@@ -1,25 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import { createPortal } from 'react-dom';
 import * as THREE from 'three';
-import { LayoutDashboard, Map as MapIcon, Box, HardHat, Users, Satellite, WifiOff, Lock, Unlock, Eye, ClipboardList, AlertTriangle, Flame, Wind, FileWarning, Siren, ShieldCheck, ChevronRight, Activity, UserCheck, ClipboardCheck, History } from 'lucide-react';
+import { LayoutDashboard, Map as MapIcon, Box, HardHat, Users, Satellite, WifiOff, Lock, Unlock, Eye, ClipboardList, MoreHorizontal, Check, Plus, Trash2, LogIn, LogOut, Ship, Languages, AlertTriangle, Flame, Wind, FileWarning, Siren, ShieldCheck, ChevronRight, Activity, UserCheck, ClipboardCheck, History } from 'lucide-react';
 
 const HAZARDS = {
-  hot: { color: '#ef4444', label: { fr: 'Travaux à chaud', en: 'Hot work' },
+  hot: { color: '#ff453a', label: { fr: 'Travaux à chaud', en: 'Hot work' },
     epi: [ { fr: 'Masque de soudure', en: 'Welding mask' }, { fr: 'Tablier ignifuge', en: 'Fire-retardant apron' }, { fr: 'Gants de soudeur', en: 'Welding gloves' }, { fr: 'Surveillant incendie', en: 'Fire watch' } ],
     permit: { fr: 'Permis de feu obligatoire', en: 'Hot work permit required' } },
-  confined: { color: '#f97316', label: { fr: 'Espace confiné', en: 'Confined space' },
+  confined: { color: '#ff9f0a', label: { fr: 'Espace confiné', en: 'Confined space' },
     epi: [ { fr: 'Détecteur 4 gaz', en: '4-gas detector' }, { fr: 'Harnais + ligne de vie', en: 'Harness + lifeline' }, { fr: 'Ventilation forcée', en: 'Forced ventilation' }, { fr: 'Surveillant à l’entrée', en: 'Standby attendant' } ],
     permit: { fr: 'Permis d’entrée + test gaz', en: 'Entry permit + gas test' } },
-  height: { color: '#eab308', label: { fr: 'Travail en hauteur', en: 'Working at height' },
+  height: { color: '#ffd60a', label: { fr: 'Travail en hauteur', en: 'Working at height' },
     epi: [ { fr: 'Harnais antichute', en: 'Fall-arrest harness' }, { fr: 'Double longe', en: 'Double lanyard' }, { fr: 'Casque à jugulaire', en: 'Chin-strap helmet' } ],
     permit: { fr: 'Échafaudage validé (étiquette verte)', en: 'Scaffold validated (green tag)' } },
-  blast: { color: '#22d3ee', label: { fr: 'Sablage / Peinture', en: 'Blasting / Painting' },
+  blast: { color: '#64d2ff', label: { fr: 'Sablage / Peinture', en: 'Blasting / Painting' },
     epi: [ { fr: 'Masque à adduction d’air', en: 'Air-fed respirator' }, { fr: 'Combinaison étanche', en: 'Sealed coverall' }, { fr: 'Gants nitrile', en: 'Nitrile gloves' }, { fr: 'Protection auditive', en: 'Hearing protection' } ],
     permit: { fr: 'Zone balisée et ventilée', en: 'Cordoned & ventilated area' } },
 };
 const STATUS = {
-  planned:  { fr: 'Planifié', en: 'Planned', color: '#64748b' },
-  progress: { fr: 'En cours', en: 'In progress', color: '#22c55e' },
-  done:     { fr: 'Terminé', en: 'Completed', color: '#3b82f6' },
+  planned:  { fr: 'Planifié', en: 'Planned', color: '#8e8e93' },
+  progress: { fr: 'En cours', en: 'In progress', color: '#30d158' },
+  done:     { fr: 'Terminé', en: 'Completed', color: '#0a84ff' },
 };
 const COMPANY_PALETTE = ['#2dd4bf', '#60a5fa', '#f472b6', '#facc15', '#fda4af', '#fb923c', '#4ade80', '#f87171', '#38bdf8', '#a3e635'];
 const SHARED_KEY = 'ams_shared_v2';
@@ -314,6 +315,9 @@ export default function ShipyardSafetyDemo() {
   const [aiPhase, setAiPhase] = useState(null);
   const [aiResult, setAiResult] = useState(null);
   const [confirmAsk, setConfirmAsk] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const tabsRef = useRef(null);
+  const [thumb, setThumb] = useState(null);
   const askConfirm = (msg, label, onYes) => setConfirmAsk({ msg, label, onYes });
   const canEdit = role === 'coordinator';
   const connected = netOnline && !simOffline;
@@ -397,12 +401,12 @@ export default function ShipyardSafetyDemo() {
   useEffect(() => { (async () => { try { await window.storage.set(PENDING_KEY, JSON.stringify(pending), false); } catch (e) {} })(); }, [pending]);
   useEffect(() => { if (connected && pending.length && !flushingRef.current) flushPending(); }, [connected, pending]);
   useEffect(() => {
-    const onKey = (e) => { if (e.key !== 'Escape') return; setConfirmAsk(null); setShowLogin(false); setShowReport(false); setDocView(null); setAiPhase((ph) => { if (ph === 'loading') return ph; setAiResult(null); return null; }); };
+    const onKey = (e) => { if (e.key !== 'Escape') return; setMenuOpen(false); setConfirmAsk(null); setShowLogin(false); setShowReport(false); setDocView(null); setAiPhase((ph) => { if (ph === 'loading') return ph; setAiResult(null); return null; }); };
     window.addEventListener('keydown', onKey);
     let drag = null;
-    const ts = (e) => { const sh = e.target.closest && e.target.closest('.dd-sheet'); if (!sh || window.innerWidth > 768) return; const top = sh.getBoundingClientRect().top; const y = e.touches[0].clientY; if (y - top > 56 && sh.scrollTop > 0) return; if (y - top > 56) return; drag = { sh, y0: y, dy: 0 }; sh.style.transition = 'none'; };
+    const ts = (e) => { const sh = e.target.closest && e.target.closest('.dd-sheet'); if (!sh || window.innerWidth > 768) return; const top = sh.getBoundingClientRect().top; const y = e.touches[0].clientY; if (y - top > 56 && sh.scrollTop > 0) return; if (y - top > 56) return; drag = { sh, y0: y, dy: 0, t0: Date.now() }; sh.style.transition = 'none'; };
     const tm = (e) => { if (!drag) return; drag.dy = Math.max(0, e.touches[0].clientY - drag.y0); drag.sh.style.transform = 'translateY(' + drag.dy + 'px)'; };
-    const te = () => { if (!drag) return; const { sh, dy } = drag; drag = null; sh.style.transition = 'transform .25s cubic-bezier(.2,.8,.2,1)'; if (dy > 110) { sh.style.transform = 'translateY(100%)'; setTimeout(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })), 180); } else { sh.style.transform = ''; } };
+    const te = () => { if (!drag) return; const { sh, dy, t0 } = drag; drag = null; const v = dy / Math.max(1, Date.now() - t0); sh.style.transition = 'transform .25s cubic-bezier(.2,.8,.2,1)'; if (dy > 110 || (dy > 24 && v > 0.11)) { sh.style.transform = 'translateY(100%)'; setTimeout(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })), 180); } else { sh.style.transform = ''; } };
     document.addEventListener('touchstart', ts, { passive: true }); document.addEventListener('touchmove', tm, { passive: true }); document.addEventListener('touchend', te);
     return () => { window.removeEventListener('keydown', onKey); document.removeEventListener('touchstart', ts); document.removeEventListener('touchmove', tm); document.removeEventListener('touchend', te); };
   }, []);
@@ -410,7 +414,7 @@ export default function ShipyardSafetyDemo() {
     if (!loaded) return;
     const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) { setIntroOut(true); setIntro(false); return; }
-    const wait = Math.max(0, 4000 - (Date.now() - introStart.current));
+    const wait = Math.max(0, 2200 - (Date.now() - introStart.current));
     let t2 = setTimeout(() => setIntro(false), wait + 700);
     const t1 = setTimeout(() => setIntroOut(true), wait);
     const skip = () => { clearTimeout(t1); clearTimeout(t2); setIntroOut(true); t2 = setTimeout(() => setIntro(false), 500); };
@@ -660,7 +664,7 @@ export default function ShipyardSafetyDemo() {
   function tryLogin() { if (codeInput.trim() === COORD_CODE) { setRole('coordinator'); setShowLogin(false); setCodeInput(''); setCodeError(false); } else { setCodeError(true); } }
   function logout() { setRole('viewer'); setTool(null); }
 
-  const C = { bg: 'var(--bg)', panel: 'var(--surface)', panel2: 'var(--surface-2)', fill: 'var(--fill)', line: 'var(--line)', accent: 'var(--accent)', accent2: 'var(--muted)', text: 'var(--ink)', dim: 'var(--ink-2)', green: 'var(--ok)', red: 'var(--danger)', amber: 'var(--warn)', blue: 'var(--info)' };
+  const C = { sel: 'var(--sel)', bg: 'var(--bg)', panel: 'var(--surface)', panel2: 'var(--surface-2)', fill: 'var(--fill)', line: 'var(--line)', accent: 'var(--accent)', accent2: 'var(--muted)', text: 'var(--ink)', dim: 'var(--ink-2)', green: 'var(--ok)', red: 'var(--danger)', amber: 'var(--warn)', blue: 'var(--info)' };
   function zoneColor(z) { return colorMode === 'company' && z.company ? companyColor(z.company, deckCompanies) : HAZARDS[z.type].color; }
 
   const TABS = [['overview', tx('Vue d\u2019ensemble', 'Overview'), LayoutDashboard], ['plan', tx('Plan', 'Plan'), MapIcon], ['3d', '3D', Box], ['works', tx('Travaux', 'Works'), HardHat], ['crew', tx('Équipe', 'Crew'), Users]];
@@ -683,163 +687,231 @@ export default function ShipyardSafetyDemo() {
   const alertCount = allConflicts.length + overdueTests.length + hotNoFw.length + riskyOccupied.length;
 
   const introHold = intro && !introOut;
+  useLayoutEffect(() => {
+    const measure = () => { const el = tabsRef.current; if (!el) return; const b = el.querySelector('button[aria-pressed="true"]'); if (b) setThumb({ x: b.offsetLeft, w: b.offsetWidth }); };
+    measure(); window.addEventListener('resize', measure); return () => window.removeEventListener('resize', measure);
+  }, [tab, lang, introHold, activeId]);
   return (
     <>
     {intro && <IntroOverlay introOut={introOut} />}
     <div style={{ minHeight: '100vh', opacity: introHold ? 0 : 1, visibility: introHold ? 'hidden' : 'visible', transition: 'opacity .55s ease', color: C.text, fontFamily: 'var(--f-text)', backgroundColor: C.bg }}>
       <a href="#main" className="dd-skip">{tx('Aller au contenu', 'Skip to content')}</a>
-      <div className="dd-tape" aria-hidden="true" />
       <input ref={docInputRef} type="file" accept="image/*" onChange={onDocFile} style={{ display: 'none' }} />
       <input ref={aiInputRef} type="file" accept="image/*" onChange={onAiFile} style={{ display: 'none' }} />
-      <div className={'dd-header' + (introHold ? '' : ' dd-rise')} style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 22px', background: 'var(--glass)', WebkitBackdropFilter: 'blur(20px) saturate(170%)', backdropFilter: 'blur(20px) saturate(170%)', borderBottom: `1px solid ${C.line}`, flexWrap: 'wrap', gap: '10px', position: 'sticky', top: 0, zIndex: 30 }}>
-        {!introHold && <div className="dd-scan" />}
-        <div className="dd-brand" style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <img className="dd-logo-light" src={LOGO_INK} alt="Allied Maritime Solutions Ltd" width="100" height="40" fetchpriority="high" style={{ height: '40px', width: 'auto' }} /><img className="dd-logo-dark" src={LOGO_WHITE} alt="Allied Maritime Solutions Ltd" width="100" height="40" style={{ height: '40px', width: 'auto' }} />
-          <div><div className="dd-title" style={{ fontSize: '22px', lineHeight: 1 }}>DryDock Safety</div><div className="dd-sub" style={{ fontSize: '10px', color: C.accent2, letterSpacing: '1.7px', textTransform: 'uppercase', fontWeight: 600, marginTop: '2px' }}>{tx('Coordination sécurité · Cale sèche', 'Safety coordination · Dry dock')}<span style={{ marginLeft: '8px', background: 'var(--accent-soft)', border: '1px solid rgba(255,122,24,.6)', color: 'var(--warn-ink)', borderRadius: '9px', padding: '1px 7px', fontSize: '9px', letterSpacing: '1px', verticalAlign: '1px' }}>DEMO v1.0</span></div></div>
+      <header className={'dd-nav' + (introHold ? '' : ' dd-rise')}>
+        <div className="dd-nav-in">
+          <img className="dd-logo" src={LOGO_WHITE} alt="Allied Maritime Solutions Ltd" width="65" height="26" fetchpriority="high" />
+          <span className="dd-appname">DryDock Safety</span>
+          <div className="dd-nav-right">
+            <button type="button" className="dd-status" onClick={() => { if (canEdit) setMenuOpen(true); else { setShowLogin(true); setCodeError(false); } }} aria-label={(connected ? (synced ? tx('En direct', 'Live') : 'Sync') : tx('Hors-ligne', 'Offline')) + ', ' + (canEdit ? tx('coordination', 'coordination') : tx('lecture seule, se connecter', 'view only, sign in'))}>
+              <span className={'dot' + (!connected ? ' off' : synced ? '' : ' sync')} aria-hidden="true" />
+              {connected ? (synced ? tx('En direct', 'Live') : 'Sync…') : tx('Hors-ligne', 'Offline')}
+              {pending.length > 0 && <span className="cnt">{pending.length}</span>}
+              <span className="sep" aria-hidden="true" />
+              <span className="role">{canEdit ? <><Unlock size={13} aria-hidden="true" />{tx('Coordination', 'Coordination')}</> : <><Lock size={13} aria-hidden="true" />{tx('Lecture seule', 'View only')}</>}</span>
+            </button>
+            <button type="button" className="dd-iconbtn" aria-label={tx('Plus d\u2019options', 'More options')} aria-haspopup="menu" aria-expanded={menuOpen} onClick={() => setMenuOpen((o) => !o)}><MoreHorizontal size={19} strokeWidth={2.2} aria-hidden="true" /></button>
+            {menuOpen && createPortal(<>
+              <div className="dd-scrim" onClick={() => setMenuOpen(false)} />
+              <div className="dd-menu" role="menu" aria-label={tx('Options', 'Options')}>
+                <div className="hd">{tx('Navire', 'Vessel')}</div>
+                {ships.map((sh) => (<button key={sh.id} type="button" role="menuitemradio" aria-checked={sh.id === activeId} className="it" onClick={() => { setActiveId(sh.id); setActiveDeckId(null); setSelectedId(null); setMenuOpen(false); }}><span className="ck">{sh.id === activeId && <Check size={17} strokeWidth={2.6} aria-hidden="true" />}</span><span className="tx">{sh.name}</span></button>))}
+                {canEdit && <button type="button" role="menuitem" className="it" onClick={() => { setMenuOpen(false); addShip(); }}><span className="ck"><Plus size={17} aria-hidden="true" /></span><span className="tx">{tx('Nouveau navire', 'New vessel')}</span></button>}
+                {canEdit && ships.length > 1 && active && <button type="button" role="menuitem" className="it danger" onClick={() => { setMenuOpen(false); deleteShip(active.id); }}><span className="ck"><Trash2 size={17} aria-hidden="true" /></span><span className="tx">{tx('Supprimer ce navire', 'Delete this vessel')}</span></button>}
+                <div className="rule" />
+                <div className="hd">{tx('Langue', 'Language')}</div>
+                <div className="seg" role="group" aria-label={tx('Langue', 'Language')}>{[['bi', 'FR / EN'], ['en', 'EN'], ['bg', 'БГ']].map(([k, l]) => (<button key={k} type="button" aria-pressed={lang === k} className={lang === k ? 'on' : ''} onClick={() => setLang(k)}>{l}</button>))}</div>
+                <div className="rule" />
+                <button type="button" role="menuitemcheckbox" aria-checked={simOffline} className="it" onClick={() => setSimOffline((v) => !v)}><span className="tx">{tx('Simuler hors-ligne', 'Simulate offline')}</span><span className={'dd-switch' + (simOffline ? ' on' : '')} aria-hidden="true" /></button>
+                <div className="it" style={{ cursor: 'default', color: 'var(--ink-2)', fontSize: '13px', minHeight: '32px' }}><Users size={15} aria-hidden="true" />{online} {tx(online > 1 ? 'personnes connectées' : 'personne connectée', online > 1 ? 'people online' : 'person online')}</div>
+                <div className="rule" />
+                {canEdit
+                  ? <button type="button" role="menuitem" className="it" onClick={() => { setMenuOpen(false); logout(); }}><span className="ck"><LogOut size={17} aria-hidden="true" /></span><span className="tx">{tx('Quitter la coordination', 'Leave coordination')}</span></button>
+                  : <button type="button" role="menuitem" className="it" onClick={() => { setMenuOpen(false); setShowLogin(true); setCodeError(false); }}><span className="ck"><LogIn size={17} aria-hidden="true" /></span><span className="tx">{tx('Accès coordination', 'Coordination access')}</span></button>}
+              </div>
+            </>, document.body)}
+          </div>
         </div>
-        <div className="dd-ctrls" style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', border: `1px solid ${C.line}`, borderRadius: '20px', overflow: 'hidden' }}>{[['bi', 'FR/EN'], ['en', 'EN'], ['bg', 'БГ']].map(([k, l]) => (<button key={k} onClick={() => setLang(k)} style={{ background: lang === k ? C.fill : 'transparent', color: lang === k ? C.text : C.dim, border: 'none', padding: '6px 12px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{l}</button>))}</div>
-          <button onClick={() => setSimOffline((v) => !v)} title={tx('Simuler hors-ligne', 'Simulate offline')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: connected ? C.panel2 : 'var(--warn-soft)', border: `1px solid ${connected ? C.line : 'var(--warn)'}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px', color: connected ? C.dim : 'var(--warn)', cursor: 'pointer' }}>{connected ? <><Satellite size={14} aria-hidden="true" />{tx('En ligne', 'Online')}</> : <><WifiOff size={14} aria-hidden="true" />{tx('Hors-ligne', 'Offline')}</>}{pending.length > 0 && <span style={{ background: 'var(--warn)', color: 'var(--on-accent)', borderRadius: '14px', padding: '0 6px', fontSize: '10px', fontWeight: 700 }}>{pending.length}</span>}</button>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px' }}><span style={{ width: '8px', height: '8px', borderRadius: '50%', background: synced ? 'var(--ok)' : 'var(--warn)', animation: 'pulse 2s infinite' }} />{synced ? tx('En direct', 'Live') : 'Sync…'} · <Users size={14} aria-hidden="true" /> {online}</div>
-          {canEdit ? (<div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--ok-soft)', border: '1px solid #22c55e', borderRadius: '20px', padding: '6px 12px', fontSize: '12px', color: 'var(--ok-ink)' }}><Unlock size={14} aria-hidden="true" /> {tx('Coordination', 'Coordination')}<button onClick={logout} style={{ background: 'transparent', border: 'none', color: 'var(--ok-ink)', cursor: 'pointer', fontSize: '11px', textDecoration: 'underline', padding: 0 }}>{tx('quitter', 'log out')}</button></div>) : (<button onClick={() => { setShowLogin(true); setCodeError(false); }} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px', color: C.dim, cursor: 'pointer' }}><Lock size={14} aria-hidden="true" />{tx('Mode consultation', 'View-only')}</button>)}
-          <select aria-label={tx('Navire', 'Vessel')} value={activeId || ''} onChange={(e) => { setActiveId(e.target.value); setActiveDeckId(null); setSelectedId(null); }} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '13px' }}>{ships.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}</select>
-          {canEdit && <button onClick={addShip} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '8px', padding: '9px 12px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>{tx('+ Navire', '+ Ship')}</button>}
-        </div>
-      </div>
+      </header>
       <style>{`
-        /* Direction: the safety board at the dock gate. ISO 7010 sign language (signal yellow + black,
-           safety red, safe-condition green), a signage typeface for figures and headlines, light
-           "permit paper on galvanised steel" for sunlight on deck, hull-steel blue-grey at night. */
+        /* Apple Pro, dark. True black ground, iOS grouped surfaces, SF type, glass only on floating
+           chrome (nav, tab bar, menus). Colour carries status only; the primary action is white.
+           Signature: the compliance ring on the overview. Motion: short ease-out, iOS drawer curve
+           for sheets, press feedback on every control, hover only for fine pointers. */
         :root {
-          --bg: #dfe3e6; --surface: #fbfbfa; --surface-2: #eef0f1; --fill: #e3e6e8; --line: rgba(21,25,28,0.14); --line-strong: #15191c;
-          --ink: #15191c; --ink-2: #4b555d; --muted: #6b757d;
-          --accent: #f6b800; --on-accent: #15191c; --accent-soft: rgba(246,184,0,0.2);
-          --danger: #c4161c; --danger-ink: #a31218; --danger-soft: rgba(196,22,28,0.09);
-          --ok: #1e7f4f; --ok-ink: #17663f; --ok-soft: rgba(30,127,79,0.1);
-          --warn: #b07900; --warn-ink: #7f5800; --warn-soft: rgba(246,184,0,0.18);
-          --info: #1d5fa0; --info-ink: #1d5fa0; --glass: rgba(251,251,250,0.78);
-          --f-sign: "Barlow Condensed", "DIN Condensed", "Arial Narrow", sans-serif;
-          --f-text: -apple-system, BlinkMacSystemFont, "SF Pro Text", Barlow, "Segoe UI", system-ui, sans-serif;
-          color-scheme: light;
+          --bg: #000000; --surface: #1c1c1e; --surface-2: #2c2c2e; --surface-3: #3a3a3c;
+          --fill: rgba(118,118,128,0.24); --sel: #636366; --line: rgba(255,255,255,0.09); --sep: rgba(84,84,88,0.45);
+          --ink: #ffffff; --ink-2: rgba(235,235,245,0.62); --muted: rgba(235,235,245,0.45);
+          --accent: #ffffff; --on-accent: #000000; --accent-soft: rgba(255,255,255,0.12);
+          --danger: #ff453a; --danger-ink: #ff6961; --danger-soft: rgba(255,69,58,0.16);
+          --ok: #30d158; --ok-ink: #30d158; --ok-soft: rgba(48,209,88,0.16);
+          --warn: #ff9f0a; --warn-ink: #ffb340; --warn-soft: rgba(255,159,10,0.16);
+          --info: #0a84ff; --info-ink: #409cff; --line-strong: rgba(255,255,255,0.3);
+          --glass: rgba(22,22,24,0.72);
+          --f-text: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", Roboto, sans-serif;
+          --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", Inter, "Segoe UI", Roboto, sans-serif;
+          --f-round: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, Inter, sans-serif;
+          --ease-out: cubic-bezier(0.23, 1, 0.32, 1); --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+          color-scheme: dark;
         }
-        @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-          --bg: #1a2127; --surface: #222a31; --surface-2: #1d242a; --fill: #2d363e; --line: rgba(255,255,255,0.11); --line-strong: #e9edf0;
-          --ink: #f1f3f4; --ink-2: #b4bdc5; --muted: #8e99a3; --accent-soft: rgba(246,184,0,0.16);
-          --danger: #ff5a52; --danger-ink: #ff8a84; --danger-soft: rgba(255,90,82,0.14);
-          --ok: #3cc47c; --ok-ink: #72dba2; --ok-soft: rgba(60,196,124,0.13);
-          --warn: #f6b800; --warn-ink: #ffd35c; --warn-soft: rgba(246,184,0,0.14);
-          --info: #5aa9f0; --info-ink: #8cc4f5; --glass: rgba(29,36,42,0.8); color-scheme: dark; } }
-        :root[data-theme="dark"] {
-          --bg: #1a2127; --surface: #222a31; --surface-2: #1d242a; --fill: #2d363e; --line: rgba(255,255,255,0.11); --line-strong: #e9edf0;
-          --ink: #f1f3f4; --ink-2: #b4bdc5; --muted: #8e99a3; --accent-soft: rgba(246,184,0,0.16);
-          --danger: #ff5a52; --danger-ink: #ff8a84; --danger-soft: rgba(255,90,82,0.14);
-          --ok: #3cc47c; --ok-ink: #72dba2; --ok-soft: rgba(60,196,124,0.13);
-          --warn: #f6b800; --warn-ink: #ffd35c; --warn-soft: rgba(246,184,0,0.14);
-          --info: #5aa9f0; --info-ink: #8cc4f5; --glass: rgba(29,36,42,0.8); color-scheme: dark; }
-        body { background: var(--bg); color: var(--ink); }
-        @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
-        @keyframes ddRise { 0%{opacity:0;} 100%{opacity:1;} }
-        .dd-rise, .dd-rise-2 { animation: ddRise .5s ease both; }
-        .dd-scan { display: none; }
-        .dd-sub { display: none; }
-        .dd-logo-dark { display: none; }
-        @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .dd-logo-dark { display: block; } :root:not([data-theme="light"]) .dd-logo-light { display: none; } }
-        :root[data-theme="dark"] .dd-logo-dark { display: block; } :root[data-theme="dark"] .dd-logo-light { display: none; }
-        .dd-title, .dd-large { font-family: var(--f-sign) !important; font-weight: 600 !important; letter-spacing: 0 !important; }
-        button { transition: background-color .15s ease, border-color .15s ease, color .15s ease, transform .1s ease; }
-        button:hover { filter: none; }
-        button:active { transform: scale(.97); transition-duration: .05s; }
-        button:disabled { cursor: not-allowed; opacity: .5; transform: none; }
-        :focus-visible { outline: 2.5px solid var(--info) !important; outline-offset: 2px; }
-        input:focus-visible, select:focus-visible, input:focus, select:focus { outline: none !important; border-color: var(--info) !important; box-shadow: 0 0 0 3px color-mix(in srgb, var(--info) 30%, transparent); }
-        h1, .dd-kpis, .dd-tabs button { font-variant-numeric: tabular-nums; }
-        input[type=range], input[type=checkbox], input[type=radio] { accent-color: var(--ink); }
-        button, [role=button], select, a { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+        html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--ink); font-family: var(--f-text); -webkit-font-smoothing: antialiased; }
+        @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.45;} }
+        @keyframes ddRise { from { opacity: 0; } to { opacity: 1; } }
+        .dd-rise, .dd-rise-2 { animation: ddRise .35s ease-out both; }
+        .dd-scan, .dd-sub, .dd-tape, .dd-logo-light { display: none; }
+
+        /* controls: one system */
+        button { font-family: inherit; transition: transform 160ms var(--ease-out), background-color 150ms ease, color 150ms ease, opacity 150ms ease; }
+        button:active { transform: scale(0.97); }
+        button:disabled { cursor: not-allowed; opacity: .4; transform: none; }
+        @media (hover: hover) and (pointer: fine) { button:hover { filter: brightness(1.15); } }
+        :focus-visible { outline: 2px solid var(--info) !important; outline-offset: 2px; }
+        #main select, .dd-sheet select { -webkit-appearance: none; appearance: none; background-color: var(--surface-2) !important; color: var(--ink) !important; border: 0 !important; border-radius: 10px !important; padding: 9px 34px 9px 12px !important; font-weight: 600; font-size: 14px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ebebf5' stroke-opacity='.6' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 15 5 5 5-5M7 9l5-5 5 5'/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 11px center !important; }
+        #main input[type=text], #main input:not([type]), #main input[type=number], #main input[type=password], .dd-sheet input[type=password], .dd-sheet input:not([type]) { background: var(--surface-2) !important; border: 1px solid transparent !important; border-radius: 10px !important; color: var(--ink) !important; }
+        input:focus, select:focus { outline: none !important; box-shadow: 0 0 0 3px rgba(10,132,255,0.45) !important; }
+        input::placeholder { color: var(--muted); }
+        input[type=range], input[type=checkbox], input[type=radio] { accent-color: var(--info); }
+        button, [role=button], select, a { touch-action: manipulation; }
         h1, h2, h3 { text-wrap: balance; }
-        .dd-skip { position: fixed; left: 12px; top: -60px; z-index: 200; background: var(--accent); color: var(--on-accent); font-weight: 700; padding: 10px 14px; border-radius: 8px; text-decoration: none; }
+        .dd-skip { position: fixed; left: 12px; top: -60px; z-index: 200; background: var(--ink); color: #000; font-weight: 600; padding: 10px 14px; border-radius: 10px; text-decoration: none; }
         .dd-skip:focus-visible { top: 12px; }
-        select { background-color: var(--surface); color: var(--ink); }
-        .dd-tabbar, .dd-seg { display: none; }
-        .dd-tape { height: 5px; background: repeating-linear-gradient(-45deg, #f6b800 0 10px, #15191c 10px 20px); }
+        ::selection { background: rgba(10,132,255,0.45); }
 
-        /* overview: the sign is the one loud element */
-        .dd-hero { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 22px; padding: 6px 2px 10px; }
-        .dd-hero-title { margin: 0; font-family: var(--f-sign); font-weight: 600; font-size: 44px; line-height: 1; color: var(--ink); }
-        .dd-hero-sub { margin-top: 8px; font-size: 15px; line-height: 1.45; color: var(--ink-2); max-width: 62ch; overflow-wrap: anywhere; }
-        .dd-hero-date { margin-top: 6px; font-size: 13px; color: var(--muted); }
-        .dd-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent); color: var(--on-accent); border: 1.5px solid var(--line-strong); border-radius: 8px; padding: 12px 18px; font-size: 15px; font-weight: 650; cursor: pointer; font-family: inherit; white-space: nowrap; }
-        .dd-primary:hover { background: #ffc81f; }
-        .dd-board { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-        .dd-cell { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 14px 16px 16px; background: var(--surface); border: 0; text-align: left; cursor: pointer; color: inherit; font-family: inherit; border-radius: 0; }
-        .dd-cell:hover { background: var(--surface-2); }
-        .dd-cell:active { transform: none; background: var(--fill); }
-        .dd-num { font-family: var(--f-sign); font-weight: 600; font-size: 42px; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
-        .dd-cell.red .dd-num { color: var(--danger); } .dd-cell.amber .dd-num { color: var(--warn); }
-        .dd-lbl { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-2); }
-        .dd-mark { width: 8px; height: 8px; flex: none; }
-        .dd-cell.red .dd-mark { background: var(--danger); } .dd-cell.amber .dd-mark { background: var(--accent); outline: 1px solid var(--line-strong); }
-        .dd-plate { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-        .dd-h3 { display: flex; align-items: center; gap: 8px; margin: 0; font-family: var(--f-sign); font-size: 21px; font-weight: 600; color: var(--ink); }
-        .dd-count { font-family: var(--f-sign); font-size: 21px; font-weight: 500; color: var(--muted); }
-        .dd-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; font-size: 14.5px; line-height: 1.4; color: var(--ink); border-top: 1px solid var(--line); }
-        .dd-row.crit { background: var(--danger-soft); font-weight: 650; }
-        .dd-row-txt { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-        .dd-row svg { margin-top: 1px; }
-        .dd-card:hover { transform: none; }
+        /* nav bar: floating glass */
+        .dd-nav { position: sticky; top: 0; z-index: 30; background: var(--glass); -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%); box-shadow: 0 0.5px 0 var(--sep); }
+        .dd-nav-in { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding: 10px 16px; padding-top: max(10px, env(safe-area-inset-top)); }
+        .dd-logo { height: 26px; width: auto; display: block; }
+        .dd-appname { font-family: var(--f-display); font-weight: 600; font-size: 15px; letter-spacing: -0.01em; color: var(--ink-2); padding-left: 12px; box-shadow: inset 0.5px 0 0 var(--sep); }
+        .dd-nav-right { margin-left: auto; display: flex; align-items: center; gap: 8px; position: relative; }
+        .dd-status { display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 12px; border-radius: 999px; border: 0; background: var(--fill); color: var(--ink); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+        .dd-status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px rgba(48,209,88,0.22); }
+        .dd-status .dot.sync { background: var(--warn); box-shadow: 0 0 0 3px rgba(255,159,10,0.22); }
+        .dd-status .dot.off { background: var(--muted); box-shadow: none; }
+        .dd-status .sep { width: 1px; height: 14px; background: var(--sep); }
+        .dd-status .role { display: inline-flex; align-items: center; gap: 5px; color: var(--ink-2); }
+        .dd-status .cnt { min-width: 18px; height: 18px; border-radius: 9px; background: var(--warn); color: #000; font-size: 11px; display: inline-grid; place-items: center; padding: 0 5px; box-sizing: border-box; }
+        .dd-iconbtn { width: 32px; height: 32px; border-radius: 50%; border: 0; background: var(--fill); color: var(--ink); display: grid; place-items: center; cursor: pointer; padding: 0; }
 
-        .dd-action { width: 300px; max-width: 100%; display: flex; flex-direction: column; gap: 8px; }
-        .dd-action .grp { background: var(--surface); border-radius: 14px; overflow: hidden; }
-        .dd-action .msg { padding: 14px 16px; text-align: center; font-size: 13px; color: var(--ink-2); border-bottom: 1px solid var(--line); }
+        /* menu (pull-down) */
+        .dd-scrim { position: fixed; inset: 0; z-index: 60; }
+        .dd-menu { position: fixed; right: max(12px, calc((100vw - 1200px) / 2 + 16px)); top: calc(env(safe-area-inset-top, 0px) + 58px); z-index: 61; width: 290px; max-width: calc(100vw - 24px); max-height: min(70vh, 560px); overflow: auto; padding: 6px 0; border-radius: 14px; background: rgba(40,40,42,0.97); -webkit-backdrop-filter: blur(40px) saturate(180%); backdrop-filter: blur(40px) saturate(180%); box-shadow: 0 0 0 0.5px rgba(255,255,255,0.12), 0 24px 60px rgba(0,0,0,0.55); transform-origin: top right; animation: ddPop 180ms var(--ease-out) both; overscroll-behavior: contain; }
+        @keyframes ddPop { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .dd-menu .hd { padding: 8px 16px 4px; font-size: 12px; color: var(--muted); }
+        .dd-menu .it { box-sizing: border-box; display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 0 16px; border: 0; background: transparent; color: var(--ink); font-size: 15px; text-align: left; cursor: pointer; border-radius: 0; }
+        .dd-menu .it:active { transform: none; background: rgba(255,255,255,0.08); }
+        @media (hover: hover) and (pointer: fine) { .dd-menu .it:hover { filter: none; background: rgba(255,255,255,0.08); } }
+        .dd-menu .it .ck { width: 18px; flex: none; color: var(--info); display: inline-flex; }
+        .dd-menu .it .tx { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .dd-menu .it.danger { color: var(--danger); }
+        .dd-menu .rule { height: 6px; margin: 6px 0; background: rgba(0,0,0,0.25); }
+        .dd-menu .seg { display: flex; margin: 4px 12px 8px; padding: 2px; border-radius: 9px; background: var(--fill); }
+        .dd-menu .seg button { flex: 1; height: 30px; border: 0; border-radius: 7px; background: transparent; color: var(--ink); font-size: 13px; font-weight: 600; cursor: pointer; }
+        .dd-menu .seg button.on { background: var(--sel); box-shadow: 0 3px 8px rgba(0,0,0,0.25); }
+        .dd-switch { margin-left: auto; width: 51px; height: 31px; border-radius: 16px; background: var(--fill); position: relative; flex: none; transition: background-color 200ms ease; }
+        .dd-switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.3); transition: transform 240ms var(--ease-out); }
+        .dd-switch.on { background: var(--ok); } .dd-switch.on::after { transform: translateX(20px); }
+
+        /* title row + segmented tabs with sliding thumb */
+        .dd-large { font-family: var(--f-display) !important; font-size: 34px !important; font-weight: 700 !important; letter-spacing: -0.025em !important; line-height: 1.1 !important; }
+        .dd-tabs { position: relative; display: flex; gap: 0 !important; padding: 2px !important; border-radius: 10px !important; background: var(--fill) !important; border: 0 !important; }
+        .dd-tabs .thumb { position: absolute; top: 2px; bottom: 2px; left: 0; border-radius: 8px; background: var(--sel); box-shadow: 0 3px 8px rgba(0,0,0,0.25), 0 0.5px 0 rgba(255,255,255,0.12) inset; transition: transform 260ms var(--ease-out), width 260ms var(--ease-out); }
+        .dd-tabs button { position: relative; z-index: 1; background: transparent !important; box-shadow: none !important; color: var(--ink) !important; font-size: 13px !important; padding: 6px 14px !important; }
+        .dd-tabs button:active { transform: none; }
+
+        /* overview */
+        .dd-hero { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 22px; padding: 22px; border-radius: 22px; background: var(--surface); }
+        .dd-ring { position: relative; width: 112px; height: 112px; flex: none; }
+        .dd-ring svg { display: block; transform: rotate(-90deg); }
+        .dd-ring .trk { stroke: rgba(255,255,255,0.1); }
+        .dd-ring .val { transition: stroke-dashoffset 900ms var(--ease-out); }
+        @starting-style { .dd-ring .val { stroke-dashoffset: 327; } }
+        .dd-ring .ctr { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
+        .dd-ring .pct { font-family: var(--f-round); font-size: 28px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+        .dd-ring .cap { font-size: 11px; color: var(--ink-2); margin-top: 2px; }
+        .dd-hero-title { margin: 0; font-family: var(--f-display); font-size: 28px; font-weight: 700; letter-spacing: -0.022em; line-height: 1.12; }
+        .dd-hero-sub { margin-top: 6px; font-size: 15px; line-height: 1.4; color: var(--ink-2); max-width: 60ch; overflow-wrap: anywhere; }
+        .dd-hero-date { margin-top: 10px; font-size: 13px; color: var(--muted); }
+        .dd-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 46px; padding: 0 20px; border-radius: 23px; border: 0; background: #fff; color: #000; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; cursor: pointer; white-space: nowrap; }
+        .dd-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 22px; align-items: start; }
+        .dd-group-hd { display: flex; align-items: baseline; gap: 8px; margin: 0 0 8px 16px; font-family: var(--f-display); font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+        .dd-group-hd .n { font-size: 15px; font-weight: 600; color: var(--muted); }
+        .dd-group { background: var(--surface); border-radius: 14px; overflow: hidden; }
+        .dd-li { box-sizing: border-box; display: flex; align-items: center; gap: 12px; width: 100%; min-height: 48px; padding: 0 16px; border: 0; background: transparent; color: var(--ink); text-align: left; font-size: 15px; cursor: pointer; border-radius: 0; position: relative; }
+        .dd-li + .dd-li::before { content: ""; position: absolute; top: 0; left: 52px; right: 0; height: 0.5px; background: var(--sep); }
+        .dd-li.plain { cursor: default; padding-top: 12px; padding-bottom: 12px; align-items: flex-start; }
+        .dd-li.plain + .dd-li.plain::before { left: 16px; }
+        .dd-li:active { transform: none; background: rgba(255,255,255,0.06); }
+        .dd-li.plain:active { background: transparent; }
+        @media (hover: hover) and (pointer: fine) { button.dd-li:hover { filter: none; background: rgba(255,255,255,0.04); } }
+        .dd-li .ic { width: 28px; height: 28px; flex: none; border-radius: 7px; display: grid; place-items: center; background: var(--surface-3); color: var(--ink); }
+        .dd-li .lb { flex: 1; min-width: 0; line-height: 1.35; overflow-wrap: anywhere; }
+        .dd-li .vl { font-family: var(--f-round); font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+        .dd-li .vl.red { color: var(--danger); } .dd-li .vl.orange { color: var(--warn); }
+        .dd-li .chev { color: var(--muted); flex: none; }
+        .dd-li .ic.red { background: var(--danger); color: #fff; } .dd-li .ic.orange { background: var(--warn); color: #000; }
+        .dd-li.crit { background: var(--danger-soft); }
+        .dd-li .tm { width: 92px; flex: none; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; padding-top: 1px; }
+        .dd-foot { background: transparent !important; border: 0 !important; color: var(--muted) !important; font-size: 12px !important; }
+
+        /* action sheet + sheets */
+        .dd-action { width: 300px; max-width: 100%; display: flex; flex-direction: column; gap: 8px; animation: ddPopC 200ms var(--ease-out) both; }
+        @keyframes ddPopC { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+        .dd-action .grp { background: rgba(44,44,46,0.92); -webkit-backdrop-filter: blur(30px); backdrop-filter: blur(30px); border-radius: 14px; overflow: hidden; }
+        .dd-action .msg { padding: 14px 16px; text-align: center; font-size: 13px; color: var(--ink-2); border-bottom: 0.5px solid var(--sep); }
         .dd-action .msg small { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
-        .dd-action button { display: block; width: 100%; background: transparent; border: 0; padding: 15px; font-size: 17px; cursor: pointer; font-family: inherit; }
+        .dd-action button { display: block; width: 100%; background: transparent; border: 0; padding: 16px; font-size: 17px; cursor: pointer; }
+        .dd-action button:active { transform: none; background: rgba(255,255,255,0.08); }
         .dd-action .danger { color: var(--danger); }
         .dd-action .cancel { color: var(--info); font-weight: 600; }
         @keyframes ddSheetIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
         @keyframes ddFade { from { opacity: 0; } to { opacity: 1; } }
+        .dd-backdrop { animation: ddFade 200ms ease-out both; }
+        .dd-sheet { animation: ddPopC 220ms var(--ease-out) both; }
+        .dd-tabbar, .dd-seg { display: none; }
+
         @media (max-width: 768px) {
-          body { -webkit-text-size-adjust: 100%; }
-          button, [role=button], .dd-tabbar { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+          button, [role=button], .dd-tabbar, .dd-status { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
           input, select, textarea { font-size: 16px !important; }
-          .dd-header { padding: 10px 16px !important; padding-top: max(10px, env(safe-area-inset-top)) !important; gap: 8px !important; }
-          .dd-header .dd-brand img { height: 28px !important; }
-          .dd-ctrls { flex-wrap: nowrap !important; overflow-x: auto; width: 100%; padding-bottom: 2px; scrollbar-width: none; }
-          .dd-ctrls::-webkit-scrollbar { display: none; }
-          .dd-ctrls > * { flex: none; }
-          .dd-ctrls button, .dd-ctrls select { min-height: 36px !important; }
+          .dd-appname { display: none; }
           .dd-tabs { display: none !important; }
-          .dd-viewonly { display: none !important; }
-          .dd-large { font-size: 36px !important; }
-          .dd-hero { grid-template-columns: auto 1fr; gap: 16px; }
+          .dd-large { font-size: 32px !important; }
+          .dd-hero { grid-template-columns: auto 1fr; gap: 16px; padding: 18px; }
           .dd-hero .dd-primary { grid-column: 1 / -1; width: 100%; }
-          .dd-hero-title { font-size: 34px; }
-          #main { padding-bottom: calc(96px + env(safe-area-inset-bottom)) !important; }
-          .dd-foot { padding-bottom: calc(96px + env(safe-area-inset-bottom)) !important; margin-top: 0 !important; }
-          .dd-tabbar { display: flex; position: fixed; z-index: 40; left: max(12px, env(safe-area-inset-left)); right: max(12px, env(safe-area-inset-right)); bottom: calc(10px + env(safe-area-inset-bottom)); justify-content: space-around; padding: 5px; border-radius: 999px; background: var(--glass); -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%); border: 1px solid var(--line); box-shadow: 0 10px 30px -12px rgba(0,0,0,.35); }
-          .dd-tabbar button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; background: transparent; border: 0; color: var(--muted); padding: 6px 0 4px; border-radius: 999px; min-height: 52px; font-family: inherit; }
-          .dd-tabbar button.on { color: var(--ink); background: var(--fill); }
+          .dd-ring { width: 92px; height: 92px; } .dd-ring svg { width: 92px; height: 92px; }
+          .dd-hero-title { font-size: 24px; }
+          .dd-li { font-size: 17px; min-height: 50px; }
+          #main { padding-bottom: calc(100px + env(safe-area-inset-bottom)) !important; }
+          .dd-foot { padding-bottom: calc(100px + env(safe-area-inset-bottom)) !important; margin-top: 0 !important; }
+          .dd-tabbar { display: flex; position: fixed; z-index: 40; left: max(14px, env(safe-area-inset-left)); right: max(14px, env(safe-area-inset-right)); bottom: calc(8px + env(safe-area-inset-bottom)); justify-content: space-around; padding: 4px; border-radius: 999px; background: rgba(30,30,32,0.7); -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%); box-shadow: 0 0 0 0.5px rgba(255,255,255,0.14), 0 12px 32px rgba(0,0,0,0.5); }
+          .dd-tabbar button { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; background: transparent; border: 0; color: var(--ink); padding: 6px 0 5px; border-radius: 999px; min-height: 54px; transition: background-color 200ms ease, color 200ms ease, transform 160ms var(--ease-out); }
+          .dd-tabbar button:not(.on) { color: var(--ink-2); }
+          .dd-tabbar button.on { background: rgba(255,255,255,0.13); color: #fff; }
           .dd-tabbar .ico { position: relative; display: inline-flex; }
-          .dd-tabbar .badge { position: absolute; top: -5px; right: -11px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #d70015; color: #fff; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
-          .dd-tabbar .lbl { font-size: 11px; font-weight: 600; }
-          .dd-seg { display: flex; margin: 0 0 14px; padding: 2px; border-radius: 9px; background: var(--fill); }
-          .dd-seg button { flex: 1; background: transparent; border: 0; color: var(--ink-2); font-size: 13px; font-weight: 600; border-radius: 7px; min-height: 32px !important; font-family: inherit; }
-          .dd-seg button.on { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.18); }
-          .dd-backdrop { align-items: flex-end !important; padding: 0 !important; animation: ddFade .2s ease both; }
+          .dd-tabbar .badge { position: absolute; top: -4px; right: -10px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #ff3b30; color: #fff; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; }
+          .dd-tabbar .lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.01em; }
+          .dd-backdrop { align-items: flex-end !important; padding: 0 !important; }
           .dd-confirm-bd { padding: 0 8px calc(8px + env(safe-area-inset-bottom)) !important; }
-          .dd-action { width: 100%; animation: ddSheetIn .32s cubic-bezier(.2,.8,.2,1) both; }
-          .dd-sheet { width: 100% !important; max-width: 100% !important; max-height: 92vh !important; border-radius: 14px 14px 0 0 !important; padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important; animation: ddSheetIn .34s cubic-bezier(.2,.8,.2,1) both; overflow: auto; position: relative; }
-          .dd-sheet::before { content: ""; display: block; width: 36px; height: 5px; border-radius: 3px; background: var(--muted); opacity: .5; margin: -8px auto 12px; }
+          .dd-action { width: 100%; animation: ddSheetIn 420ms var(--ease-drawer) both; }
+          .dd-sheet { width: 100% !important; max-width: 100% !important; max-height: 92vh !important; border-radius: 16px 16px 0 0 !important; padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important; animation: ddSheetIn 420ms var(--ease-drawer) both; overflow: auto; position: relative; overscroll-behavior: contain; }
+          .dd-sheet::before { content: ""; display: block; width: 36px; height: 5px; border-radius: 3px; background: rgba(235,235,245,0.3); margin: -8px auto 12px; }
+          .dd-menu { position: fixed; top: auto; left: 8px; right: 8px; bottom: calc(8px + env(safe-area-inset-bottom)); width: auto; max-width: none; border-radius: 18px; transform-origin: bottom center; animation: ddSheetIn 380ms var(--ease-drawer) both; }
+          .dd-menu .it { min-height: 50px; font-size: 17px; }
+          .dd-scrim { background: rgba(0,0,0,0.4); animation: ddFade 200ms ease-out both; }
         }
         @media (max-width: 640px) {
           button, select, input:not([type=file]) { min-height: 44px; }
-          .dd-plan button, .dd-plan input { min-height: 0; }
-          .dd-board { grid-template-columns: 1fr 1fr; }
-          .dd-board > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+          .dd-plan button, .dd-plan input, .dd-tabbar button, .dd-status, .dd-iconbtn, .dd-menu .seg button { min-height: 0; }
+          .dd-cols { grid-template-columns: 1fr; }
         }
-        @keyframes ddAlert { 0%,100% { box-shadow: 0 0 0 2.5px #ff453a; } 50% { box-shadow: 0 0 0 6px rgba(255,69,58,.38); } }
-        @keyframes ddCrit { 0%,100% { background: var(--danger-soft); } 50% { background: color-mix(in srgb, var(--danger) 22%, transparent); } }
-        .dd-plan { box-shadow: inset 0 0 0 1px rgba(201,210,218,.14), inset 0 0 70px rgba(0,0,0,.5); }
-        ::selection { background: var(--accent-soft); }
-        @media (prefers-reduced-motion: reduce){ .dd-rise,.dd-rise-2{ animation:none !important; } *,*::before,*::after{ animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; } }
+        @keyframes ddAlert { 0%,100% { box-shadow: 0 0 0 2px #ff453a; } 50% { box-shadow: 0 0 0 5px rgba(255,69,58,.35); } }
+        @keyframes ddCrit { 0%,100% { background: var(--danger-soft); } 50% { background: rgba(255,69,58,0.26); } }
+        .dd-plan { box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.1); }
+        #main div[style*="border: 1px solid var(--line)"] { border-color: transparent !important; }
+        #main div[style*="dashed"] { border-color: transparent !important; background: var(--surface) !important; }
+        #main button[style*="border: 1px solid var(--line)"] { border-color: transparent !important; background-color: var(--fill) !important; }
+        @media (prefers-reduced-transparency: reduce) { .dd-nav, .dd-tabbar, .dd-menu { background: #1c1c1e !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; } }
+        @media (prefers-reduced-motion: reduce) { .dd-rise, .dd-rise-2, .dd-menu, .dd-sheet, .dd-action { animation: ddFade 150ms ease both !important; } .dd-tabs .thumb, .dd-ring .val { transition: none; } *,*::before,*::after { animation-iteration-count: 1 !important; scroll-behavior: auto !important; } }
       `}</style>
 
       {showLogin && (
@@ -933,12 +1005,11 @@ export default function ShipyardSafetyDemo() {
 
       {!active ? (<div style={{ padding: '60px 20px', textAlign: 'center', color: C.dim }}><div style={{ fontSize: '44px', marginBottom: '12px' }}>🚢</div><p>{tx('Aucun navire.', 'No vessel.')}</p></div>) : (
         <div id="main" role="main" tabIndex={-1} className={introHold ? '' : 'dd-rise-2'} style={{ padding: '16px', maxWidth: '1200px', margin: '0 auto' }}>
-          {!canEdit && (<div className="dd-viewonly" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', flexWrap: 'wrap', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '14px', padding: '10px 10px 10px 16px', marginBottom: '18px', fontSize: '13px', color: C.dim }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}><Eye size={15} aria-hidden="true" />{tx('Mode consultation — seule la coordination peut modifier.', 'View-only — only site coordination can edit.')}</span><button onClick={() => { setShowLogin(true); setCodeError(false); }} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '7px', padding: '7px 12px', fontSize: '12px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>{tx('Accès coordination', 'Coordination access')}</button></div>)}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: '14px' }}>
             {canEdit ? <input aria-label={tx('Nom du navire', 'Vessel name')} value={active.name} onChange={(e) => updateActive({ name: e.target.value })} className="dd-title dd-large" style={{ background: 'transparent', color: C.text, border: 'none', borderBottom: `2px solid ${C.line}`, fontSize: '24px', fontWeight: 700, padding: '4px 2px', minWidth: '180px' }} /> : <h1 className="dd-title dd-large" style={{ margin: 0, fontSize: '24px', fontWeight: 700, letterSpacing: '-0.3px', padding: '4px 2px' }}>{active.name}</h1>}
-            <div className="dd-tabs" style={{ display: 'flex', gap: '2px', flexWrap: 'wrap', padding: '3px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px' }}>
+            <div ref={tabsRef} className="dd-tabs" style={{ display: 'flex', gap: '2px', flexWrap: 'wrap', padding: '3px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px' }}>
+              {thumb && <span className="thumb" aria-hidden="true" style={{ width: thumb.w + 'px', transform: 'translateX(' + thumb.x + 'px)' }} />}
               {TABS.map(([k, lbl, Ico]) => (<button key={k} onClick={() => setTab(k)} aria-pressed={tab === k} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '7px', position: 'relative', background: tab === k ? C.fill : 'transparent', color: tab === k ? C.text : C.dim, border: 'none', borderRadius: '9px', padding: '7px 13px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', boxShadow: tab === k ? '0 1px 2px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.06)' : 'none' }}><Ico size={16} strokeWidth={2} aria-hidden="true" style={{ color: 'currentColor' }} />{lbl}{k === 'overview' && alertCount > 0 && <span style={{ position: 'absolute', top: '-7px', right: '-7px', background: '#dc2626', color: '#fff', borderRadius: '14px', minWidth: '18px', height: '18px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 800, padding: '0 4px', boxShadow: '0 0 0 2px #0a0b0d' }}>{alertCount}</span>}</button>))}
-              {canEdit && <button onClick={() => deleteShip(active.id)} aria-label={tx('Supprimer le navire', 'Delete vessel')} title={tx('Supprimer le navire', 'Delete vessel')} style={{ background: 'transparent', color: 'var(--danger)', border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 12px', fontSize: '13px', cursor: 'pointer' }}>🗑</button>}
             </div>
           </div>
 
@@ -946,8 +1017,7 @@ export default function ShipyardSafetyDemo() {
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
               <div style={{ flex: '1 1 460px' }}>
                 <div style={{ display: 'flex', gap: '8px', marginBottom: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
-                  <span style={{ fontSize: '12px', color: C.dim }}>{bi('Pont', 'Deck')} :</span>
-                  <select aria-label={bi('Pont', 'Deck')} value={activeDeck.id} onChange={(e) => { setActiveDeckId(e.target.value); setSelectedId(null); }} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '13px', fontWeight: 600, maxWidth: '220px' }}>
+                                    <select aria-label={bi('Pont', 'Deck')} value={activeDeck.id} onChange={(e) => { setActiveDeckId(e.target.value); setSelectedId(null); }} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '13px', fontWeight: 600, maxWidth: '220px' }}>
                     {active.decks.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
                   </select>
                   {canEdit && <input aria-label={tx('Nom du pont', 'Deck name')} value={activeDeck.name} onChange={(e) => updateDeck({ name: e.target.value })} placeholder={tx('Nom du pont', 'Deck name') + '…'} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '12px', width: '150px' }} />}
@@ -961,7 +1031,7 @@ export default function ShipyardSafetyDemo() {
                   {canEdit && <button onClick={() => fileRef.current && fileRef.current.click()} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '8px', padding: '9px 14px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>{tx('Importer le plan du pont', 'Import deck plan')}</button>}
                   {canEdit && <button onClick={startAiImport} style={{ background: 'linear-gradient(120deg, #1e6fb8, #0e4a80)', color: '#fff', border: 'none', borderRadius: '8px', padding: '9px 14px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}>{tx('Analyser un plan (IA)', 'Analyse a plan (AI)')}</button>}
                   {canEdit && activeDeck.planImage && (<button onClick={() => updateDeck({ planImage: null })} style={{ background: 'transparent', color: C.dim, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '9px 12px', fontSize: '12px', cursor: 'pointer' }}>{tx('Retirer', 'Remove')}</button>)}
-                  <div style={{ display: 'flex', border: `1px solid ${C.line}`, borderRadius: '8px', overflow: 'hidden' }}>{[['hazard', tx('Par danger', 'By hazard')], ['company', tx('Par compagnie', 'By company')]].map(([k, lbl]) => (<button key={k} onClick={() => setColorMode(k)} style={{ background: colorMode === k ? C.accent : 'transparent', color: colorMode === k ? 'var(--on-accent)' : C.dim, border: 'none', padding: '8px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{lbl}</button>))}</div>
+                  <div style={{ display: 'flex', border: `1px solid ${C.line}`, borderRadius: '8px', overflow: 'hidden' }}>{[['hazard', tx('Par danger', 'By hazard')], ['company', tx('Par compagnie', 'By company')]].map(([k, lbl]) => (<button key={k} onClick={() => setColorMode(k)} style={{ background: colorMode === k ? C.sel : 'transparent', color: colorMode === k ? C.text : C.dim, border: 'none', padding: '8px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{lbl}</button>))}</div>
                 </div>
                 <div style={{ fontSize: '11px', color: C.dim, marginBottom: '8px' }}>{!canEdit ? tx('Consultation — touchez une zone pour voir le détail', 'View-only — tap a zone to see details') : (tool ? tx('→ Cliquez sur le plan pour placer : ', '→ Tap the plan to place: ') + pick(lang, HAZARDS[tool].label.fr, HAZARDS[tool].label.en) : tx('Choisissez un danger à droite, puis cliquez sur le plan', 'Pick a hazard on the right, then tap the plan'))}</div>
                 {deckConflicts.length > 0 && (
@@ -971,7 +1041,7 @@ export default function ShipyardSafetyDemo() {
                   </div>
                 )}
 
-                <div ref={planRef} onClick={handlePlanClick} className="dd-plan" style={{ position: 'relative', width: '100%', aspectRatio: '3 / 4', background: '#1d242a', border: `1px solid ${C.line}`, borderRadius: '18px', overflow: 'hidden', cursor: tool ? 'crosshair' : 'default' }}>
+                <div ref={planRef} onClick={handlePlanClick} className="dd-plan" style={{ position: 'relative', width: '100%', aspectRatio: '3 / 4', background: '#0b0b0c', border: `1px solid ${C.line}`, borderRadius: '18px', overflow: 'hidden', cursor: tool ? 'crosshair' : 'default' }}>
                   {activeDeck.planImage ? (<img src={activeDeck.planImage} alt="plan" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain' }} />) : (<DeckSchematic layout={activeDeck.layout} lang={lang} aiRooms={activeDeck.aiRooms} />)}
                   {activeDeck.zones.map((z) => {
                     const col = zoneColor(z), sel = selectedId === z.id, st = STATUS[z.status];
@@ -1100,9 +1170,9 @@ function CrewView({ crew, C, canEdit, hotZones, nowTick, lang, onCoord, onAssist
       <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
         <div style={{ flex: '1 1 280px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '16px' }}>
           <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px', color: C.text }}>{tx('Coordination du chantier', 'Site coordination')}</div>
-          <label style={{ fontSize: '11px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi('Coordinateur', 'Site coordinator')}</label>
+          <label style={{ fontSize: '12px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi('Coordinateur', 'Site coordinator')}</label>
           {canEdit ? <input value={crew.coordinator} onChange={(e) => onCoord(e.target.value)} placeholder={tx('Nom', 'Name') + '…'} style={{ width: '100%', boxSizing: 'border-box', background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '9px 10px', fontSize: '14px', marginBottom: '12px' }} /> : <div style={{ fontSize: '15px', fontWeight: 600, marginBottom: '12px' }}>{crew.coordinator || '—'}</div>}
-          <label style={{ fontSize: '11px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi('Assistant coordinateur', 'Assistant')}</label>
+          <label style={{ fontSize: '12px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi('Assistant coordinateur', 'Assistant')}</label>
           {canEdit ? <input value={crew.assistant} onChange={(e) => onAssist(e.target.value)} placeholder={tx('Nom (optionnel)', 'Name (optional)') + '…'} style={{ width: '100%', boxSizing: 'border-box', background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '9px 10px', fontSize: '14px' }} /> : <div style={{ fontSize: '15px', fontWeight: 600 }}>{crew.assistant || '—'}</div>}
         </div>
         <div style={{ flex: '1 1 160px', display: 'flex', gap: '16px' }}>
@@ -1126,12 +1196,12 @@ function CrewView({ crew, C, canEdit, hotZones, nowTick, lang, onCoord, onAssist
             <div key={f.id} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '11px 14px', borderBottom: `1px solid ${C.line}`, flexWrap: 'wrap' }}>
               <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: isPosted ? 'var(--ok)' : C.dim }} />
               <span style={{ fontWeight: 600, fontSize: '14px', minWidth: '110px' }}>{f.name}</span>
-              {isPosted ? (() => { const exists = hotZones.some((z) => z.id === f.zoneId); return (<span role={exists ? 'button' : undefined} tabIndex={exists ? 0 : undefined} onKeyDown={(e) => { if (exists && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onLocate(f.zoneId); } }} onClick={() => exists && onLocate(f.zoneId)} title={exists ? tx('Voir sur le plan', 'View on plan') : undefined} style={{ fontSize: '12px', color: 'var(--ok-ink)', flex: 1, minWidth: '160px', cursor: exists ? 'pointer' : 'default' }}><span style={{ textDecoration: exists ? 'underline dotted' : 'none', textUnderlineOffset: '3px' }}>{zoneName(f.zoneId)}</span> <span style={{ color: C.dim }}>· {tx('depuis', 'since')} {fmtDur(f.since, lang)}</span>{exists && <span style={{ marginLeft: '6px', fontSize: '11px' }}>📍</span>}</span>); })() : (<span style={{ fontSize: '12px', color: C.dim, flex: 1, minWidth: '160px' }}>{tx('Disponible', 'Available')}</span>)}
-              {canEdit && (<div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>{isPosted ? (<button onClick={() => onRelease(f.id)} style={{ background: 'transparent', border: `1px solid #22c55e`, color: 'var(--ok-ink)', borderRadius: '6px', padding: '5px 10px', fontSize: '11px', cursor: 'pointer' }}>{tx('Libérer', 'Release')}</button>) : (<select defaultValue="" onChange={(e) => { if (e.target.value) onAssign(f.id, e.target.value); }} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '6px', padding: '5px 8px', fontSize: '11px' }}><option value="" disabled>{tx('Poster sur…', 'Post to…')}</option>{hotZones.length === 0 && <option value="" disabled>{tx('Aucune zone à chaud', 'No hot work zone')}</option>}{hotZones.map((z) => <option key={z.id} value={z.id}>{z.work || tx('Zone à chaud', 'Hot work zone')}</option>)}</select>)}<button onClick={() => onRemove(f.id)} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: 'var(--danger)', borderRadius: '6px', padding: '5px 8px', fontSize: '11px', cursor: 'pointer' }}>✕</button></div>)}
+              {isPosted ? (() => { const exists = hotZones.some((z) => z.id === f.zoneId); return (<span role={exists ? 'button' : undefined} tabIndex={exists ? 0 : undefined} onKeyDown={(e) => { if (exists && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onLocate(f.zoneId); } }} onClick={() => exists && onLocate(f.zoneId)} title={exists ? tx('Voir sur le plan', 'View on plan') : undefined} style={{ fontSize: '12px', color: 'var(--ok-ink)', flex: 1, minWidth: '160px', cursor: exists ? 'pointer' : 'default' }}><span style={{ textDecoration: exists ? 'underline dotted' : 'none', textUnderlineOffset: '3px' }}>{zoneName(f.zoneId)}</span> <span style={{ color: C.dim }}>· {tx('depuis', 'since')} {fmtDur(f.since, lang)}</span>{exists && <span style={{ marginLeft: '6px', fontSize: '12px' }}>📍</span>}</span>); })() : (<span style={{ fontSize: '12px', color: C.dim, flex: 1, minWidth: '160px' }}>{tx('Disponible', 'Available')}</span>)}
+              {canEdit && (<div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>{isPosted ? (<button onClick={() => onRelease(f.id)} style={{ background: 'transparent', border: `1px solid #22c55e`, color: 'var(--ok-ink)', borderRadius: '6px', padding: '5px 10px', fontSize: '12px', cursor: 'pointer' }}>{tx('Libérer', 'Release')}</button>) : (<select defaultValue="" onChange={(e) => { if (e.target.value) onAssign(f.id, e.target.value); }} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '6px', padding: '5px 8px', fontSize: '12px' }}><option value="" disabled>{tx('Poster sur…', 'Post to…')}</option>{hotZones.length === 0 && <option value="" disabled>{tx('Aucune zone à chaud', 'No hot work zone')}</option>}{hotZones.map((z) => <option key={z.id} value={z.id}>{z.work || tx('Zone à chaud', 'Hot work zone')}</option>)}</select>)}<button onClick={() => onRemove(f.id)} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: 'var(--danger)', borderRadius: '6px', padding: '5px 8px', fontSize: '12px', cursor: 'pointer' }}>✕</button></div>)}
             </div>
           );
         })}
-        {hotZones.length === 0 && <div style={{ padding: '10px 14px', fontSize: '11px', color: C.dim, fontStyle: 'italic' }}>{tx('Astuce : ajoutez une zone « Travaux à chaud » sur un pont pour pouvoir y poster un fire watch.', 'Tip: add a “Hot work” zone on a deck to post a fire watch there.')}</div>}
+        {hotZones.length === 0 && <div style={{ padding: '10px 14px', fontSize: '12px', color: C.dim, fontStyle: 'italic' }}>{tx('Astuce : ajoutez une zone « Travaux à chaud » sur un pont pour pouvoir y poster un fire watch.', 'Tip: add a “Hot work” zone on a deck to post a fire watch there.')}</div>}
       </div>
     </div>
   );
@@ -1149,9 +1219,9 @@ function WorksView({ zones, companies, C, lang }) {
         {companies.length === 0 && zones.length === 0 && (<div style={{ padding: '24px', textAlign: 'center', color: C.dim, fontSize: '13px' }}>{tx('Aucune zone.', 'No zone.')}</div>)}
         {companies.map((c) => {
           const zs = zones.filter((z) => z.company === c);
-          return (<div key={c} style={{ padding: '12px 14px', borderBottom: `1px solid ${C.line}` }}><div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}><span style={{ width: '12px', height: '12px', borderRadius: '3px', background: companyColor(c, companies) }} /><span style={{ fontWeight: 700, fontSize: '14px' }}>{c}</span><span style={{ fontSize: '11px', color: C.dim }}>· {zs.length} {tx('zone(s)', 'zone(s)')}</span></div>{zs.map((z) => { const h = HAZARDS[z.type], s = STATUS[z.status]; return (<div key={z.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', padding: '5px 0 5px 20px' }}><span style={{ width: '8px', height: '8px', borderRadius: '50%', background: h.color }} /><span style={{ flex: 1 }}>{z.work || pick(lang, h.label.fr, h.label.en)}</span>{z.permit && <span>📄</span>}{(z.atmo || (z.checks && z.checks.length)) && <span>🫁</span>}<span style={{ background: s.color, color: '#fff', borderRadius: '4px', padding: '1px 7px', fontSize: '10px' }}>{pick(lang, s.fr, s.en)}</span></div>); })}</div>);
+          return (<div key={c} style={{ padding: '12px 14px', borderBottom: `1px solid ${C.line}` }}><div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}><span style={{ width: '12px', height: '12px', borderRadius: '3px', background: companyColor(c, companies) }} /><span style={{ fontWeight: 700, fontSize: '14px' }}>{c}</span><span style={{ fontSize: '12px', color: C.dim }}>· {zs.length} {tx('zone(s)', 'zone(s)')}</span></div>{zs.map((z) => { const h = HAZARDS[z.type], s = STATUS[z.status]; return (<div key={z.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', padding: '5px 0 5px 20px' }}><span style={{ width: '8px', height: '8px', borderRadius: '50%', background: h.color }} /><span style={{ flex: 1 }}>{z.work || pick(lang, h.label.fr, h.label.en)}</span>{z.permit && <span>📄</span>}{(z.atmo || (z.checks && z.checks.length)) && <span>🫁</span>}<span style={{ background: s.color, color: '#fff', borderRadius: '4px', padding: '1px 7px', fontSize: '12px' }}>{pick(lang, s.fr, s.en)}</span></div>); })}</div>);
         })}
-        {zones.filter((z) => !z.company).length > 0 && (<div style={{ padding: '12px 14px' }}><div style={{ fontWeight: 700, fontSize: '13px', color: C.dim, marginBottom: '6px' }}>{tx('Sans compagnie', 'No company')}</div>{zones.filter((z) => !z.company).map((z) => { const h = HAZARDS[z.type], s = STATUS[z.status]; return (<div key={z.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', padding: '5px 0 5px 20px' }}><span style={{ width: '8px', height: '8px', borderRadius: '50%', background: h.color }} /><span style={{ flex: 1 }}>{z.work || pick(lang, h.label.fr, h.label.en)}</span><span style={{ background: s.color, color: '#fff', borderRadius: '4px', padding: '1px 7px', fontSize: '10px' }}>{pick(lang, s.fr, s.en)}</span></div>); })}</div>)}
+        {zones.filter((z) => !z.company).length > 0 && (<div style={{ padding: '12px 14px' }}><div style={{ fontWeight: 700, fontSize: '13px', color: C.dim, marginBottom: '6px' }}>{tx('Sans compagnie', 'No company')}</div>{zones.filter((z) => !z.company).map((z) => { const h = HAZARDS[z.type], s = STATUS[z.status]; return (<div key={z.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', padding: '5px 0 5px 20px' }}><span style={{ width: '8px', height: '8px', borderRadius: '50%', background: h.color }} /><span style={{ flex: 1 }}>{z.work || pick(lang, h.label.fr, h.label.en)}</span><span style={{ background: s.color, color: '#fff', borderRadius: '4px', padding: '1px 7px', fontSize: '12px' }}>{pick(lang, s.fr, s.en)}</span></div>); })}</div>)}
       </div>
     </div>
   );
@@ -1362,39 +1432,50 @@ function DashboardView({ C, lang, active, statusCounts, allConflicts, overdueTes
   const log = (active.log || []).slice(0, 25);
   const top = alerts.length ? alerts[0].sev : 0;
   const today = new Date().toLocaleDateString(lang === 'en' ? 'en-GB' : lang === 'bg' ? 'bg-BG' : 'fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+  // compliance = share of active zones with no open issue (conflict, overdue/untested atmosphere, no fire watch, no permit)
+  const activeZones = active.decks.flatMap((d) => d.zones).filter((z) => z.status !== 'done');
+  const issueIds = new Set([...allConflicts.flatMap((c) => [c.z1.id, c.z2.id]), ...overdueTests.map((z) => z.id), ...untestedConfined.map((z) => z.id), ...hotNoFw.map((z) => z.id), ...noPermitActive.map((z) => z.id), ...riskyOccupied.map((z) => z.id)]);
+  const okCount = activeZones.filter((z) => !issueIds.has(z.id)).length;
+  const pct = activeZones.length ? Math.round((okCount / activeZones.length) * 100) : 100;
+  const ringCol = top >= 2 ? 'var(--danger)' : top === 1 ? 'var(--warn)' : 'var(--ok)';
+  const CIRC = 2 * Math.PI * 52;
+  const rowsActivity = [kpis[0], kpis[1], kpis[4], kpis[5]], rowsCompliance = [kpis[2], kpis[3], kpis[6]];
+  const Row = ({ k }) => (<button type="button" className="dd-li" onClick={() => onGoto(k.go)}><span className={'ic' + (k.flag === 'red' ? ' red' : k.flag === 'amber' ? ' orange' : '')}><k.ico size={16} strokeWidth={2.2} aria-hidden="true" /></span><span className="lb">{pick(lang, k.fr, k.en)}</span><span className={'vl' + (k.flag === 'red' ? ' red' : k.flag === 'amber' ? ' orange' : '')}>{k.v}</span><ChevronRight size={17} className="chev" aria-hidden="true" /></button>);
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
       <section className="dd-hero">
-        <SafetySign level={top >= 2 ? 2 : top === 1 ? 1 : 0} size={84} title={top ? tx('Danger', 'Warning') : tx('Conforme', 'Safe')} />
+        <div className="dd-ring" role="img" aria-label={pct + ' % ' + tx('des zones actives conformes', 'of active zones compliant')}>
+          <svg width="112" height="112" viewBox="0 0 120 120"><circle className="trk" cx="60" cy="60" r="52" fill="none" strokeWidth="12" /><circle className="val" cx="60" cy="60" r="52" fill="none" stroke={ringCol} strokeWidth="12" strokeLinecap="round" strokeDasharray={CIRC} strokeDashoffset={CIRC * (1 - Math.max(pct, 2) / 100)} /></svg>
+          <div className="ctr"><div><div className="pct">{pct}%</div><div className="cap">{tx('conforme', 'compliant')}</div></div></div>
+        </div>
         <div style={{ minWidth: 0 }}>
           <h2 className="dd-hero-title">{alerts.length ? alerts.length + ' ' + tx(alerts.length > 1 ? 'points à traiter' : 'point à traiter', alerts.length > 1 ? 'items need attention' : 'item needs attention') : tx('Chantier conforme', 'Site compliant')}</h2>
           <div className="dd-hero-sub">{alerts.length ? pick(lang, alerts[0].fr, alerts[0].en) : tx('Espaces confinés testés, zones à chaud couvertes, aucun conflit.', 'Confined spaces tested, hot work covered, no conflicts.')}</div>
-          <div className="dd-hero-date">{today.charAt(0).toUpperCase() + today.slice(1)}</div>
+          <div className="dd-hero-date">{today.charAt(0).toUpperCase() + today.slice(1)} · {okCount}/{activeZones.length} {tx('zones actives conformes', 'active zones compliant')}</div>
         </div>
         <button type="button" className="dd-primary" onClick={onReport}><ClipboardList size={17} aria-hidden="true" />{tx('Rapport journalier', 'Daily report')}</button>
       </section>
 
-      <div className="dd-board dd-kpis">
-        {kpis.map((k, i) => (
-          <button key={i} type="button" onClick={() => onGoto(k.go)} className={'dd-cell' + (k.flag ? ' ' + k.flag : '')}>
-            <span className="dd-num">{k.v}</span>
-            <span className="dd-lbl">{k.flag && <span className="dd-mark" aria-hidden="true" />}{pick(lang, k.fr, k.en)}</span>
-          </button>
-        ))}
+      <div className="dd-cols dd-kpis">
+        <section><h3 className="dd-group-hd">{tx('Conformité', 'Compliance')}</h3><div className="dd-group">{rowsCompliance.map((k, i) => <Row key={i} k={k} />)}</div></section>
+        <section><h3 className="dd-group-hd">{tx('Activité', 'Activity')}</h3><div className="dd-group">{rowsActivity.map((k, i) => <Row key={i} k={k} />)}</div></section>
       </div>
 
-      <div style={{ display: 'flex', gap: '18px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
-        <div className="dd-plate" style={{ flex: '1 1 340px' }}>
-          <div style={{ padding: '14px 16px 12px' }}><h3 className="dd-h3">{tx('Alertes actives', 'Active alerts')}<span className="dd-count">{alerts.length}</span></h3></div>
-          {alerts.length === 0 && <div className="dd-row" style={{ color: C.dim }}>{tx('Tous les espaces confinés sont à jour, les zones à chaud sont couvertes et aucun conflit n\u2019est détecté.', 'All confined spaces are up to date, hot work zones are covered and no conflict is detected.')}</div>}
-          {alerts.map((a, i) => (<div key={i} className={'dd-row' + (a.sev === 3 ? ' crit' : '')}><SafetySign level={a.sev >= 2 ? 2 : 1} size={22} title={a.sev >= 2 ? tx('Danger', 'Danger') : tx('Attention', 'Caution')} /><span className="dd-row-txt">{pick(lang, a.fr, a.en)}</span></div>))}
-        </div>
-
-        <div className="dd-plate" style={{ flex: '1 1 340px' }}>
-          <div style={{ padding: '14px 16px 12px' }}><h3 className="dd-h3">{tx('Journal du chantier', 'Site log')}</h3></div>
-          {log.length === 0 && <div className="dd-row" style={{ color: C.dim }}>{tx('Les permis, contrôles et mouvements de fire watch s\u2019inscrivent ici avec leur heure.', 'Permits, checks and fire watch moves are recorded here with their time.')}</div>}
-          {log.map((l) => (<div key={l.id} className="dd-row"><span style={{ color: C.dim, whiteSpace: 'nowrap', fontVariantNumeric: 'tabular-nums' }}>{fmtClock(l.ts, lang)}</span><span className="dd-row-txt">{pick(lang, l.fr, l.en)}</span></div>))}
-        </div>
+      <div className="dd-cols">
+        <section>
+          <h3 className="dd-group-hd">{tx('Alertes actives', 'Active alerts')}<span className="n">{alerts.length}</span></h3>
+          <div className="dd-group">
+            {alerts.length === 0 && <div className="dd-li plain" style={{ color: 'var(--ink-2)' }}>{tx('Tous les espaces confinés sont à jour, les zones à chaud sont couvertes et aucun conflit n\u2019est détecté.', 'All confined spaces are up to date, hot work zones are covered and no conflict is detected.')}</div>}
+            {alerts.map((a, i) => (<div key={i} className={'dd-li plain' + (a.sev === 3 ? ' crit' : '')}><span className={'ic ' + (a.sev >= 2 ? 'red' : 'orange')}><a.ico size={15} strokeWidth={2.3} aria-hidden="true" /></span><span className="lb">{pick(lang, a.fr, a.en)}</span></div>))}
+          </div>
+        </section>
+        <section>
+          <h3 className="dd-group-hd">{tx('Journal du chantier', 'Site log')}</h3>
+          <div className="dd-group">
+            {log.length === 0 && <div className="dd-li plain" style={{ color: 'var(--ink-2)' }}>{tx('Les permis, contrôles et mouvements de fire watch s\u2019inscrivent ici avec leur heure.', 'Permits, checks and fire watch moves are recorded here with their time.')}</div>}
+            {log.map((l) => (<div key={l.id} className="dd-li plain"><span className="tm">{fmtClock(l.ts, lang)}</span><span className="lb">{pick(lang, l.fr, l.en)}</span></div>))}
+          </div>
+        </section>
       </div>
     </div>
   );
@@ -1450,7 +1531,7 @@ function Yard3D({ ships, activeId, onSelect, onMove, canEdit, C, lang }) {
     const el = mountRef.current; if (!el) return;
     const W = () => el.clientWidth || 360, H = 460;
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); renderer.setSize(W(), H); renderer.setClearColor(0x0a0b0d);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); renderer.setSize(W(), H); renderer.setClearColor(0x0b0b0c);
     const cv = renderer.domElement; cv.style.touchAction = 'none'; cv.style.display = 'block'; cv.style.borderRadius = '8px'; el.appendChild(cv);
     const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(50, W() / H, 1, 3000), world = new THREE.Group();
     scene.add(world);
@@ -1504,11 +1585,11 @@ function Yard3D({ ships, activeId, onSelect, onMove, canEdit, C, lang }) {
     const mkLabel = (text, color, font, sw, sh) => { const c = document.createElement('canvas'); c.width = 256; c.height = 64; const x = c.getContext('2d'); x.fillStyle = color; x.font = font; x.textAlign = 'center'; x.fillText(text, 128, 40); const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthTest: false })); sp.scale.set(sw, sh, 1); sp.renderOrder = 9; return sp; };
     ships.filter((s) => s.id === activeId).forEach((s) => {
       const d = s.dock || {}, L = d.shipLength || 120, B = d.shipWidth || 20, DL = d.dockLength || L + 20, DW = d.dockWidth || B + 8, D = B * 0.55, hD = D * 0.28;
-      const sel = s.id === activeId, hc = sel ? 0xff7a18 : 0x8f9aa6;
+      const sel = s.id === activeId, hc = sel ? 0xd1d1d6 : 0x8e8e93;
       const g = new THREE.Group();
       if (a.cam && a.fitFor !== s.id) { a.cam.r = Math.max(50, L * 0.85); a.cam.ty = D / 2; a.fitFor = s.id; }
       const { g: hg, lg } = buildHull(B, L, D); hg.translate(0, lift, 0); lg.translate(0, lift, 0);
-      const hmat = xray ? new THREE.MeshBasicMaterial({ color: hc, transparent: true, opacity: 0.1, depthWrite: false, side: THREE.DoubleSide }) : new THREE.MeshLambertMaterial({ color: sel ? 0xb45a1c : 0x56616d, side: THREE.DoubleSide });
+      const hmat = xray ? new THREE.MeshBasicMaterial({ color: hc, transparent: true, opacity: 0.1, depthWrite: false, side: THREE.DoubleSide }) : new THREE.MeshLambertMaterial({ color: sel ? 0x636366 : 0x48484a, side: THREE.DoubleSide });
       const hull = new THREE.Mesh(hg, hmat);
       hull.userData.shipId = s.id; g.add(hull); a.hulls.push(hull);
       if (!xray) {
@@ -1516,11 +1597,11 @@ function Yard3D({ ships, activeId, onSelect, onMove, canEdit, C, lang }) {
         stt.forEach(([y, hb], n) => { const x = -hb * (B / 2), z = -planZ(y, L); if (n) sp0.lineTo(x, z); else sp0.moveTo(x, z); });
         for (let n = stt.length - 1; n >= 0; n--) sp0.lineTo(stt[n][1] * (B / 2), -planZ(stt[n][0], L));
         const cg = new THREE.ShapeGeometry(sp0); cg.rotateX(-Math.PI / 2); cg.translate(0, lift + D, 0);
-        const cap = new THREE.Mesh(cg, new THREE.MeshLambertMaterial({ color: sel ? 0xd9722b : 0x6b7683, side: THREE.DoubleSide }));
+        const cap = new THREE.Mesh(cg, new THREE.MeshLambertMaterial({ color: sel ? 0x8e8e93 : 0x636366, side: THREE.DoubleSide }));
         cap.userData.shipId = s.id; g.add(cap); a.hulls.push(cap);
       }
       g.add(new THREE.LineSegments(lg, new THREE.LineBasicMaterial({ color: hc, transparent: true, opacity: 0.7 })));
-      const nm = mkLabel(s.name || '', sel ? '#ff7a18' : '#cbd5e1', 'bold 28px sans-serif', 48, 12); nm.position.set(0, lift + D + 10, 0); g.add(nm);
+      const nm = mkLabel(s.name || '', '#ffffff', 'bold 28px sans-serif', 48, 12); nm.position.set(0, lift + D + 10, 0); g.add(nm);
       const st = hullStations(), decks = s.decks || [], inner = decks.filter((x) => x.layout !== 'technical'), dh = (D - hD) / Math.max(inner.length, 1);
       const loop = (h) => { const f = Math.pow(Math.max(h, 0.01) / D, 0.125), A = [], Z = []; st.forEach(([y, hb]) => { const b = hb * (B / 2) * f, z = planZ(y, L); A.push(new THREE.Vector3(-b, lift + h, z)); Z.unshift(new THREE.Vector3(b, lift + h, z)); }); return new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([...A, ...Z]), new THREE.LineBasicMaterial({ color: 0x5b6470, transparent: true, opacity: 0.6 })); };
       [hD, ...inner.map((_, k) => hD + (k + 1) * dh)].forEach((h) => g.add(loop(h)));
@@ -1556,7 +1637,7 @@ function Yard3D({ ships, activeId, onSelect, onMove, canEdit, C, lang }) {
     });
   }, [sig]);
 
-  const btn = (on) => ({ background: on ? C.accent : C.panel2, color: on ? '#000' : C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '6px 10px', fontSize: '12px', cursor: 'pointer' });
+  const btn = (on) => ({ background: on ? C.sel : C.fill, color: C.text, border: 0, borderRadius: '999px', padding: '7px 13px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' });
   const view = (ph) => { if (api.current.cam) api.current.cam.ph = ph; };
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '12px' }}>
