@@ -313,6 +313,8 @@ export default function ShipyardSafetyDemo() {
   const [checkinErr, setCheckinErr] = useState(null);
   const [aiPhase, setAiPhase] = useState(null);
   const [aiResult, setAiResult] = useState(null);
+  const [confirmAsk, setConfirmAsk] = useState(null);
+  const askConfirm = (msg, label, onYes) => setConfirmAsk({ msg, label, onYes });
   const canEdit = role === 'coordinator';
   const connected = netOnline && !simOffline;
   const tx = mkTx(lang); const bi = mkBi(lang);
@@ -395,8 +397,14 @@ export default function ShipyardSafetyDemo() {
   useEffect(() => { (async () => { try { await window.storage.set(PENDING_KEY, JSON.stringify(pending), false); } catch (e) {} })(); }, [pending]);
   useEffect(() => { if (connected && pending.length && !flushingRef.current) flushPending(); }, [connected, pending]);
   useEffect(() => {
-    const onKey = (e) => { if (e.key !== 'Escape') return; setShowLogin(false); setShowReport(false); setDocView(null); setAiPhase((ph) => { if (ph === 'loading') return ph; setAiResult(null); return null; }); };
-    window.addEventListener('keydown', onKey); return () => window.removeEventListener('keydown', onKey);
+    const onKey = (e) => { if (e.key !== 'Escape') return; setConfirmAsk(null); setShowLogin(false); setShowReport(false); setDocView(null); setAiPhase((ph) => { if (ph === 'loading') return ph; setAiResult(null); return null; }); };
+    window.addEventListener('keydown', onKey);
+    let drag = null;
+    const ts = (e) => { const sh = e.target.closest && e.target.closest('.dd-sheet'); if (!sh || window.innerWidth > 768) return; const top = sh.getBoundingClientRect().top; const y = e.touches[0].clientY; if (y - top > 56 && sh.scrollTop > 0) return; if (y - top > 56) return; drag = { sh, y0: y, dy: 0 }; sh.style.transition = 'none'; };
+    const tm = (e) => { if (!drag) return; drag.dy = Math.max(0, e.touches[0].clientY - drag.y0); drag.sh.style.transform = 'translateY(' + drag.dy + 'px)'; };
+    const te = () => { if (!drag) return; const { sh, dy } = drag; drag = null; sh.style.transition = 'transform .25s cubic-bezier(.2,.8,.2,1)'; if (dy > 110) { sh.style.transform = 'translateY(100%)'; setTimeout(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })), 180); } else { sh.style.transform = ''; } };
+    document.addEventListener('touchstart', ts, { passive: true }); document.addEventListener('touchmove', tm, { passive: true }); document.addEventListener('touchend', te);
+    return () => { window.removeEventListener('keydown', onKey); document.removeEventListener('touchstart', ts); document.removeEventListener('touchmove', tm); document.removeEventListener('touchend', te); };
   }, []);
   useEffect(() => {
     if (!loaded) return;
@@ -448,9 +456,11 @@ export default function ShipyardSafetyDemo() {
   function updateZone(zid, patch) { if (!canEdit || !activeDeck) return; markEdit(); updateDeck({ zones: activeDeck.zones.map((z) => (z.id === zid ? { ...z, ...patch } : z)) }); }
   function updateCrew(patch) { if (!canEdit || !active) return; markEdit(); updateActive({ crew: { ...crew, ...patch } }); }
   function addShip() { if (!canEdit) return; markEdit(); const s = normalize({ id: uid(), name: tx('Nouveau navire', 'New vessel'), dock: { dockLength: 200, dockWidth: 35, shipLength: 170, shipWidth: 28 }, decks: [{ id: uid(), name: 'Pont 1', layout: 'main', planImage: null, zones: [] }] }); setShips((p) => [...p, s]); setActiveId(s.id); setActiveDeckId(s.decks[0].id); setTab('dock'); }
-  function deleteShip(id) { if (!canEdit || ships.length <= 1) return; if (!window.confirm(tx('Supprimer ce navire et toutes ses zones ?', 'Delete this vessel and all its zones?'))) return; markEdit(); setShips((prev) => { const next = prev.filter((s) => s.id !== id); if (id === activeId) { setActiveId(next[0] ? next[0].id : null); setActiveDeckId(null); } return next; }); }
+  function deleteShip(id) { if (!canEdit || ships.length <= 1) return; askConfirm(tx('Supprimer ce navire et toutes ses zones ?', 'Delete this vessel and all its zones?'), tx('Supprimer le navire', 'Delete Vessel'), () => doDeleteShip(id)); }
+  function doDeleteShip(id) { markEdit(); setShips((prev) => { const next = prev.filter((s) => s.id !== id); if (id === activeId) { setActiveId(next[0] ? next[0].id : null); setActiveDeckId(null); } return next; }); }
   function addDeck() { if (!canEdit || !active) return; markEdit(); const nd = { id: uid(), name: tx('Nouveau pont', 'New deck'), layout: 'main', planImage: null, zones: [] }; updateActive({ decks: [...active.decks, nd] }); setActiveDeckId(nd.id); setSelectedId(null); }
-  function deleteDeck() { if (!canEdit || !active || active.decks.length <= 1) return; if (!window.confirm(tx('Supprimer ce pont et ses zones ?', 'Delete this deck and its zones?'))) return; markEdit(); const remaining = active.decks.filter((d) => d.id !== activeDeck.id); updateActive({ decks: remaining }); setActiveDeckId(remaining[0].id); setSelectedId(null); }
+  function deleteDeck() { if (!canEdit || !active || active.decks.length <= 1) return; askConfirm(tx('Supprimer ce pont et ses zones ?', 'Delete this deck and its zones?'), tx('Supprimer le pont', 'Delete Deck'), () => doDeleteDeck()); }
+  function doDeleteDeck() { markEdit(); const remaining = active.decks.filter((d) => d.id !== activeDeck.id); updateActive({ decks: remaining }); setActiveDeckId(remaining[0].id); setSelectedId(null); }
 
   function handleFile(e) {
     if (!canEdit) return; const file = e.target.files && e.target.files[0]; if (!file) return;
@@ -470,7 +480,8 @@ export default function ShipyardSafetyDemo() {
     markEdit(); updateDeck({ zones: [...activeDeck.zones, z] }); setSelectedId(z.id); setTool(null);
     logEvent('Zone créée — ' + HAZARDS[tool].label.fr + ' (' + activeDeck.name + ')', 'Zone created — ' + HAZARDS[tool].label.en + ' (' + activeDeck.name + ')');
   }
-  function removeZone(zid) { if (!canEdit || !activeDeck) return; if (!window.confirm(tx('Supprimer cette zone ?', 'Delete this zone?'))) return; const zz = activeDeck.zones.find((z) => z.id === zid); markEdit(); updateDeck({ zones: activeDeck.zones.filter((z) => z.id !== zid) }); setSelectedId(null); if (zz) logEvent('Zone supprimée — ' + (zz.work || HAZARDS[zz.type].label.fr), 'Zone removed — ' + (zz.work || HAZARDS[zz.type].label.en)); }
+  function removeZone(zid) { if (!canEdit || !activeDeck) return; askConfirm(tx('Supprimer cette zone ?', 'Delete this zone?'), tx('Supprimer la zone', 'Delete Zone'), () => doRemoveZone(zid)); }
+  function doRemoveZone(zid) { const zz = activeDeck.zones.find((z) => z.id === zid); markEdit(); updateDeck({ zones: activeDeck.zones.filter((z) => z.id !== zid) }); setSelectedId(null); if (zz) logEvent('Zone supprimée — ' + (zz.work || HAZARDS[zz.type].label.fr), 'Zone removed — ' + (zz.work || HAZARDS[zz.type].label.en)); }
   function preventScroll(e) { if (dragRef.current || resizingRef.current) { e.preventDefault(); } }
   function onResizeMove(e) {
     const r = resizingRef.current; if (!r || !planRef.current || !activeDeck) return;
@@ -675,18 +686,18 @@ export default function ShipyardSafetyDemo() {
   return (
     <>
     {intro && <IntroOverlay introOut={introOut} />}
-    <div style={{ minHeight: '100vh', opacity: introHold ? 0 : 1, visibility: introHold ? 'hidden' : 'visible', transition: 'opacity .55s ease', color: C.text, fontFamily: '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif', backgroundColor: '#0a0b0d', backgroundImage: 'radial-gradient(1100px 480px at 12% -12%, rgba(201,210,218,0.12), transparent 60%), repeating-linear-gradient(0deg, rgba(201,210,218,0.045) 0 1px, transparent 1px 30px), repeating-linear-gradient(90deg, rgba(201,210,218,0.045) 0 1px, transparent 1px 30px), linear-gradient(180deg, #0a0b0d, #060708)' }}>
+    <div style={{ minHeight: '100vh', opacity: introHold ? 0 : 1, visibility: introHold ? 'hidden' : 'visible', transition: 'opacity .55s ease', color: C.text, fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "IBM Plex Sans", "Segoe UI", system-ui, sans-serif', backgroundColor: '#0a0b0d', backgroundImage: 'radial-gradient(1100px 480px at 12% -12%, rgba(201,210,218,0.12), transparent 60%), repeating-linear-gradient(0deg, rgba(201,210,218,0.045) 0 1px, transparent 1px 30px), repeating-linear-gradient(90deg, rgba(201,210,218,0.045) 0 1px, transparent 1px 30px), linear-gradient(180deg, #0a0b0d, #060708)' }}>
       <a href="#main" className="dd-skip">{tx('Aller au contenu', 'Skip to content')}</a>
       <div style={{ height: '3px', background: 'linear-gradient(90deg, #c9d2da, #ff7a18 55%, #c9d2da)' }} />
       <input ref={docInputRef} type="file" accept="image/*" onChange={onDocFile} style={{ display: 'none' }} />
       <input ref={aiInputRef} type="file" accept="image/*" onChange={onAiFile} style={{ display: 'none' }} />
-      <div className={introHold ? '' : 'dd-rise'} style={{ position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 18px', background: `linear-gradient(120deg, ${C.panel} 0%, ${C.panel2} 72%)`, borderBottom: `1px solid ${C.line}`, boxShadow: '0 1px 0 rgba(201,210,218,0.35), 0 10px 28px -14px rgba(0,0,0,0.7)', flexWrap: 'wrap', gap: '10px' }}>
+      <div className={'dd-header' + (introHold ? '' : ' dd-rise')} style={{ position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 18px', background: `linear-gradient(120deg, ${C.panel} 0%, ${C.panel2} 72%)`, borderBottom: `1px solid ${C.line}`, boxShadow: '0 1px 0 rgba(201,210,218,0.35), 0 10px 28px -14px rgba(0,0,0,0.7)', flexWrap: 'wrap', gap: '10px' }}>
         {!introHold && <div className="dd-scan" />}
-        <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '14px' }}>
+        <div className="dd-brand" style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '14px' }}>
           <img src={LOGO_WHITE} alt="Allied Maritime Solutions Ltd" width="110" height="44" fetchpriority="high" style={{ height: '44px', width: 'auto', filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))' }} />
-          <div><div className="dd-title" style={{ fontSize: '17px', fontWeight: 700, letterSpacing: '-0.2px' }}>DryDock <span style={{ color: C.accent }}>Safety</span></div><div style={{ fontSize: '10px', color: C.accent2, letterSpacing: '1.7px', textTransform: 'uppercase', fontWeight: 600, marginTop: '2px' }}>{tx('Coordination sécurité · Cale sèche', 'Safety coordination · Dry dock')}<span style={{ marginLeft: '8px', background: 'rgba(255,122,24,.14)', border: '1px solid rgba(255,122,24,.6)', color: '#ffb26b', borderRadius: '9px', padding: '1px 7px', fontSize: '9px', letterSpacing: '1px', verticalAlign: '1px' }}>DEMO v1.0</span></div></div>
+          <div><div className="dd-title" style={{ fontSize: '17px', fontWeight: 700, letterSpacing: '-0.2px' }}>DryDock <span style={{ color: C.accent }}>Safety</span></div><div className="dd-sub" style={{ fontSize: '10px', color: C.accent2, letterSpacing: '1.7px', textTransform: 'uppercase', fontWeight: 600, marginTop: '2px' }}>{tx('Coordination sécurité · Cale sèche', 'Safety coordination · Dry dock')}<span style={{ marginLeft: '8px', background: 'rgba(255,122,24,.14)', border: '1px solid rgba(255,122,24,.6)', color: '#ffb26b', borderRadius: '9px', padding: '1px 7px', fontSize: '9px', letterSpacing: '1px', verticalAlign: '1px' }}>DEMO v1.0</span></div></div>
         </div>
-        <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div className="dd-ctrls" style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', border: `1px solid ${C.line}`, borderRadius: '20px', overflow: 'hidden' }}>{[['bi', 'FR/EN'], ['en', 'EN'], ['bg', 'БГ']].map(([k, l]) => (<button key={k} onClick={() => setLang(k)} style={{ background: lang === k ? C.accent : 'transparent', color: lang === k ? '#0b1622' : C.dim, border: 'none', padding: '6px 12px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{l}</button>))}</div>
           <button onClick={() => setSimOffline((v) => !v)} title={tx('Simuler hors-ligne', 'Simulate offline')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: connected ? C.panel2 : 'rgba(234,179,8,0.15)', border: `1px solid ${connected ? C.line : '#eab308'}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px', color: connected ? C.dim : '#eab308', cursor: 'pointer' }}>{connected ? <><Satellite size={14} aria-hidden="true" />{tx('En ligne', 'Online')}</> : <><WifiOff size={14} aria-hidden="true" />{tx('Hors-ligne', 'Offline')}</>}{pending.length > 0 && <span style={{ background: '#eab308', color: '#0b1622', borderRadius: '10px', padding: '0 6px', fontSize: '10px', fontWeight: 700 }}>⏳ {pending.length}</span>}</button>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px' }}><span style={{ width: '8px', height: '8px', borderRadius: '50%', background: synced ? '#22c55e' : '#eab308', animation: 'pulse 2s infinite' }} />{synced ? tx('En direct', 'Live') : 'Sync…'} · <Users size={14} aria-hidden="true" /> {online}</div>
@@ -716,12 +727,51 @@ export default function ShipyardSafetyDemo() {
         .dd-skip { position: fixed; left: 12px; top: -60px; z-index: 200; background: #ff7a18; color: #0b1622; font-weight: 700; padding: 10px 14px; border-radius: 8px; text-decoration: none; transition: top .15s ease; }
         .dd-skip:focus-visible { top: 12px; }
         select { background-color: #0e1012; color: #f2f4f6; }
+        .dd-tabbar, .dd-seg { display: none; }
+        .dd-action { width: 300px; max-width: 100%; display: flex; flex-direction: column; gap: 8px; }
+        .dd-action .grp { background: #1c1f24; border-radius: 14px; overflow: hidden; }
+        .dd-action .msg { padding: 14px 16px; text-align: center; font-size: 13px; color: #c3cad2; border-bottom: 1px solid #2c3036; }
+        .dd-action .msg small { display: block; margin-top: 4px; color: #8b949e; font-size: 12px; }
+        .dd-action button { display: block; width: 100%; background: transparent; border: 0; padding: 15px; font-size: 17px; cursor: pointer; font-family: inherit; }
+        .dd-action .danger { color: #ff453a; }
+        .dd-action .cancel { color: #ff9f45; font-weight: 600; }
+        @keyframes ddSheetIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes ddFade { from { opacity: 0; } to { opacity: 1; } }
+        @media (max-width: 768px) {
+          body { -webkit-text-size-adjust: 100%; }
+          button, [role=button], .dd-tabbar { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+          input, select, textarea { font-size: 16px !important; }
+          .dd-header { padding: 10px 16px !important; padding-top: max(10px, env(safe-area-inset-top)) !important; gap: 8px !important; }
+          .dd-header .dd-brand img { height: 30px !important; }
+          .dd-header .dd-sub { display: none; }
+          .dd-ctrls { flex-wrap: nowrap !important; overflow-x: auto; width: 100%; padding-bottom: 2px; scrollbar-width: none; }
+          .dd-ctrls::-webkit-scrollbar { display: none; }
+          .dd-ctrls > * { flex: none; }
+          .dd-ctrls button, .dd-ctrls select { min-height: 36px !important; }
+          .dd-tabs { display: none !important; }
+          .dd-large { font-size: 32px !important; letter-spacing: -0.6px !important; font-family: -apple-system, "SF Pro Display", "Space Grotesk", system-ui, sans-serif !important; }
+          #main { padding-bottom: calc(96px + env(safe-area-inset-bottom)) !important; }
+          .dd-foot { padding-bottom: calc(96px + env(safe-area-inset-bottom)) !important; margin-top: 0 !important; }
+          .dd-tabbar { display: flex; position: fixed; z-index: 40; left: max(12px, env(safe-area-inset-left)); right: max(12px, env(safe-area-inset-right)); bottom: calc(10px + env(safe-area-inset-bottom)); justify-content: space-around; padding: 6px; border-radius: 30px; background: rgba(28, 31, 36, 0.72); -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%); border: 1px solid rgba(255,255,255,0.09); box-shadow: 0 10px 30px -8px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.06); }
+          .dd-tabbar button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; background: transparent; border: 0; color: #9aa3ad; padding: 6px 0 4px; border-radius: 24px; min-height: 52px; font-family: inherit; }
+          .dd-tabbar button:hover { transform: none; filter: none; }
+          .dd-tabbar button.on { color: #ff7a18; background: rgba(255,122,24,0.13); }
+          .dd-tabbar .ico { position: relative; display: inline-flex; }
+          .dd-tabbar .badge { position: absolute; top: -5px; right: -11px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #dc2626; color: #fff; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+          .dd-tabbar .lbl { font-size: 11px; font-weight: 600; letter-spacing: .1px; }
+          .dd-seg { display: flex; margin: 0 0 14px; padding: 2px; border-radius: 9px; background: #1c1f24; }
+          .dd-seg button { flex: 1; background: transparent; border: 0; color: #c3cad2; font-size: 13px; font-weight: 600; border-radius: 7px; min-height: 32px !important; font-family: inherit; }
+          .dd-seg button.on { background: #3a3f46; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.35); }
+          .dd-backdrop { align-items: flex-end !important; padding: 0 !important; animation: ddFade .2s ease both; }
+          .dd-confirm-bd { padding: 0 8px calc(8px + env(safe-area-inset-bottom)) !important; }
+          .dd-action { width: 100%; animation: ddSheetIn .32s cubic-bezier(.2,.8,.2,1) both; }
+          .dd-sheet { width: 100% !important; max-width: 100% !important; max-height: 92vh !important; border-radius: 14px 14px 0 0 !important; padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important; animation: ddSheetIn .34s cubic-bezier(.2,.8,.2,1) both; overflow: auto; position: relative; }
+          .dd-sheet::before { content: ""; display: block; width: 36px; height: 5px; border-radius: 3px; background: rgba(140,148,158,.55); margin: -8px auto 12px; }
+        }
         @media (max-width: 640px) {
           button, select, input:not([type=file]) { min-height: 44px; }
           .dd-plan button, .dd-plan input { min-height: 0; }
-          .dd-tabs { display: grid !important; grid-template-columns: repeat(3, 1fr); width: 100%; }
           .dd-kpis > :last-child:nth-child(odd) { grid-column: 1 / -1; }
-          .dd-tabs button { font-size: 12px !important; padding: 6px 4px !important; white-space: nowrap; }
         }
         @keyframes ddAlert { 0%,100% { box-shadow: 0 0 0 2.5px #ef4444; } 50% { box-shadow: 0 0 0 6px rgba(239,68,68,.38); } }
         @keyframes ddCrit { 0%,100% { background: rgba(239,68,68,.16); } 50% { background: rgba(239,68,68,.32); } }
@@ -737,8 +787,8 @@ export default function ShipyardSafetyDemo() {
       `}</style>
 
       {showLogin && (
-        <div onClick={() => setShowLogin(false)} style={{ overscrollBehavior: 'contain', position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: '20px' }}>
-          <div role="dialog" aria-modal="true" aria-label={tx('Accès coordination', 'Coordination access')} onClick={(e) => e.stopPropagation()} style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '14px', padding: '22px', width: '320px', maxWidth: '100%' }}>
+        <div className="dd-backdrop" onClick={() => setShowLogin(false)} style={{ overscrollBehavior: 'contain', position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: '20px' }}>
+          <div className="dd-sheet" role="dialog" aria-modal="true" aria-label={tx('Accès coordination', 'Coordination access')} onClick={(e) => e.stopPropagation()} style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '14px', padding: '22px', width: '320px', maxWidth: '100%' }}>
             <div style={{ fontSize: '16px', fontWeight: 700, marginBottom: '6px' }}>🔐 {tx('Accès coordination', 'Coordination access')}</div>
             <div style={{ fontSize: '12px', color: C.dim, marginBottom: '14px' }}>{tx('Réservé à la coordination du chantier.', 'Restricted to site coordination.')}</div>
             <input type="password" name="access-code" autoComplete="current-password" spellCheck={false} aria-label={tx("Code d'accès", 'Access code')} value={codeInput} autoFocus onChange={(e) => { setCodeInput(e.target.value); setCodeError(false); }} onKeyDown={(e) => { if (e.key === 'Enter') tryLogin(); }} placeholder={tx("Code d'accès", 'Access code') + '…'} style={{ width: '100%', boxSizing: 'border-box', background: C.panel2, color: C.text, border: `1px solid ${codeError ? '#ef4444' : C.line}`, borderRadius: '8px', padding: '11px 12px', fontSize: '15px', marginBottom: codeError ? '6px' : '14px' }} />
@@ -749,8 +799,8 @@ export default function ShipyardSafetyDemo() {
       )}
 
       {showReport && active && (
-        <div onClick={() => setShowReport(false)} style={{ overscrollBehavior: 'contain', position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.78)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 70, padding: '18px' }}>
-          <div role="dialog" aria-modal="true" aria-label={tx('Rapport journalier', 'Daily report')} onClick={(e) => e.stopPropagation()} style={{ overscrollBehavior: 'contain', background: '#fff', color: '#11283c', borderRadius: '12px', width: '600px', maxWidth: '100%', maxHeight: '92vh', overflow: 'auto', fontFamily: 'Georgia, serif' }}>
+        <div className="dd-backdrop" onClick={() => setShowReport(false)} style={{ overscrollBehavior: 'contain', position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.78)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 70, padding: '18px' }}>
+          <div className="dd-sheet" role="dialog" aria-modal="true" aria-label={tx('Rapport journalier', 'Daily report')} onClick={(e) => e.stopPropagation()} style={{ overscrollBehavior: 'contain', background: '#fff', color: '#11283c', borderRadius: '12px', width: '600px', maxWidth: '100%', maxHeight: '92vh', overflow: 'auto', fontFamily: 'Georgia, serif' }}>
             <div style={{ padding: '20px 24px', borderBottom: '3px solid ' + BRAND_INK, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
               <div>
                 <div style={{ marginBottom: '4px' }}><img src={LOGO_INK} alt="Allied Maritime Solutions Ltd" width="80" height="32" style={{ height: '32px', width: 'auto', display: 'block' }} /><span style={{ display: 'block', fontSize: '8px', fontWeight: 600, letterSpacing: '2.5px', color: '#5b6470', fontFamily: 'Arial, sans-serif', marginTop: '3px' }}>SAFETY & SERVICE</span></div>
@@ -782,8 +832,8 @@ export default function ShipyardSafetyDemo() {
       )}
 
       {aiPhase && (
-        <div onClick={() => { if (aiPhase !== 'loading') { setAiPhase(null); setAiResult(null); } }} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.78)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 80, padding: '18px' }}>
-          <div role="dialog" aria-modal="true" aria-label={tx('Analyse IA du plan', 'AI plan analysis')} onClick={(e) => e.stopPropagation()} style={{ overscrollBehavior: 'contain', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '14px', padding: '20px', width: '460px', maxWidth: '100%', maxHeight: '90vh', overflow: 'auto' }}>
+        <div className="dd-backdrop" onClick={() => { if (aiPhase !== 'loading') { setAiPhase(null); setAiResult(null); } }} style={{ overscrollBehavior: 'contain', position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.78)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 80, padding: '18px' }}>
+          <div className="dd-sheet" role="dialog" aria-modal="true" aria-label={tx('Analyse IA du plan', 'AI plan analysis')} onClick={(e) => e.stopPropagation()} style={{ overscrollBehavior: 'contain', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '14px', padding: '20px', width: '460px', maxWidth: '100%', maxHeight: '90vh', overflow: 'auto' }}>
             <div style={{ fontSize: '15px', fontWeight: 700, marginBottom: '4px' }}>🤖 {tx('Analyse IA du plan', 'AI plan analysis')}</div>
             {aiPhase === 'loading' && (
               <div style={{ padding: '18px 0' }}>
@@ -817,8 +867,8 @@ export default function ShipyardSafetyDemo() {
       )}
 
       {docView && (
-        <div onClick={() => setDocView(null)} style={{ overscrollBehavior: 'contain', position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.78)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 60, padding: '20px' }}>
-          <div role="dialog" aria-modal="true" aria-label={docView.name} onClick={(e) => e.stopPropagation()} style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '14px', padding: '16px', width: '560px', maxWidth: '100%', maxHeight: '92vh', display: 'flex', flexDirection: 'column' }}>
+        <div className="dd-backdrop" onClick={() => setDocView(null)} style={{ overscrollBehavior: 'contain', position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.78)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 60, padding: '20px' }}>
+          <div className="dd-sheet" role="dialog" aria-modal="true" aria-label={docView.name} onClick={(e) => e.stopPropagation()} style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '14px', padding: '16px', width: '560px', maxWidth: '100%', maxHeight: '92vh', display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}><div style={{ fontSize: '14px', fontWeight: 700 }}>{docView.kind === 'permit' ? tx('📄 Permis de travail', '📄 Work permit') : tx('🫁 Test atmosphérique', '🫁 Atmospheric test')}<span style={{ color: C.dim, fontWeight: 400 }}> · {docView.name}</span></div><button onClick={() => setDocView(null)} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: C.text, borderRadius: '6px', padding: '4px 10px', fontSize: '13px', cursor: 'pointer' }}>{tx('Fermer', 'Close')}</button></div>
             <div style={{ overflow: 'auto', background: '#fff', borderRadius: '8px' }}>{docView.loading ? <div style={{ padding: '40px', textAlign: 'center', color: C.dim }}>{tx('Chargement…', 'Loading…')}</div> : docView.data ? <img src={docView.data} alt={docView.name} style={{ width: '100%', display: 'block' }} /> : <div style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>{tx('Document indisponible.', 'Document unavailable.')}</div>}</div>
           </div>
@@ -829,13 +879,14 @@ export default function ShipyardSafetyDemo() {
         <div id="main" role="main" tabIndex={-1} className={introHold ? '' : 'dd-rise-2'} style={{ padding: '16px', maxWidth: '1200px', margin: '0 auto' }}>
           {!canEdit && (<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', flexWrap: 'wrap', background: 'rgba(30,136,199,0.12)', border: `1px solid ${C.accent2}`, borderRadius: '10px', padding: '10px 14px', marginBottom: '14px', fontSize: '12px', color: '#bcd9ee' }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}><Eye size={15} aria-hidden="true" />{tx('Mode consultation — seule la coordination peut modifier.', 'View-only — only site coordination can edit.')}</span><button onClick={() => { setShowLogin(true); setCodeError(false); }} style={{ background: C.accent2, color: '#0b1622', border: 'none', borderRadius: '7px', padding: '7px 12px', fontSize: '12px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>{tx('Accès coordination', 'Coordination access')}</button></div>)}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: '14px' }}>
-            {canEdit ? <input aria-label={tx('Nom du navire', 'Vessel name')} value={active.name} onChange={(e) => updateActive({ name: e.target.value })} className="dd-title" style={{ background: 'transparent', color: C.text, border: 'none', borderBottom: `2px solid ${C.line}`, fontSize: '24px', fontWeight: 700, padding: '4px 2px', minWidth: '180px' }} /> : <h1 className="dd-title" style={{ margin: 0, fontSize: '24px', fontWeight: 700, letterSpacing: '-0.3px', padding: '4px 2px' }}>{active.name}</h1>}
+            {canEdit ? <input aria-label={tx('Nom du navire', 'Vessel name')} value={active.name} onChange={(e) => updateActive({ name: e.target.value })} className="dd-title dd-large" style={{ background: 'transparent', color: C.text, border: 'none', borderBottom: `2px solid ${C.line}`, fontSize: '24px', fontWeight: 700, padding: '4px 2px', minWidth: '180px' }} /> : <h1 className="dd-title dd-large" style={{ margin: 0, fontSize: '24px', fontWeight: 700, letterSpacing: '-0.3px', padding: '4px 2px' }}>{active.name}</h1>}
             <div className="dd-tabs" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {TABS.map(([k, lbl, Ico]) => (<button key={k} onClick={() => setTab(k)} aria-pressed={tab === k} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '7px', position: 'relative', background: tab === k ? C.accent : 'transparent', color: tab === k ? '#0b1622' : C.dim, border: `1px solid ${tab === k ? C.accent : C.line}`, borderRadius: '8px', padding: '8px 12px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', boxShadow: tab === k ? '0 5px 18px -6px rgba(255,122,24,.55)' : 'none' }}><Ico size={16} strokeWidth={2.2} aria-hidden="true" />{lbl}{k === 'overview' && alertCount > 0 && <span style={{ position: 'absolute', top: '-7px', right: '-7px', background: '#dc2626', color: '#fff', borderRadius: '10px', minWidth: '18px', height: '18px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 800, padding: '0 4px', boxShadow: '0 0 0 2px #0a0b0d' }}>{alertCount}</span>}</button>))}
               {canEdit && <button onClick={() => deleteShip(active.id)} aria-label={tx('Supprimer le navire', 'Delete vessel')} title={tx('Supprimer le navire', 'Delete vessel')} style={{ background: 'transparent', color: '#ef4444', border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 12px', fontSize: '13px', cursor: 'pointer' }}>🗑</button>}
             </div>
           </div>
 
+          {(tab === 'dock' || tab === '3d') && (<div className="dd-seg" role="group" aria-label="Dry Dock">{[['dock', tx('Vue 2D', '2D View')], ['3d', '3D']].map(([k, l]) => (<button key={k} type="button" aria-pressed={tab === k} onClick={() => setTab(k)} className={tab === k ? 'on' : ''}>{l}</button>))}</div>)}
           {tab === 'plan' && (
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
               <div style={{ flex: '1 1 460px' }}>
@@ -970,7 +1021,14 @@ export default function ShipyardSafetyDemo() {
         </div>
       )}
 
-      <div style={{ padding: '14px 18px', background: C.panel2, borderTop: `1px solid ${C.line}`, fontSize: '11px', color: C.dim, textAlign: 'center', marginTop: '20px' }}>{tx('Démo collaborative — Allied Maritime Solutions Ltd · Safety & Service. Permis et tests sont des exemples de démonstration.', 'Collaborative demo — Allied Maritime Solutions Ltd · Safety & Service. Permits and tests are demonstration samples.')}</div>
+      {active && (<nav className="dd-tabbar" aria-label={tx('Navigation', 'Navigation')}>{[['overview', tx('Aperçu', 'Summary'), LayoutDashboard], ['plan', 'Plan', MapIcon], ['dock', 'Dock', Ruler], ['works', tx('Travaux', 'Works'), HardHat], ['crew', tx('Équipe', 'Crew'), Users]].map(([k, l, Ico]) => { const on = tab === k || (k === 'dock' && tab === '3d'); return (<button key={k} type="button" aria-current={on ? 'page' : undefined} className={on ? 'on' : ''} onClick={() => { setTab(k); window.scrollTo({ top: 0 }); }}><span className="ico"><Ico size={23} strokeWidth={on ? 2.4 : 1.9} aria-hidden="true" />{k === 'overview' && alertCount > 0 && <span className="badge" aria-label={alertCount + ' ' + tx('alertes', 'alerts')}>{alertCount}</span>}</span><span className="lbl">{l}</span></button>); })}</nav>)}
+      {confirmAsk && (<div className="dd-backdrop dd-confirm-bd" onClick={() => setConfirmAsk(null)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 80, padding: '20px' }}>
+        <div className="dd-action" role="alertdialog" aria-modal="true" aria-label={confirmAsk.msg} onClick={(e) => e.stopPropagation()}>
+          <div className="grp"><div className="msg">{confirmAsk.msg}<small>{tx('Cette action est définitive.', 'This can’t be undone.')}</small></div><button type="button" className="danger" autoFocus onClick={() => { const f = confirmAsk.onYes; setConfirmAsk(null); f(); }}>{confirmAsk.label}</button></div>
+          <div className="grp"><button type="button" className="cancel" onClick={() => setConfirmAsk(null)}>{tx('Annuler', 'Cancel')}</button></div>
+        </div>
+      </div>)}
+      <div className="dd-foot" style={{ padding: '14px 18px', background: C.panel2, borderTop: `1px solid ${C.line}`, fontSize: '11px', color: C.dim, textAlign: 'center', marginTop: '20px' }}>{tx('Démo collaborative — Allied Maritime Solutions Ltd · Safety & Service. Permis et tests sont des exemples de démonstration.', 'Collaborative demo — Allied Maritime Solutions Ltd · Safety & Service. Permits and tests are demonstration samples.')}</div>
     </div>
     </>
   );
