@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { LayoutDashboard, Map as MapIcon, Ruler, Box, HardHat, Users, Satellite, WifiOff, Lock, Unlock, Eye, ClipboardList, AlertTriangle, Flame, Wind, FileWarning, Siren, ShieldCheck, ChevronRight, Activity, UserCheck, ClipboardCheck, History } from 'lucide-react';
+import { LayoutDashboard, Map as MapIcon, Box, HardHat, Users, Satellite, WifiOff, Lock, Unlock, Eye, ClipboardList, AlertTriangle, Flame, Wind, FileWarning, Siren, ShieldCheck, ChevronRight, Activity, UserCheck, ClipboardCheck, History } from 'lucide-react';
 
 const HAZARDS = {
   hot: { color: '#ef4444', label: { fr: 'Travaux à chaud', en: 'Hot work' },
@@ -287,7 +287,7 @@ export default function ShipyardSafetyDemo() {
   const [ships, setShips] = useState([]);
   const [activeId, setActiveId] = useState(null);
   const [activeDeckId, setActiveDeckId] = useState(null);
-  const TAB_KEYS = ['overview', 'plan', 'dock', '3d', 'works', 'crew'];
+  const TAB_KEYS = ['overview', 'plan', '3d', 'works', 'crew'];
   const [tab, setTabState] = useState(() => { const h = (typeof location !== 'undefined' ? location.hash.slice(1) : ''); return TAB_KEYS.includes(h) ? h : 'overview'; });
   const setTab = (k) => { setTabState(k); try { history.replaceState(null, '', '#' + k); } catch (e) {} };
   const [tool, setTool] = useState(null);
@@ -663,7 +663,7 @@ export default function ShipyardSafetyDemo() {
   const C = { bg: 'var(--bg)', panel: 'var(--surface)', panel2: 'var(--surface-2)', fill: 'var(--fill)', line: 'var(--line)', accent: 'var(--accent)', accent2: 'var(--muted)', text: 'var(--ink)', dim: 'var(--ink-2)', green: 'var(--ok)', red: 'var(--danger)', amber: 'var(--warn)', blue: 'var(--info)' };
   function zoneColor(z) { return colorMode === 'company' && z.company ? companyColor(z.company, deckCompanies) : HAZARDS[z.type].color; }
 
-  const TABS = [['overview', tx('Vue d\u2019ensemble', 'Overview'), LayoutDashboard], ['plan', tx('Plan', 'Plan'), MapIcon], ['dock', 'Dry Dock', Ruler], ['3d', '3D', Box], ['works', tx('Travaux', 'Works'), HardHat], ['crew', tx('Équipe', 'Crew'), Users]];
+  const TABS = [['overview', tx('Vue d\u2019ensemble', 'Overview'), LayoutDashboard], ['plan', tx('Plan', 'Plan'), MapIcon], ['3d', '3D', Box], ['works', tx('Travaux', 'Works'), HardHat], ['crew', tx('Équipe', 'Crew'), Users]];
 
   // Indicateurs et alertes agrégés (tous les ponts du navire actif)
   const statusCounts = { planned: 0, progress: 0, done: 0 };
@@ -942,7 +942,6 @@ export default function ShipyardSafetyDemo() {
             </div>
           </div>
 
-          {(tab === 'dock' || tab === '3d') && (<div className="dd-seg" role="group" aria-label="Dry Dock">{[['dock', tx('Vue 2D', '2D View')], ['3d', '3D']].map(([k, l]) => (<button key={k} type="button" aria-pressed={tab === k} onClick={() => setTab(k)} className={tab === k ? 'on' : ''}>{l}</button>))}</div>)}
           {tab === 'plan' && (
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
               <div style={{ flex: '1 1 460px' }}>
@@ -1067,7 +1066,6 @@ export default function ShipyardSafetyDemo() {
           )}
 
           {tab === 'overview' && <DashboardView C={C} lang={lang} active={active} statusCounts={statusCounts} allConflicts={allConflicts} overdueTests={overdueTests} untestedConfined={untestedConfined} hotNoFw={hotNoFw} noPermitActive={noPermitActive} fwPosted={fwPosted} fwAvail={fwAvail} checksToday={checksToday} crew={crew} occupantsTotal={occupantsTotal} riskyOccupied={riskyOccupied} onReport={() => setShowReport(true)} onGoto={(t) => setTab(t)} />}
-          {tab === 'dock' && <DryDockView active={active} updateActive={updateActive} C={C} canEdit={canEdit} lang={lang} />}
           {tab === '3d' && (<div>
             {canEdit && !ships.some((x) => x.name === "L'Atalante") && <button onClick={addAtalante} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '8px', padding: '9px 12px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', marginBottom: '10px' }}>{tx("+ Ajouter L'Atalante (plan photographié)", "+ Add L'Atalante (photographed plan)")}</button>}
             <Yard3D ships={ships} activeId={activeId} onSelect={(id) => { setActiveId(id); setActiveDeckId(null); setSelectedId(null); }} onMove={moveShip} canEdit={canEdit} C={C} lang={lang} />
@@ -1077,7 +1075,7 @@ export default function ShipyardSafetyDemo() {
         </div>
       )}
 
-      {active && (<nav className="dd-tabbar" aria-label={tx('Navigation', 'Navigation')}>{[['overview', tx('Aperçu', 'Summary'), LayoutDashboard], ['plan', 'Plan', MapIcon], ['dock', 'Dock', Ruler], ['works', tx('Travaux', 'Works'), HardHat], ['crew', tx('Équipe', 'Crew'), Users]].map(([k, l, Ico]) => { const on = tab === k || (k === 'dock' && tab === '3d'); return (<button key={k} type="button" aria-current={on ? 'page' : undefined} className={on ? 'on' : ''} onClick={() => { setTab(k); window.scrollTo({ top: 0 }); }}><span className="ico"><Ico size={23} strokeWidth={on ? 2.4 : 1.9} aria-hidden="true" />{k === 'overview' && alertCount > 0 && <span className="badge" aria-label={alertCount + ' ' + tx('alertes', 'alerts')}>{alertCount}</span>}</span><span className="lbl">{l}</span></button>); })}</nav>)}
+      {active && (<nav className="dd-tabbar" aria-label={tx('Navigation', 'Navigation')}>{[['overview', tx('Aperçu', 'Summary'), LayoutDashboard], ['plan', 'Plan', MapIcon], ['3d', '3D', Box], ['works', tx('Travaux', 'Works'), HardHat], ['crew', tx('Équipe', 'Crew'), Users]].map(([k, l, Ico]) => { const on = tab === k; return (<button key={k} type="button" aria-current={on ? 'page' : undefined} className={on ? 'on' : ''} onClick={() => { setTab(k); window.scrollTo({ top: 0 }); }}><span className="ico"><Ico size={23} strokeWidth={on ? 2.4 : 1.9} aria-hidden="true" />{k === 'overview' && alertCount > 0 && <span className="badge" aria-label={alertCount + ' ' + tx('alertes', 'alerts')}>{alertCount}</span>}</span><span className="lbl">{l}</span></button>); })}</nav>)}
       {confirmAsk && (<div className="dd-backdrop dd-confirm-bd" onClick={() => setConfirmAsk(null)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 80, padding: '20px' }}>
         <div className="dd-action" role="alertdialog" aria-modal="true" aria-label={confirmAsk.msg} onClick={(e) => e.stopPropagation()}>
           <div className="grp"><div className="msg">{confirmAsk.msg}<small>{tx('Cette action est définitive.', 'This can’t be undone.')}</small></div><button type="button" className="danger" autoFocus onClick={() => { const f = confirmAsk.onYes; setConfirmAsk(null); f(); }}>{confirmAsk.label}</button></div>
@@ -1444,7 +1442,8 @@ function Yard3D({ ships, activeId, onSelect, onMove, canEdit, C, lang }) {
   const tx = mkTx(lang);
   const mountRef = useRef(null), api = useRef({}), cb = useRef({});
   cb.current = { onSelect, onMove, canEdit };
-  const [xray, setXray] = useState(true), [labels, setLabels] = useState(true), [lift, setLift] = useState(14), [zmode, setZmode] = useState('through'), [hide, setHide] = useState({});
+  const lift = 0;
+  const [xray, setXray] = useState(true), [labels, setLabels] = useState(true), [zmode, setZmode] = useState('through'), [hide, setHide] = useState({});
   const sig = JSON.stringify([activeId, xray, labels, lift, lang, zmode, hide, ships.map((s) => [s.id, s.name, s.dock, s.pos, (s.decks || []).map((d) => [d.layout, d.aiRooms ? d.aiRooms.length : 0, (d.zones || []).map((z) => [z.id, z.type, z.x, z.y, z.w, z.h, z.status])])])]);
 
   useEffect(() => {
@@ -1454,7 +1453,7 @@ function Yard3D({ ships, activeId, onSelect, onMove, canEdit, C, lang }) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); renderer.setSize(W(), H); renderer.setClearColor(0x0a0b0d);
     const cv = renderer.domElement; cv.style.touchAction = 'none'; cv.style.display = 'block'; cv.style.borderRadius = '8px'; el.appendChild(cv);
     const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(50, W() / H, 1, 3000), world = new THREE.Group();
-    scene.add(world); scene.add(new THREE.GridHelper(1200, 60, 0x26292e, 0x16181b));
+    scene.add(world);
     scene.add(new THREE.AmbientLight(0xffffff, 0.6)); const sun = new THREE.DirectionalLight(0xffffff, 0.8); sun.position.set(200, 400, 150); scene.add(sun);
     const cam = { th: 0.9, ph: 1.0, r: 330, ty: 10 };
     const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), ground = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), hit = new THREE.Vector3();
@@ -1467,7 +1466,7 @@ function Yard3D({ ships, activeId, onSelect, onMove, canEdit, C, lang }) {
       const h = ray.intersectObjects(api.current.hulls || [], false)[0];
       if (h) {
         cb.current.onSelect(h.object.userData.shipId);
-        if (cb.current.canEdit && ray.ray.intersectPlane(ground, hit)) { const g = h.object.parent; drag = { g, id: h.object.userData.shipId, ox: g.position.x - hit.x, oz: g.position.z - hit.z, moved: false }; }
+        
       }
     };
     const move = (e) => {
@@ -1503,15 +1502,11 @@ function Yard3D({ ships, activeId, onSelect, onMove, canEdit, C, lang }) {
     while (a.world.children.length) { const o = a.world.children.pop(); o.traverse((c) => { if (c.geometry) c.geometry.dispose(); if (c.material) { if (c.material.map) c.material.map.dispose(); c.material.dispose(); } }); }
     a.hulls = []; a.pulse = [];
     const mkLabel = (text, color, font, sw, sh) => { const c = document.createElement('canvas'); c.width = 256; c.height = 64; const x = c.getContext('2d'); x.fillStyle = color; x.font = font; x.textAlign = 'center'; x.fillText(text, 128, 40); const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthTest: false })); sp.scale.set(sw, sh, 1); sp.renderOrder = 9; return sp; };
-    const maxB = Math.max(30, ...ships.map((s) => (s.dock && s.dock.dockWidth) || 30));
-    ships.forEach((s, i) => {
+    ships.filter((s) => s.id === activeId).forEach((s) => {
       const d = s.dock || {}, L = d.shipLength || 120, B = d.shipWidth || 20, DL = d.dockLength || L + 20, DW = d.dockWidth || B + 8, D = B * 0.55, hD = D * 0.28;
       const sel = s.id === activeId, hc = sel ? 0xff7a18 : 0x8f9aa6;
-      const g = new THREE.Group(), p = s.pos || { x: (i - (ships.length - 1) / 2) * (maxB + 20), z: 0 };
-      g.position.set(p.x, 0, p.z);
-      const bg = new THREE.PlaneGeometry(DW, DL);
-      const basin = new THREE.Mesh(bg, new THREE.MeshBasicMaterial({ color: 0x15181c })); basin.rotation.x = -Math.PI / 2; basin.position.y = 0.05; g.add(basin);
-      const bl = new THREE.LineSegments(new THREE.EdgesGeometry(bg), new THREE.LineBasicMaterial({ color: 0x8f9aa6 })); bl.rotation.x = -Math.PI / 2; bl.position.y = 0.1; g.add(bl);
+      const g = new THREE.Group();
+      if (a.cam && a.fitFor !== s.id) { a.cam.r = Math.max(50, L * 0.85); a.cam.ty = D / 2; a.fitFor = s.id; }
       const { g: hg, lg } = buildHull(B, L, D); hg.translate(0, lift, 0); lg.translate(0, lift, 0);
       const hmat = xray ? new THREE.MeshBasicMaterial({ color: hc, transparent: true, opacity: 0.1, depthWrite: false, side: THREE.DoubleSide }) : new THREE.MeshLambertMaterial({ color: sel ? 0xb45a1c : 0x56616d, side: THREE.DoubleSide });
       const hull = new THREE.Mesh(hg, hmat);
@@ -1525,13 +1520,6 @@ function Yard3D({ ships, activeId, onSelect, onMove, canEdit, C, lang }) {
         cap.userData.shipId = s.id; g.add(cap); a.hulls.push(cap);
       }
       g.add(new THREE.LineSegments(lg, new THREE.LineBasicMaterial({ color: hc, transparent: true, opacity: 0.7 })));
-      if (lift > 0.5) {
-        const sm = new THREE.MeshBasicMaterial({ color: 0x4b525b });
-        for (let k = 0; k <= 12; k++) {
-          const z = planZ(40 + (k * 192) / 12, L);
-          [[0, B * 0.09], ...(k % 2 === 0 ? [[-B * 0.3, B * 0.05], [B * 0.3, B * 0.05]] : [])].forEach(([x, w]) => { const bx = new THREE.Mesh(new THREE.BoxGeometry(w, lift, 3), sm); bx.position.set(x, lift / 2, z); g.add(bx); });
-        }
-      }
       const nm = mkLabel(s.name || '', sel ? '#ff7a18' : '#cbd5e1', 'bold 28px sans-serif', 48, 12); nm.position.set(0, lift + D + 10, 0); g.add(nm);
       const st = hullStations(), decks = s.decks || [], inner = decks.filter((x) => x.layout !== 'technical'), dh = (D - hD) / Math.max(inner.length, 1);
       const loop = (h) => { const f = Math.pow(Math.max(h, 0.01) / D, 0.125), A = [], Z = []; st.forEach(([y, hb]) => { const b = hb * (B / 2) * f, z = planZ(y, L); A.push(new THREE.Vector3(-b, lift + h, z)); Z.unshift(new THREE.Vector3(b, lift + h, z)); }); return new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([...A, ...Z]), new THREE.LineBasicMaterial({ color: 0x5b6470, transparent: true, opacity: 0.6 })); };
@@ -1573,7 +1561,7 @@ function Yard3D({ ships, activeId, onSelect, onMove, canEdit, C, lang }) {
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '12px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
-        <div style={{ fontSize: '14px', fontWeight: 700, color: C.text }}>{tx('Vue 3D du chantier', '3D yard view')}</div>
+        <div style={{ fontSize: '14px', fontWeight: 700, color: C.text }}>{tx('Vue 3D du navire', '3D vessel view')}</div>
         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
           <button onClick={() => setXray(!xray)} style={btn(xray)}>{tx('Coque transparente', 'See-through hull')}</button>
           <button onClick={() => setLabels(!labels)} style={btn(labels)}>{tx('Étiquettes', 'Labels')}</button>
@@ -1581,10 +1569,6 @@ function Yard3D({ ships, activeId, onSelect, onMove, canEdit, C, lang }) {
           <button onClick={() => view(1.57)} style={btn(false)}>{tx('Côté', 'Side')}</button>
           <button onClick={() => view(2.4)} style={btn(false)}>{tx('Dessous', 'Below')}</button>
         </div>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', fontSize: '12px', color: C.dim }}>
-        <span style={{ whiteSpace: 'nowrap' }}>{tx('Hauteur sous quille', 'Keel clearance')} : {lift} m</span>
-        <input type="range" min="0" max="40" value={lift} onChange={(e) => setLift(+e.target.value)} style={{ flex: 1 }} />
       </div>
       <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '8px', fontSize: '12px', color: C.dim }}>
         <span>{tx('Zones', 'Zones')} :</span>
@@ -1598,38 +1582,7 @@ function Yard3D({ ships, activeId, onSelect, onMove, canEdit, C, lang }) {
         {Object.keys(HAZARDS).map((k) => (<span key={k} role="button" tabIndex={0} aria-pressed={!hide[k]} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setHide({ ...hide, [k]: !hide[k] }); } }} onClick={() => setHide({ ...hide, [k]: !hide[k] })} style={{ cursor: 'pointer', opacity: hide[k] ? 0.35 : 1, textDecoration: hide[k] ? 'line-through' : 'none' }}><span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: 2, background: HAZARDS[k].color, marginRight: 4 }} />{pick(lang, HAZARDS[k].label.fr, HAZARDS[k].label.en)}</span>))}
         <span><span style={{ display: 'inline-block', width: 14, height: 2, background: '#ef4444', marginRight: 4, verticalAlign: 'middle' }} />{tx('Conflit', 'Conflict')}</span>
       </div>
-      <div style={{ fontSize: '11px', color: C.dim, marginTop: '6px' }}>{canEdit ? tx('Glisser un navire pour le déplacer · glisser le fond pour tourner · molette/pincer pour zoomer', 'Drag a ship to move it · drag background to rotate · wheel/pinch to zoom') : tx('Lecture seule : seul le coordinateur déplace les navires', 'Read-only: only the coordinator moves ships')}</div>
-    </div>
-  );
-}
-
-function DryDockView({ active, updateActive, C, canEdit, lang }) {
-  const tx = mkTx(lang), bi = mkBi(lang);
-  const d = active.dock;
-  function set(field, val) { updateActive({ dock: { ...d, [field]: parseFloat(val) || 0 } }); }
-  const pad = 18, W = 360, H = 220, dockW = W - pad * 2, dockH = H - pad * 2;
-  const shipWfrac = d.dockWidth ? Math.min(1, d.shipWidth / d.dockWidth) : 0.7;
-  const shipLfrac = d.dockLength ? Math.min(1, d.shipLength / d.dockLength) : 0.85;
-  const sW = dockW * shipWfrac, sH = dockH * shipLfrac, sx = pad + (dockW - sW) / 2, sy = pad + (dockH - sH) / 2;
-  const marginSide = ((d.dockWidth - d.shipWidth) / 2).toFixed(1), marginEnd = ((d.dockLength - d.shipLength) / 2).toFixed(1);
-  const fits = d.shipWidth <= d.dockWidth && d.shipLength <= d.dockLength;
-  const fields = [['dockLength', 'Longueur bassin', 'Dock length'], ['dockWidth', 'Largeur bassin', 'Dock width'], ['shipLength', 'Longueur navire', 'Ship length'], ['shipWidth', 'Largeur navire', 'Ship width']];
-  return (
-    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-      <div style={{ flex: '1 1 300px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '16px' }}>
-        <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px', color: C.text }}>{tx('Dimensions du dry dock & du navire', 'Dry dock & vessel dimensions')}</div>
-        {fields.map(([f, fr, en]) => (<div key={f} style={{ marginBottom: '12px' }}><label style={{ fontSize: '11px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi(fr, en)}</label><div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><input type="number" value={d[f]} readOnly={!canEdit} onChange={(e) => set(f, e.target.value)} style={{ flex: 1, background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '9px 10px', fontSize: '14px', opacity: canEdit ? 1 : 0.7 }} /><span style={{ fontSize: '12px', color: C.dim }}>m</span></div></div>))}
-        <div style={{ marginTop: '6px', padding: '10px', borderRadius: '8px', background: fits ? 'var(--ok-soft)' : 'var(--danger-soft)', border: `1px solid ${fits ? 'var(--ok)' : 'var(--danger)'}`, fontSize: '12px', color: fits ? 'var(--ok-ink)' : 'var(--danger-ink)' }}>{fits ? tx(`✓ Le navire entre dans le bassin · Marge latérale ${marginSide} m / extrémités ${marginEnd} m`, `✓ Vessel fits in the dock · Side clearance ${marginSide} m / ends ${marginEnd} m`) : tx('✗ Le navire dépasse les dimensions du bassin', '✗ Vessel exceeds the dock dimensions')}</div>
-      </div>
-      <div style={{ flex: '1 1 360px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '16px' }}>
-        <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px', color: C.text }}>{tx('Vue de dessus — navire en cale sèche', 'Top view — vessel in dry dock')}</div>
-        <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', background: C.panel2, borderRadius: '8px' }}>
-          <rect x={pad} y={pad} width={dockW} height={dockH} fill="#0e1012" stroke={C.accent2} strokeWidth="2" rx="4" />
-          <text x={W / 2} y={12} textAnchor="middle" fill={C.dim} fontSize="9">{d.dockLength} m</text>
-          {fits && (<path d={`M ${sx + sW / 2} ${sy} C ${sx + sW} ${sy + sH * 0.08}, ${sx + sW} ${sy + sH * 0.16}, ${sx + sW} ${sy + sH * 0.22} L ${sx + sW} ${sy + sH * 0.9} C ${sx + sW} ${sy + sH * 0.98}, ${sx + sW * 0.55} ${sy + sH}, ${sx + sW / 2} ${sy + sH} C ${sx + sW * 0.45} ${sy + sH}, ${sx} ${sy + sH * 0.98}, ${sx} ${sy + sH * 0.9} L ${sx} ${sy + sH * 0.22} C ${sx} ${sy + sH * 0.16}, ${sx} ${sy + sH * 0.08}, ${sx + sW / 2} ${sy} Z`} fill="#22262b" stroke={C.accent} strokeWidth="2" />)}
-          <text x={W / 2} y={H - 4} textAnchor="middle" fill={C.dim} fontSize="9">{pick(lang, 'PROUE', 'BOW')} ▲ — {tx('Largeur navire', 'Ship width')} {d.shipWidth} m</text>
-        </svg>
-      </div>
+      <div style={{ fontSize: '11px', color: C.dim, marginTop: '6px' }}>{tx('Glisser pour tourner · molette ou pincer pour zoomer', 'Drag to rotate · scroll or pinch to zoom')}</div>
     </div>
   );
 }
