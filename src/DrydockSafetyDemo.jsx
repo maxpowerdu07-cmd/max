@@ -414,10 +414,10 @@ export default function ShipyardSafetyDemo() {
     if (!loaded) return;
     const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) { setIntroOut(true); setIntro(false); return; }
-    const wait = Math.max(0, 2200 - (Date.now() - introStart.current));
-    let t2 = setTimeout(() => setIntro(false), wait + 700);
+    const wait = Math.max(0, 1550 - (Date.now() - introStart.current));
+    let t2 = setTimeout(() => setIntro(false), wait + 440);
     const t1 = setTimeout(() => setIntroOut(true), wait);
-    const skip = () => { clearTimeout(t1); clearTimeout(t2); setIntroOut(true); t2 = setTimeout(() => setIntro(false), 500); };
+    const skip = () => { clearTimeout(t1); clearTimeout(t2); setIntroOut(true); t2 = setTimeout(() => setIntro(false), 440); };
     window.addEventListener('pointerdown', skip, { once: true }); window.addEventListener('keydown', skip, { once: true });
     return () => { clearTimeout(t1); clearTimeout(t2); window.removeEventListener('pointerdown', skip); window.removeEventListener('keydown', skip); };
   }, [loaded]);
@@ -694,7 +694,7 @@ export default function ShipyardSafetyDemo() {
   return (
     <>
     {intro && <IntroOverlay introOut={introOut} />}
-    <div style={{ minHeight: '100vh', opacity: introHold ? 0 : 1, visibility: introHold ? 'hidden' : 'visible', transition: 'opacity .55s ease', color: C.text, fontFamily: 'var(--f-text)', backgroundColor: C.bg }}>
+    <div style={{ minHeight: '100vh', opacity: introHold ? 0 : 1, visibility: introHold ? 'hidden' : 'visible', transition: 'opacity 420ms cubic-bezier(0.23, 1, 0.32, 1)', color: C.text, fontFamily: 'var(--f-text)', backgroundColor: C.bg }}>
       <a href="#main" className="dd-skip">{tx('Aller au contenu', 'Skip to content')}</a>
       <input ref={docInputRef} type="file" accept="image/*" onChange={onDocFile} style={{ display: 'none' }} />
       <input ref={aiInputRef} type="file" accept="image/*" onChange={onAiFile} style={{ display: 'none' }} />
@@ -1278,123 +1278,38 @@ const DECK_LAYOUTS = {
 };
 
 function IntroOverlay({ introOut }) {
-  const vlines = []; for (let x = 0; x <= 400; x += 25) vlines.push(x);
-  const hlines = []; for (let y = 0; y <= 300; y += 25) hlines.push(y);
-  const portholes = []; for (let x = 96; x <= 296; x += 20) portholes.push(x);
+  // Launch: one lead (the logo materialises), two supports overlapping it (wordmark, hull line).
+  // Exit: everything together, the logo pushes slightly toward the viewer as the app fades in beneath.
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '20px', backgroundColor: '#0a0b0d', background: 'radial-gradient(1000px 620px at 50% 38%, #1a1d21 0%, #0a0b0d 66%)', opacity: introOut ? 0 : 1, transition: 'opacity .65s ease', pointerEvents: introOut ? 'none' : 'auto' }}>
-      <svg viewBox="0 0 400 300" style={{ width: 'min(88vw, 500px)', height: 'auto', overflow: 'visible' }}>
-        <defs>
-          <clipPath id="ddioDock"><rect x="31" y="109" width="338" height="141" /></clipPath>
-          <linearGradient id="ddioScan" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#c9d2da" stopOpacity="0" /><stop offset="0.5" stopColor="#eef1f4" stopOpacity="0.55" /><stop offset="1" stopColor="#c9d2da" stopOpacity="0" /></linearGradient>
-        </defs>
-        <g className="ddio-grid">
-          {vlines.map((x) => <line key={'v' + x} x1={x} y1="0" x2={x} y2="300" stroke="rgba(201,210,218,0.07)" strokeWidth="1" />)}
-          {hlines.map((y) => <line key={'h' + y} x1="0" y1={y} x2="400" y2={y} stroke="rgba(201,210,218,0.07)" strokeWidth="1" />)}
-        </g>
-
-        {/* Portique de levage (grue de chantier) */}
-        <g className="ddio-crane" stroke="#6f8aa3" strokeWidth="3" fill="none">
-          <line x1="40" y1="46" x2="40" y2="250" />
-          <line x1="360" y1="46" x2="360" y2="250" />
-          <line x1="28" y1="44" x2="372" y2="44" strokeWidth="5" />
-          <line x1="34" y1="52" x2="366" y2="52" strokeWidth="1.5" opacity="0.7" />
-          <g className="ddio-trolley">
-            <rect x="192" y="36" width="18" height="11" rx="1.5" fill="#6f8aa3" stroke="none" />
-            <line x1="201" y1="47" x2="201" y2="126" strokeWidth="1.5" />
-            <path d="M196 126 q5 9 10 0" strokeWidth="2" />
-          </g>
-        </g>
-
-        {/* Eau du bassin (vidange) */}
-        <g clipPath="url(#ddioDock)">
-          <g className="ddio-water" style={{ transformBox: 'fill-box', transformOrigin: 'bottom' }}>
-            <rect x="31" y="118" width="338" height="132" fill="rgba(201,210,218,0.18)" />
-            <rect x="31" y="118" width="338" height="3" fill="rgba(143,212,255,0.55)" />
-          </g>
-          <circle className="ddio-bubble b1" cx="120" cy="244" r="3" fill="rgba(143,212,255,0.5)" style={{ transformBox: 'fill-box' }} />
-          <circle className="ddio-bubble b2" cx="210" cy="246" r="2.4" fill="rgba(143,212,255,0.5)" style={{ transformBox: 'fill-box' }} />
-          <circle className="ddio-bubble b3" cx="285" cy="244" r="3.2" fill="rgba(143,212,255,0.5)" style={{ transformBox: 'fill-box' }} />
-        </g>
-
-        {/* Tins (blocs de quille) */}
-        <g className="ddio-blocks">
-          {[110, 170, 230, 290].map((x, i) => <rect key={i} x={x} y="222" width="18" height="28" rx="1" fill="#1c1f23" stroke="#3a3f45" strokeWidth="1.2" />)}
-        </g>
-
-        {/* Navire (se pose sur les tins) */}
-        <g className="ddio-ship">
-          <path className="ddio-draw" pathLength="1" d="M72 188 L300 188 C326 188 350 198 358 214 L358 222 L86 222 C70 222 62 206 72 188 Z" fill="rgba(158,199,230,0.06)" stroke="#d5dbe1" strokeWidth="2.3" />
-          <g className="ddio-detail" stroke="#d5dbe1" fill="none">
-            <rect x="132" y="160" width="78" height="28" rx="2" strokeWidth="2" />
-            <rect x="142" y="167" width="11" height="8" strokeWidth="1.2" />
-            <rect x="160" y="167" width="11" height="8" strokeWidth="1.2" />
-            <rect x="178" y="167" width="11" height="8" strokeWidth="1.2" />
-            <rect x="176" y="142" width="14" height="20" rx="2" strokeWidth="1.8" />
-            <rect x="176" y="147" width="14" height="4" fill="#ff7a18" stroke="none" />
-            <line x1="225" y1="188" x2="225" y2="150" strokeWidth="2" />
-            <line x1="218" y1="158" x2="232" y2="158" strokeWidth="1.5" />
-            {portholes.map((x, i) => <circle key={i} cx={x} cy="206" r="2.4" strokeWidth="1.1" />)}
-            <path d="M72 222 L64 230 L70 238" strokeWidth="2" />
-            <circle cx="60" cy="231" r="5" strokeWidth="1.4" />
-            <line x1="55" y1="231" x2="65" y2="231" strokeWidth="1.2" />
-            <line x1="60" y1="226" x2="60" y2="236" strokeWidth="1.2" />
-          </g>
-        </g>
-
-        {/* Parois du bassin */}
-        <path className="ddio-walls" pathLength="1" d="M30 108 L30 250 L370 250 L370 108" fill="none" stroke="#c9d2da" strokeWidth="2.6" />
-
-        {/* Cote de longueur (plan technique) */}
-        <g className="ddio-dim" stroke="#8fa9c0" strokeWidth="1.3" fill="none">
-          <line x1="72" y1="264" x2="358" y2="264" />
-          <line x1="72" y1="259" x2="72" y2="269" />
-          <line x1="358" y1="259" x2="358" y2="269" />
-        </g>
-        <text className="ddio-dimlabel" x="215" y="278" textAnchor="middle" fill="#8fa9c0" fontSize="9" fontFamily="ui-monospace, monospace">L.O.A. ≈ 154 m</text>
-
-        {/* Balayage */}
-        <rect className="ddio-scan" x="-50" y="0" width="50" height="300" fill="url(#ddioScan)" />
-      </svg>
-
-      <div className="ddio-brand" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-        <div style={{ textAlign: 'center' }}><img src={LOGO_WHITE} alt="Allied Maritime Solutions Ltd" width="180" height="72" style={{ height: '72px', width: 'auto', filter: 'drop-shadow(0 0 24px rgba(201,210,218,0.35))' }} /><div style={{ fontSize: '8.5px', letterSpacing: '3px', color: '#8a929b', marginTop: '12px' }}>SETTING STANDARDS, NOT MEETING STANDARDS</div></div>
-        <div style={{ fontFamily: "'Space Grotesk', -apple-system, system-ui, sans-serif", fontSize: '15px', fontWeight: 600, letterSpacing: '6px', textTransform: 'uppercase', color: '#eaf3fb' }}>DryDock Safety</div>
+    <div className={'ddi' + (introOut ? ' out' : '')} aria-hidden="true">
+      <div className="ddi-glow" />
+      <div className="ddi-stack">
+        <img className="ddi-logo" src={LOGO_WHITE} alt="" width="160" height="64" />
+        <div className="ddi-name">DryDock Safety</div>
+        <svg className="ddi-hull" viewBox="0 0 320 64" fill="none">
+          <path pathLength="1" d="M16 22 L250 19 C272 18 290 14 306 8 L298 40 C297 44 305 46 304 51 C303 55 296 56 288 56 H60 C40 56 26 50 21 40 Z" stroke="rgba(255,255,255,0.42)" strokeWidth="1.2" strokeLinejoin="round" />
+          <path pathLength="1" d="M10 40 H312" stroke="rgba(255,255,255,0.16)" strokeWidth="1" />
+        </svg>
       </div>
-
       <style>{`
-        @keyframes ddioFade { to { opacity:1; } }
-        @keyframes ddioDraw { to { stroke-dashoffset:0; } }
-        @keyframes ddioDrain { to { transform:scaleY(0.045); } }
-        @keyframes ddioSettle { 0%{opacity:0; transform:translateY(-16px);} 35%{opacity:1;} 100%{opacity:1; transform:translateY(0);} }
-        @keyframes ddioRise { to { opacity:1; transform:translateY(0); } }
-        @keyframes ddioScan { 0%{opacity:0; transform:translateX(0);} 12%{opacity:1;} 100%{opacity:0; transform:translateX(470px);} }
-        @keyframes ddioBubble { 0%{opacity:0; transform:translateY(0);} 25%{opacity:.65;} 100%{opacity:0; transform:translateY(-95px);} }
-        @keyframes ddioTrolley { 0%{transform:translateX(-26px);} 100%{transform:translateX(0);} }
-        .ddio-grid { opacity:0; animation: ddioFade .8s ease .15s forwards; }
-        .ddio-crane { opacity:0; animation: ddioFade 1s ease .4s forwards; }
-        .ddio-trolley { animation: ddioTrolley 1.4s cubic-bezier(.4,0,.2,1) 1.2s both; }
-        .ddio-walls { stroke-dasharray:1; stroke-dashoffset:1; animation: ddioDraw 1.2s ease .25s forwards; }
-        .ddio-draw { stroke-dasharray:1; stroke-dashoffset:1; animation: ddioDraw 1.5s ease .8s forwards; }
-        .ddio-detail { opacity:0; animation: ddioFade 1s ease 1.7s forwards; }
-        .ddio-water { animation: ddioDrain 2s cubic-bezier(.5,0,.3,1) 1.5s forwards; }
-        .ddio-bubble { opacity:0; transform-origin:center; }
-        .ddio-bubble.b1 { animation: ddioBubble 2s ease 1.8s 1; }
-        .ddio-bubble.b2 { animation: ddioBubble 2s ease 2.2s 1; }
-        .ddio-bubble.b3 { animation: ddioBubble 2s ease 2.6s 1; }
-        .ddio-blocks { opacity:0; animation: ddioFade .7s ease 2.1s forwards; }
-        .ddio-ship { opacity:0; transform:translateY(-16px); animation: ddioSettle 1.6s cubic-bezier(.3,.8,.3,1) 1.4s forwards; }
-        .ddio-dim { stroke-dasharray:1; stroke-dashoffset:1; animation: ddioDraw 1s ease 2.7s forwards; }
-        .ddio-dimlabel { opacity:0; animation: ddioFade .7s ease 3.1s forwards; }
-        .ddio-scan { opacity:0; animation: ddioScan 2.4s ease 2.3s 1; }
-        .ddio-brand { opacity:0; transform:translateY(12px); animation: ddioRise .9s ease 3.2s forwards; }
+        .ddi { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; background: #000; transition: opacity 420ms cubic-bezier(0.23, 1, 0.32, 1); }
+        .ddi.out { opacity: 0; pointer-events: none; }
+        .ddi-glow { position: absolute; left: 50%; top: 50%; width: 560px; height: 560px; margin: -300px 0 0 -280px; border-radius: 50%; background: radial-gradient(closest-side, rgba(120,140,160,0.16), transparent); opacity: 0; animation: ddiFade 900ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+        .ddi-stack { position: relative; display: flex; flex-direction: column; align-items: center; transition: transform 420ms cubic-bezier(0.23, 1, 0.32, 1), filter 420ms cubic-bezier(0.23, 1, 0.32, 1); }
+        .ddi.out .ddi-stack { transform: scale(1.04); filter: blur(6px); }
+        .ddi-logo { display: block; height: 64px; width: auto; animation: ddiMaterialise 700ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+        .ddi-name { margin-top: 18px; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Inter, system-ui, sans-serif; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: rgba(235,235,245,0.62); animation: ddiRise 500ms cubic-bezier(0.23, 1, 0.32, 1) 180ms both; }
+        .ddi-hull { width: min(72vw, 300px); height: auto; margin-top: 30px; overflow: visible; }
+        .ddi-hull path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: ddiDraw 900ms cubic-bezier(0.77, 0, 0.175, 1) 260ms both; }
+        .ddi-hull path + path { animation-delay: 520ms; animation-duration: 600ms; }
+        @keyframes ddiMaterialise { from { opacity: 0; transform: scale(0.96); filter: blur(12px); } to { opacity: 1; transform: scale(1); filter: blur(0); } }
+        @keyframes ddiRise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes ddiDraw { to { stroke-dashoffset: 0; } }
+        @keyframes ddiFade { to { opacity: 1; } }
         @media (prefers-reduced-motion: reduce) {
-          .ddio-grid,.ddio-crane,.ddio-blocks,.ddio-brand,.ddio-detail,.ddio-dimlabel { opacity:1 !important; transform:none !important; animation:none !important; }
-          .ddio-trolley { transform:none !important; animation:none !important; }
-          .ddio-walls,.ddio-draw,.ddio-dim { stroke-dashoffset:0 !important; animation:none !important; }
-          .ddio-ship { opacity:1 !important; transform:none !important; animation:none !important; }
-          .ddio-water { transform:scaleY(.045) !important; animation:none !important; }
-          .ddio-scan,.ddio-bubble { display:none; }
+          .ddi-logo, .ddi-name, .ddi-glow { animation: ddiFade 200ms ease both; }
+          .ddi-hull path { animation: none; stroke-dashoffset: 0; }
+          .ddi.out .ddi-stack { transform: none; filter: none; }
         }
       `}</style>
     </div>
