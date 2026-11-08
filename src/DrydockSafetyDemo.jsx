@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { LayoutDashboard, Map as MapIcon, Ruler, Box, HardHat, Users, Satellite, WifiOff, Lock, Unlock, Eye, ClipboardList } from 'lucide-react';
+import { LayoutDashboard, Map as MapIcon, Ruler, Box, HardHat, Users, Satellite, WifiOff, Lock, Unlock, Eye, ClipboardList, AlertTriangle, Flame, Wind, FileWarning, Siren, ShieldCheck, ChevronRight, Activity, UserCheck, ClipboardCheck, History } from 'lucide-react';
 
 const HAZARDS = {
   hot: { color: '#ef4444', label: { fr: 'Travaux à chaud', en: 'Hot work' },
@@ -660,7 +660,7 @@ export default function ShipyardSafetyDemo() {
   function tryLogin() { if (codeInput.trim() === COORD_CODE) { setRole('coordinator'); setShowLogin(false); setCodeInput(''); setCodeError(false); } else { setCodeError(true); } }
   function logout() { setRole('viewer'); setTool(null); }
 
-  const C = { bg: '#0a0b0d', panel: '#141619', panel2: '#0e1012', line: '#26292e', accent: '#ff7a18', accent2: '#8f9aa6', text: '#f2f4f6', dim: '#9aa3ad' };
+  const C = { bg: '#08090b', panel: '#121418', panel2: '#0c0e11', fill: '#22262d', line: 'rgba(255,255,255,0.075)', accent: '#ff7a18', accent2: '#8e96a1', text: '#f5f6f7', dim: '#9aa1ab', green: '#30d158', red: '#ff453a', amber: '#ffd60a', blue: '#0a84ff' };
   function zoneColor(z) { return colorMode === 'company' && z.company ? companyColor(z.company, deckCompanies) : HAZARDS[z.type].color; }
 
   const TABS = [['overview', tx('Vue d\u2019ensemble', 'Overview'), LayoutDashboard], ['plan', tx('Plan', 'Plan'), MapIcon], ['dock', 'Dry Dock', Ruler], ['3d', '3D', Box], ['works', tx('Travaux', 'Works'), HardHat], ['crew', tx('Équipe', 'Crew'), Users]];
@@ -686,24 +686,24 @@ export default function ShipyardSafetyDemo() {
   return (
     <>
     {intro && <IntroOverlay introOut={introOut} />}
-    <div style={{ minHeight: '100vh', opacity: introHold ? 0 : 1, visibility: introHold ? 'hidden' : 'visible', transition: 'opacity .55s ease', color: C.text, fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "IBM Plex Sans", "Segoe UI", system-ui, sans-serif', backgroundColor: '#0a0b0d', backgroundImage: 'radial-gradient(1100px 480px at 12% -12%, rgba(201,210,218,0.12), transparent 60%), repeating-linear-gradient(0deg, rgba(201,210,218,0.045) 0 1px, transparent 1px 30px), repeating-linear-gradient(90deg, rgba(201,210,218,0.045) 0 1px, transparent 1px 30px), linear-gradient(180deg, #0a0b0d, #060708)' }}>
+    <div style={{ minHeight: '100vh', opacity: introHold ? 0 : 1, visibility: introHold ? 'hidden' : 'visible', transition: 'opacity .55s ease', color: C.text, fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", Geist, "Segoe UI", system-ui, sans-serif', letterSpacing: '-0.01em', backgroundColor: C.bg, backgroundImage: 'radial-gradient(900px 420px at 85% -10%, rgba(255,122,24,0.07), transparent 65%), radial-gradient(700px 380px at 0% 0%, rgba(142,150,161,0.06), transparent 60%)', backgroundAttachment: 'fixed' }}>
       <a href="#main" className="dd-skip">{tx('Aller au contenu', 'Skip to content')}</a>
-      <div style={{ height: '3px', background: 'linear-gradient(90deg, #c9d2da, #ff7a18 55%, #c9d2da)' }} />
+      <div className="dd-tape" aria-hidden="true" />
       <input ref={docInputRef} type="file" accept="image/*" onChange={onDocFile} style={{ display: 'none' }} />
       <input ref={aiInputRef} type="file" accept="image/*" onChange={onAiFile} style={{ display: 'none' }} />
-      <div className={'dd-header' + (introHold ? '' : ' dd-rise')} style={{ position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 18px', background: `linear-gradient(120deg, ${C.panel} 0%, ${C.panel2} 72%)`, borderBottom: `1px solid ${C.line}`, boxShadow: '0 1px 0 rgba(201,210,218,0.35), 0 10px 28px -14px rgba(0,0,0,0.7)', flexWrap: 'wrap', gap: '10px' }}>
+      <div className={'dd-header' + (introHold ? '' : ' dd-rise')} style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 22px', background: 'rgba(12,14,17,0.72)', WebkitBackdropFilter: 'blur(20px) saturate(170%)', backdropFilter: 'blur(20px) saturate(170%)', borderBottom: `1px solid ${C.line}`, flexWrap: 'wrap', gap: '10px', position: 'sticky', top: 0, zIndex: 30 }}>
         {!introHold && <div className="dd-scan" />}
         <div className="dd-brand" style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '14px' }}>
           <img src={LOGO_WHITE} alt="Allied Maritime Solutions Ltd" width="110" height="44" fetchpriority="high" style={{ height: '44px', width: 'auto', filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))' }} />
           <div><div className="dd-title" style={{ fontSize: '17px', fontWeight: 700, letterSpacing: '-0.2px' }}>DryDock <span style={{ color: C.accent }}>Safety</span></div><div className="dd-sub" style={{ fontSize: '10px', color: C.accent2, letterSpacing: '1.7px', textTransform: 'uppercase', fontWeight: 600, marginTop: '2px' }}>{tx('Coordination sécurité · Cale sèche', 'Safety coordination · Dry dock')}<span style={{ marginLeft: '8px', background: 'rgba(255,122,24,.14)', border: '1px solid rgba(255,122,24,.6)', color: '#ffb26b', borderRadius: '9px', padding: '1px 7px', fontSize: '9px', letterSpacing: '1px', verticalAlign: '1px' }}>DEMO v1.0</span></div></div>
         </div>
         <div className="dd-ctrls" style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', border: `1px solid ${C.line}`, borderRadius: '20px', overflow: 'hidden' }}>{[['bi', 'FR/EN'], ['en', 'EN'], ['bg', 'БГ']].map(([k, l]) => (<button key={k} onClick={() => setLang(k)} style={{ background: lang === k ? C.accent : 'transparent', color: lang === k ? '#0b1622' : C.dim, border: 'none', padding: '6px 12px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{l}</button>))}</div>
-          <button onClick={() => setSimOffline((v) => !v)} title={tx('Simuler hors-ligne', 'Simulate offline')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: connected ? C.panel2 : 'rgba(234,179,8,0.15)', border: `1px solid ${connected ? C.line : '#eab308'}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px', color: connected ? C.dim : '#eab308', cursor: 'pointer' }}>{connected ? <><Satellite size={14} aria-hidden="true" />{tx('En ligne', 'Online')}</> : <><WifiOff size={14} aria-hidden="true" />{tx('Hors-ligne', 'Offline')}</>}{pending.length > 0 && <span style={{ background: '#eab308', color: '#0b1622', borderRadius: '10px', padding: '0 6px', fontSize: '10px', fontWeight: 700 }}>⏳ {pending.length}</span>}</button>
+          <div style={{ display: 'flex', border: `1px solid ${C.line}`, borderRadius: '20px', overflow: 'hidden' }}>{[['bi', 'FR/EN'], ['en', 'EN'], ['bg', 'БГ']].map(([k, l]) => (<button key={k} onClick={() => setLang(k)} style={{ background: lang === k ? C.fill : 'transparent', color: lang === k ? C.text : C.dim, border: 'none', padding: '6px 12px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{l}</button>))}</div>
+          <button onClick={() => setSimOffline((v) => !v)} title={tx('Simuler hors-ligne', 'Simulate offline')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: connected ? C.panel2 : 'rgba(234,179,8,0.15)', border: `1px solid ${connected ? C.line : '#eab308'}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px', color: connected ? C.dim : '#eab308', cursor: 'pointer' }}>{connected ? <><Satellite size={14} aria-hidden="true" />{tx('En ligne', 'Online')}</> : <><WifiOff size={14} aria-hidden="true" />{tx('Hors-ligne', 'Offline')}</>}{pending.length > 0 && <span style={{ background: '#eab308', color: '#0b1622', borderRadius: '14px', padding: '0 6px', fontSize: '10px', fontWeight: 700 }}>⏳ {pending.length}</span>}</button>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px' }}><span style={{ width: '8px', height: '8px', borderRadius: '50%', background: synced ? '#22c55e' : '#eab308', animation: 'pulse 2s infinite' }} />{synced ? tx('En direct', 'Live') : 'Sync…'} · <Users size={14} aria-hidden="true" /> {online}</div>
           {canEdit ? (<div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(34,197,94,0.14)', border: '1px solid #22c55e', borderRadius: '20px', padding: '6px 12px', fontSize: '12px', color: '#86efac' }}><Unlock size={14} aria-hidden="true" /> {tx('Coordination', 'Coordination')}<button onClick={logout} style={{ background: 'transparent', border: 'none', color: '#86efac', cursor: 'pointer', fontSize: '11px', textDecoration: 'underline', padding: 0 }}>{tx('quitter', 'log out')}</button></div>) : (<button onClick={() => { setShowLogin(true); setCodeError(false); }} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px', color: C.dim, cursor: 'pointer' }}><Lock size={14} aria-hidden="true" />{tx('Mode consultation', 'View-only')}</button>)}
           <select aria-label={tx('Navire', 'Vessel')} value={activeId || ''} onChange={(e) => { setActiveId(e.target.value); setActiveDeckId(null); setSelectedId(null); }} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '13px' }}>{ships.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}</select>
-          {canEdit && <button onClick={addShip} style={{ background: C.accent2, color: '#0b1622', border: 'none', borderRadius: '8px', padding: '9px 12px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>{tx('+ Navire', '+ Ship')}</button>}
+          {canEdit && <button onClick={addShip} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '8px', padding: '9px 12px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>{tx('+ Navire', '+ Ship')}</button>}
         </div>
       </div>
       <style>{`
@@ -728,6 +728,30 @@ export default function ShipyardSafetyDemo() {
         .dd-skip:focus-visible { top: 12px; }
         select { background-color: #0e1012; color: #f2f4f6; }
         .dd-tabbar, .dd-seg { display: none; }
+        .dd-tape { height: 3px; background: repeating-linear-gradient(-45deg, #ff7a18 0 14px, #e9edf1 14px 22px); opacity: .9; }
+        .dd-title, .dd-hero-title, .dd-tile-num { font-family: -apple-system, "SF Pro Display", Geist, system-ui, sans-serif; }
+        .dd-hero { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 22px; border-radius: 22px; background: linear-gradient(135deg, color-mix(in srgb, var(--tone) 14%, #121418) 0%, #121418 60%); border: 1px solid color-mix(in srgb, var(--tone) 28%, transparent); box-shadow: 0 20px 50px -30px color-mix(in srgb, var(--tone) 60%, transparent); }
+        .dd-hero-ico { width: 52px; height: 52px; flex: none; border-radius: 16px; display: grid; place-items: center; color: var(--tone); background: color-mix(in srgb, var(--tone) 16%, transparent); }
+        .dd-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #8e96a1; }
+        .dd-hero-title { margin: 4px 0 4px; font-size: 28px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; color: #f5f6f7; }
+        .dd-hero-sub { font-size: 14px; line-height: 1.45; color: #b4bbc4; overflow-wrap: anywhere; }
+        .dd-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #ff7a18; color: #1a0d02; border: 0; border-radius: 14px; padding: 13px 18px; font-size: 15px; font-weight: 650; cursor: pointer; font-family: inherit; box-shadow: 0 8px 22px -10px rgba(255,122,24,.7), inset 0 1px 0 rgba(255,255,255,.25); }
+        .dd-tile { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; text-align: left; cursor: pointer; background: #121418; border: 1px solid rgba(255,255,255,0.075); border-radius: 18px; padding: 14px 16px 16px; color: inherit; font-family: inherit; }
+        .dd-tile-top { display: flex; width: 100%; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+        .dd-tile-ico { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; color: var(--tint); background: color-mix(in srgb, var(--tint) 15%, transparent); }
+        .dd-tile-num { font-size: 30px; font-weight: 650; letter-spacing: -0.03em; line-height: 1; color: #f5f6f7; font-variant-numeric: tabular-nums; }
+        .dd-tile-lbl { font-size: 13px; color: #9aa1ab; }
+        .dd-flag { font-size: 11px; font-weight: 650; padding: 3px 8px; border-radius: 99px; }
+        .dd-flag.red { color: #ff6961; background: rgba(255,69,58,.14); }
+        .dd-flag.amber { color: #ffd60a; background: rgba(255,214,10,.12); }
+        .dd-card:hover { border-color: rgba(255,255,255,.16) !important; box-shadow: 0 18px 36px -22px rgba(0,0,0,.9); }
+        .dd-h3 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 15px; font-weight: 650; letter-spacing: -0.01em; color: #f5f6f7; }
+        .dd-count { min-width: 22px; height: 22px; padding: 0 7px; box-sizing: border-box; border-radius: 11px; background: #22262d; color: #c3cad2; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums; }
+        .dd-row { display: flex; align-items: center; gap: 12px; padding: 11px 16px; font-size: 14px; line-height: 1.35; color: #e6e9ec; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .dd-row:last-child { border-bottom: 0; }
+        .dd-row.crit { background: rgba(255,69,58,.12); font-weight: 650; }
+        .dd-row-ico { width: 30px; height: 30px; flex: none; border-radius: 9px; display: grid; place-items: center; color: var(--tint); background: color-mix(in srgb, var(--tint) 14%, transparent); }
+        .dd-row-txt { flex: 1; min-width: 0; overflow-wrap: anywhere; }
         .dd-action { width: 300px; max-width: 100%; display: flex; flex-direction: column; gap: 8px; }
         .dd-action .grp { background: #1c1f24; border-radius: 14px; overflow: hidden; }
         .dd-action .msg { padding: 14px 16px; text-align: center; font-size: 13px; color: #c3cad2; border-bottom: 1px solid #2c3036; }
@@ -749,6 +773,7 @@ export default function ShipyardSafetyDemo() {
           .dd-ctrls > * { flex: none; }
           .dd-ctrls button, .dd-ctrls select { min-height: 36px !important; }
           .dd-tabs { display: none !important; }
+          .dd-viewonly { display: none !important; }
           .dd-large { font-size: 32px !important; letter-spacing: -0.6px !important; font-family: -apple-system, "SF Pro Display", "Space Grotesk", system-ui, sans-serif !important; }
           #main { padding-bottom: calc(96px + env(safe-area-inset-bottom)) !important; }
           .dd-foot { padding-bottom: calc(96px + env(safe-area-inset-bottom)) !important; margin-top: 0 !important; }
@@ -772,11 +797,14 @@ export default function ShipyardSafetyDemo() {
           button, select, input:not([type=file]) { min-height: 44px; }
           .dd-plan button, .dd-plan input { min-height: 0; }
           .dd-kpis > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+          .dd-hero { padding: 18px; }
+          .dd-hero-title { font-size: 24px; }
+          .dd-primary { width: 100%; }
         }
         @keyframes ddAlert { 0%,100% { box-shadow: 0 0 0 2.5px #ef4444; } 50% { box-shadow: 0 0 0 6px rgba(239,68,68,.38); } }
         @keyframes ddCrit { 0%,100% { background: rgba(239,68,68,.16); } 50% { background: rgba(239,68,68,.32); } }
         .dd-card { transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
-        .dd-card:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -16px rgba(0,0,0,.7); border-color: #ff7a18 !important; }
+        .dd-card:hover { transform: translateY(-2px); }
         .dd-plan { box-shadow: inset 0 0 0 1px rgba(201,210,218,.14), inset 0 0 70px rgba(0,0,0,.5); }
         ::selection { background: rgba(255,122,24,0.35); }
         ::-webkit-scrollbar { width:10px; height:10px; }
@@ -800,7 +828,7 @@ export default function ShipyardSafetyDemo() {
 
       {showReport && active && (
         <div className="dd-backdrop" onClick={() => setShowReport(false)} style={{ overscrollBehavior: 'contain', position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.78)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 70, padding: '18px' }}>
-          <div className="dd-sheet" role="dialog" aria-modal="true" aria-label={tx('Rapport journalier', 'Daily report')} onClick={(e) => e.stopPropagation()} style={{ overscrollBehavior: 'contain', background: '#fff', color: '#11283c', borderRadius: '12px', width: '600px', maxWidth: '100%', maxHeight: '92vh', overflow: 'auto', fontFamily: 'Georgia, serif' }}>
+          <div className="dd-sheet" role="dialog" aria-modal="true" aria-label={tx('Rapport journalier', 'Daily report')} onClick={(e) => e.stopPropagation()} style={{ overscrollBehavior: 'contain', background: '#fff', color: '#11283c', borderRadius: '18px', width: '600px', maxWidth: '100%', maxHeight: '92vh', overflow: 'auto', fontFamily: 'Georgia, serif' }}>
             <div style={{ padding: '20px 24px', borderBottom: '3px solid ' + BRAND_INK, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
               <div>
                 <div style={{ marginBottom: '4px' }}><img src={LOGO_INK} alt="Allied Maritime Solutions Ltd" width="80" height="32" style={{ height: '32px', width: 'auto', display: 'block' }} /><span style={{ display: 'block', fontSize: '8px', fontWeight: 600, letterSpacing: '2.5px', color: '#5b6470', fontFamily: 'Arial, sans-serif', marginTop: '3px' }}>SAFETY & SERVICE</span></div>
@@ -850,7 +878,7 @@ export default function ShipyardSafetyDemo() {
                 <div style={{ fontSize: '12px', color: '#86efac', margin: '6px 0 12px' }}>✓ {aiResult.decks.length} {tx('pont(s) détecté(s)', 'deck(s) detected')}</div>
                 {aiResult.demo && <div style={{ fontSize: '11px', color: '#fde68a', background: 'rgba(234,179,8,0.08)', border: '1px solid #eab308', borderRadius: '8px', padding: '8px 10px', marginBottom: '12px' }}>⚠ {tx('API indisponible ici — résultat d\u2019exemple (pétrolier) pour illustrer le fonctionnement.', 'API unavailable here — sample result (tanker) to illustrate the workflow.')}</div>}
                 {aiResult.decks.map((d, i) => (
-                  <div key={i} style={{ background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '10px', padding: '10px 12px', marginBottom: '8px' }}>
+                  <div key={i} style={{ background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '14px', padding: '10px 12px', marginBottom: '8px' }}>
                     <div style={{ fontSize: '13px', fontWeight: 700 }}>{d.name}</div>
                     <div style={{ fontSize: '11px', color: C.dim, marginTop: '2px' }}>{(d.compartments || []).length} {tx('compartiments', 'compartments')} · {(d.suggestedZones || []).length} {tx('zones de danger proposées', 'suggested hazard zones')}</div>
                     {(d.suggestedZones || []).map((z, j) => HAZARDS[z.type] ? (<div key={j} style={{ fontSize: '11px', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ width: '8px', height: '8px', borderRadius: '50%', background: HAZARDS[z.type].color }} />{pick(lang, z.workFr || z.workEn, z.workEn || z.workFr)}</div>) : null)}
@@ -877,11 +905,11 @@ export default function ShipyardSafetyDemo() {
 
       {!active ? (<div style={{ padding: '60px 20px', textAlign: 'center', color: C.dim }}><div style={{ fontSize: '44px', marginBottom: '12px' }}>🚢</div><p>{tx('Aucun navire.', 'No vessel.')}</p></div>) : (
         <div id="main" role="main" tabIndex={-1} className={introHold ? '' : 'dd-rise-2'} style={{ padding: '16px', maxWidth: '1200px', margin: '0 auto' }}>
-          {!canEdit && (<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', flexWrap: 'wrap', background: 'rgba(30,136,199,0.12)', border: `1px solid ${C.accent2}`, borderRadius: '10px', padding: '10px 14px', marginBottom: '14px', fontSize: '12px', color: '#bcd9ee' }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}><Eye size={15} aria-hidden="true" />{tx('Mode consultation — seule la coordination peut modifier.', 'View-only — only site coordination can edit.')}</span><button onClick={() => { setShowLogin(true); setCodeError(false); }} style={{ background: C.accent2, color: '#0b1622', border: 'none', borderRadius: '7px', padding: '7px 12px', fontSize: '12px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>{tx('Accès coordination', 'Coordination access')}</button></div>)}
+          {!canEdit && (<div className="dd-viewonly" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', flexWrap: 'wrap', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '14px', padding: '10px 10px 10px 16px', marginBottom: '18px', fontSize: '13px', color: C.dim }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}><Eye size={15} aria-hidden="true" />{tx('Mode consultation — seule la coordination peut modifier.', 'View-only — only site coordination can edit.')}</span><button onClick={() => { setShowLogin(true); setCodeError(false); }} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '7px', padding: '7px 12px', fontSize: '12px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>{tx('Accès coordination', 'Coordination access')}</button></div>)}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: '14px' }}>
             {canEdit ? <input aria-label={tx('Nom du navire', 'Vessel name')} value={active.name} onChange={(e) => updateActive({ name: e.target.value })} className="dd-title dd-large" style={{ background: 'transparent', color: C.text, border: 'none', borderBottom: `2px solid ${C.line}`, fontSize: '24px', fontWeight: 700, padding: '4px 2px', minWidth: '180px' }} /> : <h1 className="dd-title dd-large" style={{ margin: 0, fontSize: '24px', fontWeight: 700, letterSpacing: '-0.3px', padding: '4px 2px' }}>{active.name}</h1>}
-            <div className="dd-tabs" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              {TABS.map(([k, lbl, Ico]) => (<button key={k} onClick={() => setTab(k)} aria-pressed={tab === k} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '7px', position: 'relative', background: tab === k ? C.accent : 'transparent', color: tab === k ? '#0b1622' : C.dim, border: `1px solid ${tab === k ? C.accent : C.line}`, borderRadius: '8px', padding: '8px 12px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', boxShadow: tab === k ? '0 5px 18px -6px rgba(255,122,24,.55)' : 'none' }}><Ico size={16} strokeWidth={2.2} aria-hidden="true" />{lbl}{k === 'overview' && alertCount > 0 && <span style={{ position: 'absolute', top: '-7px', right: '-7px', background: '#dc2626', color: '#fff', borderRadius: '10px', minWidth: '18px', height: '18px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 800, padding: '0 4px', boxShadow: '0 0 0 2px #0a0b0d' }}>{alertCount}</span>}</button>))}
+            <div className="dd-tabs" style={{ display: 'flex', gap: '2px', flexWrap: 'wrap', padding: '3px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px' }}>
+              {TABS.map(([k, lbl, Ico]) => (<button key={k} onClick={() => setTab(k)} aria-pressed={tab === k} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '7px', position: 'relative', background: tab === k ? C.fill : 'transparent', color: tab === k ? C.text : C.dim, border: 'none', borderRadius: '9px', padding: '7px 13px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', boxShadow: tab === k ? '0 1px 2px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.06)' : 'none' }}><Ico size={16} strokeWidth={2} aria-hidden="true" style={{ color: tab === k ? C.accent : 'currentColor' }} />{lbl}{k === 'overview' && alertCount > 0 && <span style={{ position: 'absolute', top: '-7px', right: '-7px', background: '#dc2626', color: '#fff', borderRadius: '14px', minWidth: '18px', height: '18px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 800, padding: '0 4px', boxShadow: '0 0 0 2px #0a0b0d' }}>{alertCount}</span>}</button>))}
               {canEdit && <button onClick={() => deleteShip(active.id)} aria-label={tx('Supprimer le navire', 'Delete vessel')} title={tx('Supprimer le navire', 'Delete vessel')} style={{ background: 'transparent', color: '#ef4444', border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 12px', fontSize: '13px', cursor: 'pointer' }}>🗑</button>}
             </div>
           </div>
@@ -897,26 +925,26 @@ export default function ShipyardSafetyDemo() {
                   </select>
                   {canEdit && <input aria-label={tx('Nom du pont', 'Deck name')} value={activeDeck.name} onChange={(e) => updateDeck({ name: e.target.value })} placeholder={tx('Nom du pont', 'Deck name') + '…'} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '12px', width: '150px' }} />}
                   {canEdit && <select value={activeDeck.layout || 'main'} onChange={(e) => updateDeck({ layout: e.target.value })} aria-label={tx('Type de pont (schéma)', 'Deck type (schematic)')} title={tx('Type de pont (schéma)', 'Deck type (schematic)')} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '12px' }}><option value="main">{tx('Type : Général', 'Type: General')}</option><option value="cabins">{tx('Type : Cabines', 'Type: Cabins')}</option><option value="machinery">{tx('Type : Machines', 'Type: Machinery')}</option><option value="technical">{tx('Type : Technique', 'Type: Technical')}</option></select>}
-                  {canEdit && <button onClick={addDeck} style={{ background: C.accent2, color: '#0b1622', border: 'none', borderRadius: '8px', padding: '8px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{tx('+ Pont', '+ Deck')}</button>}
+                  {canEdit && <button onClick={addDeck} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '8px', padding: '8px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{tx('+ Pont', '+ Deck')}</button>}
                   {canEdit && active.decks.length > 1 && <button onClick={deleteDeck} style={{ background: 'transparent', color: '#ef4444', border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '12px', cursor: 'pointer' }}>🗑 {tx('Pont', 'Deck')}</button>}
                 </div>
 
                 <div style={{ display: 'flex', gap: '8px', marginBottom: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
                   <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} style={{ display: 'none' }} />
-                  {canEdit && <button onClick={() => fileRef.current && fileRef.current.click()} style={{ background: C.accent2, color: '#0b1622', border: 'none', borderRadius: '8px', padding: '9px 14px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>{tx('📤 Importer le plan du pont', '📤 Import deck plan')}</button>}
+                  {canEdit && <button onClick={() => fileRef.current && fileRef.current.click()} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '8px', padding: '9px 14px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>{tx('📤 Importer le plan du pont', '📤 Import deck plan')}</button>}
                   {canEdit && <button onClick={startAiImport} style={{ background: 'linear-gradient(120deg, #1e6fb8, #0e4a80)', color: '#fff', border: 'none', borderRadius: '8px', padding: '9px 14px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}>{tx('🤖 Analyser un plan (IA)', '🤖 Analyse a plan (AI)')}</button>}
                   {canEdit && activeDeck.planImage && (<button onClick={() => updateDeck({ planImage: null })} style={{ background: 'transparent', color: C.dim, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '9px 12px', fontSize: '12px', cursor: 'pointer' }}>{tx('Retirer', 'Remove')}</button>)}
                   <div style={{ display: 'flex', border: `1px solid ${C.line}`, borderRadius: '8px', overflow: 'hidden' }}>{[['hazard', tx('Par danger', 'By hazard')], ['company', tx('Par compagnie', 'By company')]].map(([k, lbl]) => (<button key={k} onClick={() => setColorMode(k)} style={{ background: colorMode === k ? C.accent : 'transparent', color: colorMode === k ? '#0b1622' : C.dim, border: 'none', padding: '8px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{lbl}</button>))}</div>
                 </div>
                 <div style={{ fontSize: '11px', color: C.dim, marginBottom: '8px' }}>{!canEdit ? tx('Consultation — touchez une zone pour voir le détail', 'View-only — tap a zone to see details') : (tool ? tx('→ Cliquez sur le plan pour placer : ', '→ Tap the plan to place: ') + pick(lang, HAZARDS[tool].label.fr, HAZARDS[tool].label.en) : tx('Choisissez un danger à droite, puis cliquez sur le plan', 'Pick a hazard on the right, then tap the plan'))}</div>
                 {deckConflicts.length > 0 && (
-                  <div style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid #ef4444', borderRadius: '10px', padding: '10px 12px', marginBottom: '8px' }}>
+                  <div style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid #ef4444', borderRadius: '14px', padding: '10px 12px', marginBottom: '8px' }}>
                     <div style={{ fontSize: '12px', fontWeight: 800, color: '#fca5a5', marginBottom: '4px' }}>⚠ {tx('Conflits de travaux détectés', 'Work conflicts detected')} ({deckConflicts.length})</div>
                     {deckConflicts.map((c, i) => (<div key={i} style={{ fontSize: '11px', color: '#fecaca', marginBottom: '2px' }}>• {(c.z1.work || pick(lang, HAZARDS[c.z1.type].label.fr, HAZARDS[c.z1.type].label.en))} ↔ {(c.z2.work || pick(lang, HAZARDS[c.z2.type].label.fr, HAZARDS[c.z2.type].label.en))} — {pick(lang, c.rule.fr, c.rule.en)}</div>))}
                   </div>
                 )}
 
-                <div ref={planRef} onClick={handlePlanClick} className="dd-plan" style={{ position: 'relative', width: '100%', aspectRatio: '3 / 4', background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '12px', overflow: 'hidden', cursor: tool ? 'crosshair' : 'default' }}>
+                <div ref={planRef} onClick={handlePlanClick} className="dd-plan" style={{ position: 'relative', width: '100%', aspectRatio: '3 / 4', background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '18px', overflow: 'hidden', cursor: tool ? 'crosshair' : 'default' }}>
                   {activeDeck.planImage ? (<img src={activeDeck.planImage} alt="plan" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain' }} />) : (<DeckSchematic layout={activeDeck.layout} lang={lang} aiRooms={activeDeck.aiRooms} />)}
                   {activeDeck.zones.map((z) => {
                     const col = zoneColor(z), sel = selectedId === z.id, st = STATUS[z.status];
@@ -934,13 +962,13 @@ export default function ShipyardSafetyDemo() {
               </div>
 
               <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {canEdit && <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px', padding: '14px' }}><div style={{ fontSize: '13px', fontWeight: 700, marginBottom: '10px', color: C.accent }}>{tx('Ajouter une zone', 'Add a zone')}</div><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>{Object.entries(HAZARDS).map(([key, h]) => (<button key={key} onClick={() => setTool(tool === key ? null : key)} style={{ background: tool === key ? h.color : 'transparent', color: tool === key ? '#0b1622' : C.text, border: `1.5px solid ${h.color}`, borderRadius: '8px', padding: '9px 8px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', textAlign: 'left' }}><span style={{ display: 'inline-block', width: '10px', height: '10px', background: h.color, borderRadius: '50%', marginRight: '6px' }} />{lang !== 'bi' ? pick(lang, h.label.fr, h.label.en) : <>{h.label.fr}<br /><span style={{ opacity: 0.6, fontSize: '10px' }}>{h.label.en}</span></>}</button>))}</div></div>}
+                {canEdit && <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '14px' }}><div style={{ fontSize: '13px', fontWeight: 700, marginBottom: '10px', color: C.accent }}>{tx('Ajouter une zone', 'Add a zone')}</div><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>{Object.entries(HAZARDS).map(([key, h]) => (<button key={key} onClick={() => setTool(tool === key ? null : key)} style={{ background: tool === key ? h.color : 'transparent', color: tool === key ? '#0b1622' : C.text, border: `1.5px solid ${h.color}`, borderRadius: '8px', padding: '9px 8px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', textAlign: 'left' }}><span style={{ display: 'inline-block', width: '10px', height: '10px', background: h.color, borderRadius: '50%', marginRight: '6px' }} />{lang !== 'bi' ? pick(lang, h.label.fr, h.label.en) : <>{h.label.fr}<br /><span style={{ opacity: 0.6, fontSize: '10px' }}>{h.label.en}</span></>}</button>))}</div></div>}
 
                 {selectedZone ? (() => {
                   const h = HAZARDS[selectedZone.type];
                   const fwHere = crew.fireWatch.filter((f) => f.status === 'posted' && f.zoneId === selectedZone.id);
                   return (
-                    <div style={{ background: C.panel, border: `2px solid ${h.color}`, borderRadius: '12px', padding: '14px' }}>
+                    <div style={{ background: C.panel, border: `2px solid ${h.color}`, borderRadius: '18px', padding: '14px' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}><div style={{ fontSize: '13px', fontWeight: 700, color: h.color }}>{lang !== 'bi' ? pick(lang, h.label.fr, h.label.en) : <>{h.label.fr} <span style={{ opacity: 0.55, fontWeight: 400 }}>/ {h.label.en}</span></>}</div>{canEdit && <button onClick={() => removeZone(selectedZone.id)} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: '#ef4444', borderRadius: '6px', padding: '4px 8px', fontSize: '11px', cursor: 'pointer' }}>{tx('Supprimer', 'Delete')}</button>}</div>
                       {(() => { const my = deckConflicts.filter((c) => c.z1.id === selectedZone.id || c.z2.id === selectedZone.id); return my.length ? (<div style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid #ef4444', borderRadius: '8px', padding: '8px 10px', marginBottom: '10px' }}>{my.map((c, i) => { const other = c.z1.id === selectedZone.id ? c.z2 : c.z1; return (<div key={i} style={{ fontSize: '11px', color: '#fecaca', marginBottom: i < my.length - 1 ? '4px' : 0 }}>⚠ {tx('Conflit avec', 'Conflict with')} « {other.work || pick(lang, HAZARDS[other.type].label.fr, HAZARDS[other.type].label.en)} » — {pick(lang, c.rule.fr, c.rule.en)}</div>); })}</div>) : null; })()}
                       <label style={{ fontSize: '11px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi('Compagnie', 'Company')}</label>
@@ -974,7 +1002,7 @@ export default function ShipyardSafetyDemo() {
                       })()}
                       <div style={{ borderTop: `1px solid ${C.line}`, paddingTop: '10px', marginBottom: '10px' }}>
                         <div style={{ fontSize: '11px', color: C.accent, marginBottom: '6px', fontWeight: 700 }}>📄 {bi('Permis de travail', 'Work permit')}</div>
-                        {selectedZone.permit ? (<div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}><button onClick={() => openDoc('permit', selectedZone.permit)} style={{ background: C.accent2, color: '#0b1622', border: 'none', borderRadius: '7px', padding: '7px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{tx('Voir le permis', 'View permit')}</button><span style={{ fontSize: '11px', color: C.dim, flex: 1, minWidth: '80px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{selectedZone.permit.name}</span>{canEdit && <button onClick={() => removeDoc(selectedZone.id, 'permit')} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: '#ef4444', borderRadius: '6px', padding: '5px 8px', fontSize: '11px', cursor: 'pointer' }}>{tx('Retirer', 'Remove')}</button>}</div>) : canEdit ? (<button onClick={() => startDocImport(selectedZone.id, 'permit')} style={{ background: 'transparent', border: `1px dashed ${C.accent2}`, color: C.accent2, borderRadius: '7px', padding: '8px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer', width: '100%' }}>{tx('＋ Importer le permis (image / scan)', '＋ Import permit (image / scan)')}</button>) : (<div style={{ fontSize: '12px', color: C.dim }}>{tx('Aucun permis importé.', 'No permit uploaded.')}</div>)}
+                        {selectedZone.permit ? (<div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}><button onClick={() => openDoc('permit', selectedZone.permit)} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '7px', padding: '7px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{tx('Voir le permis', 'View permit')}</button><span style={{ fontSize: '11px', color: C.dim, flex: 1, minWidth: '80px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{selectedZone.permit.name}</span>{canEdit && <button onClick={() => removeDoc(selectedZone.id, 'permit')} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: '#ef4444', borderRadius: '6px', padding: '5px 8px', fontSize: '11px', cursor: 'pointer' }}>{tx('Retirer', 'Remove')}</button>}</div>) : canEdit ? (<button onClick={() => startDocImport(selectedZone.id, 'permit')} style={{ background: 'transparent', border: `1px dashed ${C.accent2}`, color: C.accent2, borderRadius: '7px', padding: '8px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer', width: '100%' }}>{tx('＋ Importer le permis (image / scan)', '＋ Import permit (image / scan)')}</button>) : (<div style={{ fontSize: '12px', color: C.dim }}>{tx('Aucun permis importé.', 'No permit uploaded.')}</div>)}
                       </div>
 
                       {selectedZone.type === 'confined' && (() => {
@@ -1005,7 +1033,7 @@ export default function ShipyardSafetyDemo() {
                       {h.epi.map((e, i) => (<div key={i} style={{ fontSize: '12px', marginBottom: '3px' }}>{lang !== 'bi' ? '✓ ' + pick(lang, e.fr, e.en) : <>✓ {e.fr} <span style={{ opacity: 0.5 }}>/ {e.en}</span></>}</div>))}
                     </div>
                   );
-                })() : (<div style={{ background: C.panel2, border: `1px dashed ${C.line}`, borderRadius: '12px', padding: '18px', textAlign: 'center', fontSize: '12px', color: C.dim }}>{tx('Touchez une zone pour voir permis, test atmo, fire watch et EPI.', 'Tap a zone to see permit, atmospheric test, fire watch and PPE.')}</div>)}
+                })() : (<div style={{ background: C.panel2, border: `1px dashed ${C.line}`, borderRadius: '18px', padding: '18px', textAlign: 'center', fontSize: '12px', color: C.dim }}>{tx('Touchez une zone pour voir permis, test atmo, fire watch et EPI.', 'Tap a zone to see permit, atmospheric test, fire watch and PPE.')}</div>)}
               </div>
             </div>
           )}
@@ -1013,7 +1041,7 @@ export default function ShipyardSafetyDemo() {
           {tab === 'overview' && <DashboardView C={C} lang={lang} active={active} statusCounts={statusCounts} allConflicts={allConflicts} overdueTests={overdueTests} untestedConfined={untestedConfined} hotNoFw={hotNoFw} noPermitActive={noPermitActive} fwPosted={fwPosted} fwAvail={fwAvail} checksToday={checksToday} crew={crew} occupantsTotal={occupantsTotal} riskyOccupied={riskyOccupied} onReport={() => setShowReport(true)} onGoto={(t) => setTab(t)} />}
           {tab === 'dock' && <DryDockView active={active} updateActive={updateActive} C={C} canEdit={canEdit} lang={lang} />}
           {tab === '3d' && (<div>
-            {canEdit && !ships.some((x) => x.name === "L'Atalante") && <button onClick={addAtalante} style={{ background: C.accent2, color: '#0b1622', border: 'none', borderRadius: '8px', padding: '9px 12px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', marginBottom: '10px' }}>{tx("+ Ajouter L'Atalante (plan photographié)", "+ Add L'Atalante (photographed plan)")}</button>}
+            {canEdit && !ships.some((x) => x.name === "L'Atalante") && <button onClick={addAtalante} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '8px', padding: '9px 12px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', marginBottom: '10px' }}>{tx("+ Ajouter L'Atalante (plan photographié)", "+ Add L'Atalante (photographed plan)")}</button>}
             <Yard3D ships={ships} activeId={activeId} onSelect={(id) => { setActiveId(id); setActiveDeckId(null); setSelectedId(null); }} onMove={moveShip} canEdit={canEdit} C={C} lang={lang} />
           </div>)}
           {tab === 'works' && <WorksView zones={allZones} companies={companyList(allZones)} C={C} lang={lang} />}
@@ -1044,7 +1072,7 @@ function CrewView({ crew, C, canEdit, hotZones, nowTick, lang, onCoord, onAssist
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-        <div style={{ flex: '1 1 280px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px', padding: '16px' }}>
+        <div style={{ flex: '1 1 280px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '16px' }}>
           <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px', color: C.accent }}>{tx('Coordination du chantier', 'Site coordination')}</div>
           <label style={{ fontSize: '11px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi('Coordinateur', 'Site coordinator')}</label>
           {canEdit ? <input value={crew.coordinator} onChange={(e) => onCoord(e.target.value)} placeholder={tx('Nom', 'Name') + '…'} style={{ width: '100%', boxSizing: 'border-box', background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '9px 10px', fontSize: '14px', marginBottom: '12px' }} /> : <div style={{ fontSize: '15px', fontWeight: 600, marginBottom: '12px' }}>{crew.coordinator || '—'}</div>}
@@ -1052,17 +1080,17 @@ function CrewView({ crew, C, canEdit, hotZones, nowTick, lang, onCoord, onAssist
           {canEdit ? <input value={crew.assistant} onChange={(e) => onAssist(e.target.value)} placeholder={tx('Nom (optionnel)', 'Name (optional)') + '…'} style={{ width: '100%', boxSizing: 'border-box', background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '9px 10px', fontSize: '14px' }} /> : <div style={{ fontSize: '15px', fontWeight: 600 }}>{crew.assistant || '—'}</div>}
         </div>
         <div style={{ flex: '1 1 160px', display: 'flex', gap: '16px' }}>
-          <div style={{ flex: 1, background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px', padding: '16px', textAlign: 'center' }}><div style={{ fontSize: '30px', fontWeight: 800, color: '#22c55e' }}>{posted.length}</div><div style={{ fontSize: '12px', color: C.dim }}>{tx('Fire Watch en position', 'Fire watch on station')}</div></div>
-          <div style={{ flex: 1, background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px', padding: '16px', textAlign: 'center' }}><div style={{ fontSize: '30px', fontWeight: 800, color: C.accent2 }}>{avail.length}</div><div style={{ fontSize: '12px', color: C.dim }}>{tx('Disponibles', 'Available')}</div></div>
+          <div style={{ flex: 1, background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '16px', textAlign: 'center' }}><div style={{ fontSize: '30px', fontWeight: 800, color: '#22c55e' }}>{posted.length}</div><div style={{ fontSize: '12px', color: C.dim }}>{tx('Fire Watch en position', 'Fire watch on station')}</div></div>
+          <div style={{ flex: 1, background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '16px', textAlign: 'center' }}><div style={{ fontSize: '30px', fontWeight: 800, color: C.accent2 }}>{avail.length}</div><div style={{ fontSize: '12px', color: C.dim }}>{tx('Disponibles', 'Available')}</div></div>
         </div>
       </div>
 
-      <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', overflow: 'hidden' }}>
         <div style={{ padding: '12px 14px', fontSize: '14px', fontWeight: 700, color: C.accent, borderBottom: `1px solid ${C.line}` }}>🧯 {tx('Fire Watch — surveillants incendie', 'Fire watch — fire sentries')}</div>
         {canEdit && (
           <div style={{ display: 'flex', gap: '8px', padding: '12px 14px', borderBottom: `1px solid ${C.line}`, flexWrap: 'wrap' }}>
             <input value={fwName} onChange={(e) => setFwName(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') submitAdd(); }} placeholder={tx('Nom du fire watch…', 'Fire watch name…')} style={{ flex: 1, minWidth: '160px', background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '9px 10px', fontSize: '13px' }} />
-            <button onClick={submitAdd} style={{ background: C.accent2, color: '#0b1622', border: 'none', borderRadius: '8px', padding: '9px 16px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>{tx('＋ Ajouter', '＋ Add')}</button>
+            <button onClick={submitAdd} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '8px', padding: '9px 16px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>{tx('＋ Ajouter', '＋ Add')}</button>
           </div>
         )}
         {crew.fireWatch.length === 0 && <div style={{ padding: '20px', textAlign: 'center', color: C.dim, fontSize: '13px' }}>{tx('Aucun fire watch.', 'No fire watch.')}</div>}
@@ -1089,8 +1117,8 @@ function WorksView({ zones, companies, C, lang }) {
   zones.forEach((z) => { counts[z.status] = (counts[z.status] || 0) + 1; });
   return (
     <div>
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', flexWrap: 'wrap' }}>{Object.entries(STATUS).map(([k, s]) => (<div key={k} style={{ flex: '1 1 120px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px', padding: '14px', textAlign: 'center' }}><div style={{ fontSize: '26px', fontWeight: 800, color: s.color }}>{counts[k] || 0}</div><div style={{ fontSize: '12px', color: C.dim }}>{pick(lang, s.fr, s.en)}</div></div>))}</div>
-      <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', flexWrap: 'wrap' }}>{Object.entries(STATUS).map(([k, s]) => (<div key={k} style={{ flex: '1 1 120px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '14px', textAlign: 'center' }}><div style={{ fontSize: '26px', fontWeight: 800, color: s.color }}>{counts[k] || 0}</div><div style={{ fontSize: '12px', color: C.dim }}>{pick(lang, s.fr, s.en)}</div></div>))}</div>
+      <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', overflow: 'hidden' }}>
         <div style={{ padding: '12px 14px', fontSize: '14px', fontWeight: 700, color: C.accent, borderBottom: `1px solid ${C.line}` }}>🏗️ {tx('Travaux par compagnie (tous les ponts)', 'Works by company (all decks)')}</div>
         {companies.length === 0 && zones.length === 0 && (<div style={{ padding: '24px', textAlign: 'center', color: C.dim, fontSize: '13px' }}>{tx('Aucune zone.', 'No zone.')}</div>)}
         {companies.map((c) => {
@@ -1280,46 +1308,56 @@ function IntroOverlay({ introOut }) {
 function DashboardView({ C, lang, active, statusCounts, allConflicts, overdueTests, untestedConfined, hotNoFw, noPermitActive, fwPosted, fwAvail, checksToday, crew, occupantsTotal, riskyOccupied, onReport, onGoto }) {
   const tx = mkTx(lang);
   const kpis = [
-    { v: statusCounts.progress || 0, fr: 'Travaux en cours', en: 'Works in progress', color: '#22c55e', go: 'works' },
-    { v: occupantsTotal, fr: 'Présents en zone', en: 'People in zones', color: '#0ea5e9', go: 'plan' },
-    { v: allConflicts.length, fr: 'Conflits détectés', en: 'Conflicts detected', color: allConflicts.length ? '#ef4444' : '#22c55e', go: 'plan' },
-    { v: overdueTests.length, fr: 'Tests atmo en retard', en: 'Overdue atmo tests', color: overdueTests.length ? '#ef4444' : '#22c55e', go: 'plan' },
-    { v: fwPosted + ' / ' + (fwPosted + fwAvail), fr: 'Fire watch postés', en: 'Fire watch posted', color: '#c9d2da', go: 'crew' },
-    { v: checksToday, fr: 'Contrôles aujourd\u2019hui', en: 'Checks today', color: '#c9d2da', go: 'plan' },
-    { v: noPermitActive.length, fr: 'Permis manquants', en: 'Missing permits', color: noPermitActive.length ? '#eab308' : '#22c55e', go: 'plan' },
+    { v: statusCounts.progress || 0, fr: 'Travaux en cours', en: 'Works in progress', ico: Activity, tint: C.blue, go: 'works' },
+    { v: occupantsTotal, fr: 'Présents en zone', en: 'People in zones', ico: UserCheck, tint: C.blue, go: 'plan' },
+    { v: allConflicts.length, fr: 'Conflits détectés', en: 'Conflicts detected', ico: AlertTriangle, tint: allConflicts.length ? C.red : C.green, flag: allConflicts.length ? 'red' : null, go: 'plan' },
+    { v: overdueTests.length, fr: 'Tests atmo en retard', en: 'Overdue atmo tests', ico: Wind, tint: overdueTests.length ? C.red : C.green, flag: overdueTests.length ? 'red' : null, go: 'plan' },
+    { v: fwPosted + ' / ' + (fwPosted + fwAvail), fr: 'Fire watch postés', en: 'Fire watch posted', ico: Flame, tint: C.accent, go: 'crew' },
+    { v: checksToday, fr: 'Contrôles aujourd\u2019hui', en: 'Checks today', ico: ClipboardCheck, tint: C.green, go: 'plan' },
+    { v: noPermitActive.length, fr: 'Permis manquants', en: 'Missing permits', ico: FileWarning, tint: noPermitActive.length ? C.amber : C.green, flag: noPermitActive.length ? 'amber' : null, go: 'plan' },
   ];
   const alerts = [
-    ...riskyOccupied.map((z) => ({ sev: 3, fr: '🚨 PERSONNE EN ESPACE CONFINÉ AVEC TEST EXPIRÉ — ' + (z.work || 'zone') + ' : évacuation et re-test immédiats', en: '🚨 PERSON IN CONFINED SPACE WITH EXPIRED TEST — ' + (z.work || 'zone') + ': evacuate and re-test immediately' })),
-    ...allConflicts.map((c) => ({ sev: 2, fr: '⚠ Conflit (' + c.deck + ') : ' + (c.z1.work || HAZARDS[c.z1.type].label.fr) + ' ↔ ' + (c.z2.work || HAZARDS[c.z2.type].label.fr), en: '⚠ Conflict (' + c.deck + '): ' + (c.z1.work || HAZARDS[c.z1.type].label.en) + ' ↔ ' + (c.z2.work || HAZARDS[c.z2.type].label.en) })),
-    ...overdueTests.map((z) => ({ sev: 2, fr: '⏰ Test atmosphérique en retard — ' + (z.work || 'espace confiné'), en: '⏰ Atmospheric test overdue — ' + (z.work || 'confined space') })),
-    ...hotNoFw.map((z) => ({ sev: 2, fr: '🧯 Travaux à chaud sans fire watch — ' + (z.work || 'zone'), en: '🧯 Hot work without fire watch — ' + (z.work || 'zone') })),
-    ...untestedConfined.map((z) => ({ sev: 1, fr: '🫁 Espace confiné jamais testé — ' + (z.work || 'zone'), en: '🫁 Confined space never tested — ' + (z.work || 'zone') })),
-    ...noPermitActive.map((z) => ({ sev: 1, fr: '📄 Permis manquant — ' + (z.work || HAZARDS[z.type].label.fr), en: '📄 Missing permit — ' + (z.work || HAZARDS[z.type].label.en) })),
+    ...riskyOccupied.map((z) => ({ ico: Siren, sev: 3, fr: 'PERSONNE EN ESPACE CONFINÉ AVEC TEST EXPIRÉ — ' + (z.work || 'zone') + ' : évacuation et re-test immédiats', en: 'PERSON IN CONFINED SPACE WITH EXPIRED TEST — ' + (z.work || 'zone') + ': evacuate and re-test immediately' })),
+    ...allConflicts.map((c) => ({ ico: AlertTriangle, sev: 2, fr: 'Conflit (' + c.deck + ') : ' + (c.z1.work || HAZARDS[c.z1.type].label.fr) + ' ↔ ' + (c.z2.work || HAZARDS[c.z2.type].label.fr), en: 'Conflict (' + c.deck + '): ' + (c.z1.work || HAZARDS[c.z1.type].label.en) + ' ↔ ' + (c.z2.work || HAZARDS[c.z2.type].label.en) })),
+    ...overdueTests.map((z) => ({ ico: Wind, sev: 2, fr: 'Test atmosphérique en retard — ' + (z.work || 'espace confiné'), en: 'Atmospheric test overdue — ' + (z.work || 'confined space') })),
+    ...hotNoFw.map((z) => ({ ico: Flame, sev: 2, fr: 'Travaux à chaud sans fire watch — ' + (z.work || 'zone'), en: 'Hot work without fire watch — ' + (z.work || 'zone') })),
+    ...untestedConfined.map((z) => ({ ico: Wind, sev: 1, fr: 'Espace confiné jamais testé — ' + (z.work || 'zone'), en: 'Confined space never tested — ' + (z.work || 'zone') })),
+    ...noPermitActive.map((z) => ({ ico: FileWarning, sev: 1, fr: 'Permis manquant — ' + (z.work || HAZARDS[z.type].label.fr), en: 'Missing permit — ' + (z.work || HAZARDS[z.type].label.en) })),
   ].sort((a, b) => b.sev - a.sev);
   const log = (active.log || []).slice(0, 25);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div className="dd-kpis" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '12px' }}>
+      {(() => { const top = alerts.length ? alerts[0].sev : 0; const tone = top >= 2 ? C.red : top === 1 ? C.amber : C.green; const Ico = top >= 2 ? AlertTriangle : top === 1 ? FileWarning : ShieldCheck; return (
+        <section className="dd-hero" style={{ '--tone': tone }}>
+          <div className="dd-hero-ico"><Ico size={26} strokeWidth={2} aria-hidden="true" /></div>
+          <div style={{ flex: '1 1 220px', minWidth: 0 }}>
+            <div className="dd-eyebrow">{new Date().toLocaleDateString(lang === 'en' ? 'en-GB' : lang === 'bg' ? 'bg-BG' : 'fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
+            <h2 className="dd-hero-title">{alerts.length ? alerts.length + ' ' + tx(alerts.length > 1 ? 'points à traiter' : 'point à traiter', alerts.length > 1 ? 'items need attention' : 'item needs attention') : tx('Chantier conforme', 'Site compliant')}</h2>
+            <div className="dd-hero-sub">{alerts.length ? pick(lang, alerts[0].fr, alerts[0].en) : tx('Espaces confinés testés, zones à chaud couvertes, aucun conflit.', 'Confined spaces tested, hot work covered, no conflicts.')}</div>
+          </div>
+          <button type="button" className="dd-primary" onClick={onReport}><ClipboardList size={17} aria-hidden="true" />{tx('Rapport journalier', 'Daily report')}</button>
+        </section>); })()}
+      <div className="dd-kpis" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '10px' }}>
         {kpis.map((k, i) => (
-          <button key={i} onClick={() => onGoto(k.go)} className="dd-card" style={{ textAlign: 'left', cursor: 'pointer', background: C.panel, border: `1px solid ${C.line}`, borderTop: `3px solid ${k.color}`, borderRadius: '12px', padding: '14px' }}>
-            <div style={{ fontSize: '26px', fontWeight: 800, color: k.color, fontFamily: "'Space Grotesk', system-ui, sans-serif" }}>{k.v}</div>
-            <div style={{ fontSize: '11px', color: C.dim, marginTop: '2px' }}>{pick(lang, k.fr, k.en)}</div>
+          <button key={i} onClick={() => onGoto(k.go)} className="dd-card dd-tile" style={{ '--tint': k.tint }}>
+            <span className="dd-tile-top"><span className="dd-tile-ico"><k.ico size={17} strokeWidth={2.1} aria-hidden="true" /></span>{k.flag && <span className={'dd-flag ' + k.flag}>{tx('À traiter', 'Action')}</span>}</span>
+            <span className="dd-tile-num">{k.v}</span>
+            <span className="dd-tile-lbl">{pick(lang, k.fr, k.en)}</span>
           </button>
         ))}
       </div>
 
       <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
-        <div style={{ flex: '1 1 320px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px', overflow: 'hidden' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', borderBottom: `1px solid ${C.line}` }}>
-            <div style={{ fontSize: '14px', fontWeight: 700, color: alerts.length ? '#fca5a5' : '#86efac' }}>{alerts.length ? '🚨 ' + tx('Alertes actives', 'Active alerts') + ' (' + alerts.length + ')' : '✅ ' + tx('Aucune alerte — chantier conforme', 'No alerts — site compliant')}</div>
-            <button onClick={onReport} style={{ background: C.accent, color: '#0b1622', border: 'none', borderRadius: '8px', padding: '7px 12px', fontSize: '12px', fontWeight: 700, cursor: 'pointer' }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}><ClipboardList size={15} aria-hidden="true" />{tx('Rapport journalier', 'Daily report')}</span></button>
+        <div style={{ flex: '1 1 320px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', overflow: 'hidden' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', borderBottom: `1px solid ${C.line}` }}>
+            <h3 className="dd-h3">{tx('Alertes actives', 'Active alerts')}<span className="dd-count">{alerts.length}</span></h3>
           </div>
           {alerts.length === 0 && <div style={{ padding: '18px', fontSize: '12px', color: C.dim }}>{tx('Tous les espaces confinés sont à jour, les zones à chaud sont couvertes et aucun conflit n\u2019est détecté.', 'All confined spaces are up to date, hot work zones are covered and no conflict is detected.')}</div>}
-          {alerts.map((a, i) => (<div key={i} style={{ padding: '9px 14px', borderBottom: `1px solid ${C.line}`, fontSize: '12px', fontWeight: a.sev === 3 ? 800 : 400, color: a.sev >= 2 ? '#fecaca' : '#fde68a', background: a.sev === 3 ? 'rgba(239,68,68,0.18)' : a.sev === 2 ? 'rgba(239,68,68,0.07)' : 'rgba(234,179,8,0.05)', animation: a.sev === 3 ? 'ddCrit 1.6s ease-in-out infinite' : 'none' }}>{pick(lang, a.fr, a.en)}</div>))}
+          {alerts.map((a, i) => (<div key={i} className={'dd-row' + (a.sev === 3 ? ' crit' : '')} style={{ '--tint': a.sev >= 2 ? C.red : C.amber }}><span className="dd-row-ico"><a.ico size={16} strokeWidth={2.1} aria-hidden="true" /></span><span className="dd-row-txt">{pick(lang, a.fr, a.en)}</span><ChevronRight size={16} aria-hidden="true" style={{ color: C.dim, flex: 'none' }} /></div>))}
         </div>
 
-        <div style={{ flex: '1 1 320px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px', overflow: 'hidden' }}>
-          <div style={{ padding: '12px 14px', borderBottom: `1px solid ${C.line}`, fontSize: '14px', fontWeight: 700, color: C.accent2 }}>🕐 {tx('Journal du chantier (traçabilité)', 'Site log (audit trail)')}</div>
+        <div style={{ flex: '1 1 320px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', overflow: 'hidden' }}>
+          <div style={{ display: 'flex', alignItems: 'center', padding: '14px 16px', borderBottom: `1px solid ${C.line}` }}><h3 className="dd-h3"><History size={16} aria-hidden="true" style={{ color: C.dim }} />{tx('Journal du chantier', 'Site log')}</h3></div>
           {log.length === 0 && <div style={{ padding: '18px', fontSize: '12px', color: C.dim }}>{tx('Les actions (permis, contrôles, fire watch…) s\u2019enregistrent ici, horodatées.', 'Actions (permits, checks, fire watch…) are recorded here with timestamps.')}</div>}
           {log.map((l) => (<div key={l.id} style={{ display: 'flex', gap: '10px', padding: '8px 14px', borderBottom: `1px solid ${C.line}`, fontSize: '12px' }}><span style={{ color: C.dim, fontFamily: 'ui-monospace, monospace', whiteSpace: 'nowrap' }}>{fmtClock(l.ts, lang)}</span><span style={{ color: C.text }}>{pick(lang, l.fr, l.en)}</span></div>))}
         </div>
@@ -1497,7 +1535,7 @@ function Yard3D({ ships, activeId, onSelect, onMove, canEdit, C, lang }) {
   const btn = (on) => ({ background: on ? C.accent : C.panel2, color: on ? '#000' : C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '6px 10px', fontSize: '12px', cursor: 'pointer' });
   const view = (ph) => { if (api.current.cam) api.current.cam.ph = ph; };
   return (
-    <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px', padding: '12px' }}>
+    <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '12px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
         <div style={{ fontSize: '14px', fontWeight: 700, color: C.accent }}>{tx('Vue 3D du chantier', '3D yard view')}</div>
         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -1542,12 +1580,12 @@ function DryDockView({ active, updateActive, C, canEdit, lang }) {
   const fields = [['dockLength', 'Longueur bassin', 'Dock length'], ['dockWidth', 'Largeur bassin', 'Dock width'], ['shipLength', 'Longueur navire', 'Ship length'], ['shipWidth', 'Largeur navire', 'Ship width']];
   return (
     <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-      <div style={{ flex: '1 1 300px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px', padding: '16px' }}>
+      <div style={{ flex: '1 1 300px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '16px' }}>
         <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px', color: C.accent }}>{tx('Dimensions du dry dock & du navire', 'Dry dock & vessel dimensions')}</div>
         {fields.map(([f, fr, en]) => (<div key={f} style={{ marginBottom: '12px' }}><label style={{ fontSize: '11px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi(fr, en)}</label><div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><input type="number" value={d[f]} readOnly={!canEdit} onChange={(e) => set(f, e.target.value)} style={{ flex: 1, background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '9px 10px', fontSize: '14px', opacity: canEdit ? 1 : 0.7 }} /><span style={{ fontSize: '12px', color: C.dim }}>m</span></div></div>))}
         <div style={{ marginTop: '6px', padding: '10px', borderRadius: '8px', background: fits ? 'rgba(34,197,94,0.12)' : 'rgba(239,68,68,0.14)', border: `1px solid ${fits ? '#22c55e' : '#ef4444'}`, fontSize: '12px', color: fits ? '#86efac' : '#fca5a5' }}>{fits ? tx(`✓ Le navire entre dans le bassin · Marge latérale ${marginSide} m / extrémités ${marginEnd} m`, `✓ Vessel fits in the dock · Side clearance ${marginSide} m / ends ${marginEnd} m`) : tx('✗ Le navire dépasse les dimensions du bassin', '✗ Vessel exceeds the dock dimensions')}</div>
       </div>
-      <div style={{ flex: '1 1 360px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px', padding: '16px' }}>
+      <div style={{ flex: '1 1 360px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '16px' }}>
         <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px', color: C.accent }}>{tx('Vue de dessus — navire en cale sèche', 'Top view — vessel in dry dock')}</div>
         <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', background: C.panel2, borderRadius: '8px' }}>
           <rect x={pad} y={pad} width={dockW} height={dockH} fill="#0e1012" stroke={C.accent2} strokeWidth="2" rx="4" />
