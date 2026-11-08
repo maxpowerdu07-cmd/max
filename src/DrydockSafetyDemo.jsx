@@ -51,22 +51,22 @@ const BG = {
   'Permis de feu obligatoire': 'Задължително разрешително за огневи работи', 'Permis d’entrée + test gaz': 'Разрешително за влизане + газов тест',
   'Échafaudage validé (étiquette verte)': 'Одобрено скеле (зелен етикет)', 'Zone balisée et ventilée': 'Обозначена и вентилирана зона',
   'Planifié': 'Планирано', 'En cours': 'В процес', 'Terminé': 'Завършено',
-  '📊 Vue d’ensemble': '📊 Общ преглед', '🗺️ Plan': '🗺️ План', '🏗️ Travaux': '🏗️ Дейности', '👷 Équipe': '👷 Екип',
+  'Vue d’ensemble': 'Общ преглед', 'Plan': 'План', 'Travaux': 'Дейности', 'Équipe': 'Екип',
   'En direct': 'На живо', 'Coordination': 'Координация', 'quitter': 'изход', 'Mode consultation': 'Само преглед', 'Accès coordination': 'Достъп за координация',
   'Réservé à la coordination du chantier.': 'Само за координацията на обекта.', "Code d'accès": 'Код за достъп', 'Code incorrect.': 'Грешен код.',
   'Annuler': 'Отказ', 'Déverrouiller': 'Отключи', 'Fermer': 'Затвори', 'Chargement…': 'Зареждане…', 'Document indisponible.': 'Документът не е наличен.',
-  '📄 Permis de travail': '📄 Работно разрешително', '🫁 Test atmosphérique': '🫁 Атмосферен тест',
+  'Permis de travail': 'Работно разрешително', 'Test atmosphérique': 'Атмосферен тест',
   'Aucun navire.': 'Няма кораб.', '+ Navire': '+ Кораб', 'Nouveau navire': 'Нов кораб', 'Pont': 'Палуба', 'Nom du pont': 'Име на палубата', '+ Pont': '+ Палуба', 'Nouveau pont': 'Нова палуба',
   'Type : Général': 'Тип: Общ', 'Type : Cabines': 'Тип: Каюти', 'Type : Machines': 'Тип: Машини', 'Type : Technique': 'Тип: Технически',
-  '📤 Importer le plan du pont': '📤 Качи план на палубата', 'Retirer': 'Премахни', 'Par danger': 'По опасност', 'Par compagnie': 'По фирма',
-  '🤖 Analyser un plan (IA)': '🤖 Анализ на план (ИИ)', 'Analyse IA du plan': 'ИИ анализ на плана',
+  'Importer le plan du pont': 'Качи план на палубата', 'Retirer': 'Премахни', 'Par danger': 'По опасност', 'Par compagnie': 'По фирма',
+  'Analyser un plan (IA)': 'Анализ на план (ИИ)', 'Analyse IA du plan': 'ИИ анализ на плана',
   'Ajouter une zone': 'Добави зона', 'Supprimer': 'Изтрий', 'Compagnie': 'Фирма', 'Travaux': 'Дейности', 'Statut': 'Статус',
   'Taille de la zone': 'Размер на зоната', 'Largeur': 'Ширина', 'Hauteur': 'Височина',
   'Permis de travail': 'Работно разрешително', 'Voir le permis': 'Виж разрешителното', 'Aucun permis importé.': 'Няма качено разрешително.',
   '＋ Importer le permis (image / scan)': '＋ Качи разрешително (снимка / скан)',
   'Tests atmosphériques': 'Атмосферни тестове', 'Intervalle': 'Интервал', '＋ Nouveau contrôle (upload fiche)': '＋ Нов контрол (качи протокол)',
   'Aucun contrôle.': 'Няма контроли.', 'Voir': 'Виж', 'en attente': 'изчаква', '⚠ Aucun test enregistré': '⚠ Няма записан тест',
-  '⏰ EN RETARD depuis ': '⏰ ПРОСРОЧЕН от ', '✓ Prochain test dans ': '✓ Следващ тест след ',
+  'EN RETARD depuis ': 'ПРОСРОЧЕН от ', '✓ Prochain test dans ': '✓ Следващ тест след ',
   'Registre d’accès': 'Регистър за достъп', 'Personne dans la zone.': 'Няма никой в зоната.', 'Nom de l’intervenant…': 'Име на работника…',
   'Entrée': 'Вход', 'Sortie': 'Изход', 'Conditions non remplies : ': 'Условията не са изпълнени: ', 'Entrée refusée et journalisée — ': 'Входът е отказан и записан — ',
   'depuis': 'от', 'EPI': 'ЛПС',
@@ -76,18 +76,18 @@ const BG = {
   'Aucune zone à chaud': 'Няма зона за огневи работи', 'Zone à chaud': 'Зона за огневи работи', 'Zone travaux à chaud': 'Зона за огневи работи', 'Zone supprimée': 'Изтрита зона',
   'Coordination du chantier': 'Координация на обекта', 'Coordinateur': 'Координатор', 'Assistant coordinateur': 'Асистент-координатор', 'Nom': 'Име', 'Nom (optionnel)': 'Име (по избор)',
   'Fire Watch en position': 'Наблюдатели на позиция', 'Disponibles': 'Свободни',
-  '🏗️ Travaux par compagnie (tous les ponts)': '🏗️ Дейности по фирми (всички палуби)', 'Aucune zone.': 'Няма зони.', 'zone(s)': 'зона/и', 'Sans compagnie': 'Без фирма',
+  'Travaux par compagnie (tous les ponts)': 'Дейности по фирми (всички палуби)', 'Aucune zone.': 'Няма зони.', 'zone(s)': 'зона/и', 'Sans compagnie': 'Без фирма',
   'Dimensions du dry dock & du navire': 'Размери на сухия док и кораба', 'Longueur bassin': 'Дължина на дока', 'Largeur bassin': 'Ширина на дока',
   'Longueur navire': 'Дължина на кораба', 'Largeur navire': 'Ширина на кораба', 'Vue de dessus — navire en cale sèche': 'Изглед отгоре — кораб в сух док',
   'Travaux en cours': 'Текущи дейности', 'Présents en zone': 'Хора в зоните', 'Conflits détectés': 'Открити конфликти', 'Tests atmo en retard': 'Просрочени тестове',
   'Fire watch postés': 'Поставени наблюдатели', 'Contrôles aujourd’hui': 'Контроли днес', 'Permis manquants': 'Липсващи разрешителни',
   'Alertes actives': 'Активни аларми', 'Aucune alerte — chantier conforme': 'Няма аларми — обектът е съответен',
-  '📋 Rapport journalier': '📋 Дневен отчет', 'Journal du chantier (traçabilité)': 'Дневник на обекта (проследимост)',
+  'Rapport journalier': 'Дневен отчет', 'Journal du chantier (traçabilité)': 'Дневник на обекта (проследимост)',
   'Conflits de travaux détectés': 'Открити конфликти между дейности', 'Conflit avec': 'Конфликт с',
   'Travaux à chaud à proximité de sablage/peinture — vapeurs et poussières inflammables': 'Огневи работи близо до пясъкоструене/боядисване — запалими пари и прах',
   'Travaux à chaud à proximité d’un espace confiné — atmosphère intérieure à risque': 'Огневи работи близо до затворено пространство — риск за вътрешната атмосфера',
   'Sablage/peinture près d’un espace confiné — contamination possible de l’atmosphère': 'Пясъкоструене/боядисване близо до затворено пространство — възможно замърсяване на атмосферата',
-  '🛰️ En ligne': '🛰️ Онлайн', '📴 Hors-ligne': '📴 Офлайн', 'Simuler hors-ligne': 'Симулирай офлайн',
+  'En ligne': 'Онлайн', 'Hors-ligne': 'Офлайн', 'Simuler hors-ligne': 'Симулирай офлайн',
   'Coordination sécurité · Cale sèche': 'Координация по безопасност · Сух док',
   'Rapport journalier de sécurité': 'Дневен отчет за безопасност', 'POINTS DE VIGILANCE': 'ТОЧКИ ЗА ВНИМАНИЕ', 'JOURNAL DES OPÉRATIONS': 'ДНЕВНИК НА ОПЕРАЦИИТЕ',
   'en cours': 'в процес', 'planifiés': 'планирани', 'terminés': 'завършени', 'postés': 'поставени', 'Contrôles atmo aujourd’hui': 'Атмосферни контроли днес',
@@ -660,7 +660,7 @@ export default function ShipyardSafetyDemo() {
   function tryLogin() { if (codeInput.trim() === COORD_CODE) { setRole('coordinator'); setShowLogin(false); setCodeInput(''); setCodeError(false); } else { setCodeError(true); } }
   function logout() { setRole('viewer'); setTool(null); }
 
-  const C = { bg: '#08090b', panel: '#121418', panel2: '#0c0e11', fill: '#22262d', line: 'rgba(255,255,255,0.075)', accent: '#ff7a18', accent2: '#8e96a1', text: '#f5f6f7', dim: '#9aa1ab', green: '#30d158', red: '#ff453a', amber: '#ffd60a', blue: '#0a84ff' };
+  const C = { bg: 'var(--bg)', panel: 'var(--surface)', panel2: 'var(--surface-2)', fill: 'var(--fill)', line: 'var(--line)', accent: 'var(--accent)', accent2: 'var(--muted)', text: 'var(--ink)', dim: 'var(--ink-2)', green: 'var(--ok)', red: 'var(--danger)', amber: 'var(--warn)', blue: 'var(--info)' };
   function zoneColor(z) { return colorMode === 'company' && z.company ? companyColor(z.company, deckCompanies) : HAZARDS[z.type].color; }
 
   const TABS = [['overview', tx('Vue d\u2019ensemble', 'Overview'), LayoutDashboard], ['plan', tx('Plan', 'Plan'), MapIcon], ['dock', 'Dry Dock', Ruler], ['3d', '3D', Box], ['works', tx('Travaux', 'Works'), HardHat], ['crew', tx('Équipe', 'Crew'), Users]];
@@ -686,79 +686,114 @@ export default function ShipyardSafetyDemo() {
   return (
     <>
     {intro && <IntroOverlay introOut={introOut} />}
-    <div style={{ minHeight: '100vh', opacity: introHold ? 0 : 1, visibility: introHold ? 'hidden' : 'visible', transition: 'opacity .55s ease', color: C.text, fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", Geist, "Segoe UI", system-ui, sans-serif', letterSpacing: '-0.01em', backgroundColor: C.bg, backgroundImage: 'radial-gradient(900px 420px at 85% -10%, rgba(255,122,24,0.07), transparent 65%), radial-gradient(700px 380px at 0% 0%, rgba(142,150,161,0.06), transparent 60%)', backgroundAttachment: 'fixed' }}>
+    <div style={{ minHeight: '100vh', opacity: introHold ? 0 : 1, visibility: introHold ? 'hidden' : 'visible', transition: 'opacity .55s ease', color: C.text, fontFamily: 'var(--f-text)', backgroundColor: C.bg }}>
       <a href="#main" className="dd-skip">{tx('Aller au contenu', 'Skip to content')}</a>
       <div className="dd-tape" aria-hidden="true" />
       <input ref={docInputRef} type="file" accept="image/*" onChange={onDocFile} style={{ display: 'none' }} />
       <input ref={aiInputRef} type="file" accept="image/*" onChange={onAiFile} style={{ display: 'none' }} />
-      <div className={'dd-header' + (introHold ? '' : ' dd-rise')} style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 22px', background: 'rgba(12,14,17,0.72)', WebkitBackdropFilter: 'blur(20px) saturate(170%)', backdropFilter: 'blur(20px) saturate(170%)', borderBottom: `1px solid ${C.line}`, flexWrap: 'wrap', gap: '10px', position: 'sticky', top: 0, zIndex: 30 }}>
+      <div className={'dd-header' + (introHold ? '' : ' dd-rise')} style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 22px', background: 'var(--glass)', WebkitBackdropFilter: 'blur(20px) saturate(170%)', backdropFilter: 'blur(20px) saturate(170%)', borderBottom: `1px solid ${C.line}`, flexWrap: 'wrap', gap: '10px', position: 'sticky', top: 0, zIndex: 30 }}>
         {!introHold && <div className="dd-scan" />}
         <div className="dd-brand" style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <img src={LOGO_WHITE} alt="Allied Maritime Solutions Ltd" width="110" height="44" fetchpriority="high" style={{ height: '44px', width: 'auto', filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))' }} />
-          <div><div className="dd-title" style={{ fontSize: '17px', fontWeight: 700, letterSpacing: '-0.2px' }}>DryDock <span style={{ color: C.accent }}>Safety</span></div><div className="dd-sub" style={{ fontSize: '10px', color: C.accent2, letterSpacing: '1.7px', textTransform: 'uppercase', fontWeight: 600, marginTop: '2px' }}>{tx('Coordination sécurité · Cale sèche', 'Safety coordination · Dry dock')}<span style={{ marginLeft: '8px', background: 'rgba(255,122,24,.14)', border: '1px solid rgba(255,122,24,.6)', color: '#ffb26b', borderRadius: '9px', padding: '1px 7px', fontSize: '9px', letterSpacing: '1px', verticalAlign: '1px' }}>DEMO v1.0</span></div></div>
+          <img className="dd-logo-light" src={LOGO_INK} alt="Allied Maritime Solutions Ltd" width="100" height="40" fetchpriority="high" style={{ height: '40px', width: 'auto' }} /><img className="dd-logo-dark" src={LOGO_WHITE} alt="Allied Maritime Solutions Ltd" width="100" height="40" style={{ height: '40px', width: 'auto' }} />
+          <div><div className="dd-title" style={{ fontSize: '22px', lineHeight: 1 }}>DryDock Safety</div><div className="dd-sub" style={{ fontSize: '10px', color: C.accent2, letterSpacing: '1.7px', textTransform: 'uppercase', fontWeight: 600, marginTop: '2px' }}>{tx('Coordination sécurité · Cale sèche', 'Safety coordination · Dry dock')}<span style={{ marginLeft: '8px', background: 'var(--accent-soft)', border: '1px solid rgba(255,122,24,.6)', color: 'var(--warn-ink)', borderRadius: '9px', padding: '1px 7px', fontSize: '9px', letterSpacing: '1px', verticalAlign: '1px' }}>DEMO v1.0</span></div></div>
         </div>
         <div className="dd-ctrls" style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', border: `1px solid ${C.line}`, borderRadius: '20px', overflow: 'hidden' }}>{[['bi', 'FR/EN'], ['en', 'EN'], ['bg', 'БГ']].map(([k, l]) => (<button key={k} onClick={() => setLang(k)} style={{ background: lang === k ? C.fill : 'transparent', color: lang === k ? C.text : C.dim, border: 'none', padding: '6px 12px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{l}</button>))}</div>
-          <button onClick={() => setSimOffline((v) => !v)} title={tx('Simuler hors-ligne', 'Simulate offline')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: connected ? C.panel2 : 'rgba(234,179,8,0.15)', border: `1px solid ${connected ? C.line : '#eab308'}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px', color: connected ? C.dim : '#eab308', cursor: 'pointer' }}>{connected ? <><Satellite size={14} aria-hidden="true" />{tx('En ligne', 'Online')}</> : <><WifiOff size={14} aria-hidden="true" />{tx('Hors-ligne', 'Offline')}</>}{pending.length > 0 && <span style={{ background: '#eab308', color: '#0b1622', borderRadius: '14px', padding: '0 6px', fontSize: '10px', fontWeight: 700 }}>⏳ {pending.length}</span>}</button>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px' }}><span style={{ width: '8px', height: '8px', borderRadius: '50%', background: synced ? '#22c55e' : '#eab308', animation: 'pulse 2s infinite' }} />{synced ? tx('En direct', 'Live') : 'Sync…'} · <Users size={14} aria-hidden="true" /> {online}</div>
-          {canEdit ? (<div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(34,197,94,0.14)', border: '1px solid #22c55e', borderRadius: '20px', padding: '6px 12px', fontSize: '12px', color: '#86efac' }}><Unlock size={14} aria-hidden="true" /> {tx('Coordination', 'Coordination')}<button onClick={logout} style={{ background: 'transparent', border: 'none', color: '#86efac', cursor: 'pointer', fontSize: '11px', textDecoration: 'underline', padding: 0 }}>{tx('quitter', 'log out')}</button></div>) : (<button onClick={() => { setShowLogin(true); setCodeError(false); }} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px', color: C.dim, cursor: 'pointer' }}><Lock size={14} aria-hidden="true" />{tx('Mode consultation', 'View-only')}</button>)}
+          <button onClick={() => setSimOffline((v) => !v)} title={tx('Simuler hors-ligne', 'Simulate offline')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: connected ? C.panel2 : 'var(--warn-soft)', border: `1px solid ${connected ? C.line : 'var(--warn)'}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px', color: connected ? C.dim : 'var(--warn)', cursor: 'pointer' }}>{connected ? <><Satellite size={14} aria-hidden="true" />{tx('En ligne', 'Online')}</> : <><WifiOff size={14} aria-hidden="true" />{tx('Hors-ligne', 'Offline')}</>}{pending.length > 0 && <span style={{ background: 'var(--warn)', color: 'var(--on-accent)', borderRadius: '14px', padding: '0 6px', fontSize: '10px', fontWeight: 700 }}>{pending.length}</span>}</button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px' }}><span style={{ width: '8px', height: '8px', borderRadius: '50%', background: synced ? 'var(--ok)' : 'var(--warn)', animation: 'pulse 2s infinite' }} />{synced ? tx('En direct', 'Live') : 'Sync…'} · <Users size={14} aria-hidden="true" /> {online}</div>
+          {canEdit ? (<div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--ok-soft)', border: '1px solid #22c55e', borderRadius: '20px', padding: '6px 12px', fontSize: '12px', color: 'var(--ok-ink)' }}><Unlock size={14} aria-hidden="true" /> {tx('Coordination', 'Coordination')}<button onClick={logout} style={{ background: 'transparent', border: 'none', color: 'var(--ok-ink)', cursor: 'pointer', fontSize: '11px', textDecoration: 'underline', padding: 0 }}>{tx('quitter', 'log out')}</button></div>) : (<button onClick={() => { setShowLogin(true); setCodeError(false); }} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '20px', padding: '6px 12px', fontSize: '12px', color: C.dim, cursor: 'pointer' }}><Lock size={14} aria-hidden="true" />{tx('Mode consultation', 'View-only')}</button>)}
           <select aria-label={tx('Navire', 'Vessel')} value={activeId || ''} onChange={(e) => { setActiveId(e.target.value); setActiveDeckId(null); setSelectedId(null); }} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '13px' }}>{ships.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}</select>
           {canEdit && <button onClick={addShip} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '8px', padding: '9px 12px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>{tx('+ Navire', '+ Ship')}</button>}
         </div>
       </div>
       <style>{`
+        /* Direction: the safety board at the dock gate. ISO 7010 sign language (signal yellow + black,
+           safety red, safe-condition green), a signage typeface for figures and headlines, light
+           "permit paper on galvanised steel" for sunlight on deck, hull-steel blue-grey at night. */
+        :root {
+          --bg: #dfe3e6; --surface: #fbfbfa; --surface-2: #eef0f1; --fill: #e3e6e8; --line: rgba(21,25,28,0.14); --line-strong: #15191c;
+          --ink: #15191c; --ink-2: #4b555d; --muted: #6b757d;
+          --accent: #f6b800; --on-accent: #15191c; --accent-soft: rgba(246,184,0,0.2);
+          --danger: #c4161c; --danger-ink: #a31218; --danger-soft: rgba(196,22,28,0.09);
+          --ok: #1e7f4f; --ok-ink: #17663f; --ok-soft: rgba(30,127,79,0.1);
+          --warn: #b07900; --warn-ink: #7f5800; --warn-soft: rgba(246,184,0,0.18);
+          --info: #1d5fa0; --info-ink: #1d5fa0; --glass: rgba(251,251,250,0.78);
+          --f-sign: "Barlow Condensed", "DIN Condensed", "Arial Narrow", sans-serif;
+          --f-text: -apple-system, BlinkMacSystemFont, "SF Pro Text", Barlow, "Segoe UI", system-ui, sans-serif;
+          color-scheme: light;
+        }
+        @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+          --bg: #1a2127; --surface: #222a31; --surface-2: #1d242a; --fill: #2d363e; --line: rgba(255,255,255,0.11); --line-strong: #e9edf0;
+          --ink: #f1f3f4; --ink-2: #b4bdc5; --muted: #8e99a3; --accent-soft: rgba(246,184,0,0.16);
+          --danger: #ff5a52; --danger-ink: #ff8a84; --danger-soft: rgba(255,90,82,0.14);
+          --ok: #3cc47c; --ok-ink: #72dba2; --ok-soft: rgba(60,196,124,0.13);
+          --warn: #f6b800; --warn-ink: #ffd35c; --warn-soft: rgba(246,184,0,0.14);
+          --info: #5aa9f0; --info-ink: #8cc4f5; --glass: rgba(29,36,42,0.8); color-scheme: dark; } }
+        :root[data-theme="dark"] {
+          --bg: #1a2127; --surface: #222a31; --surface-2: #1d242a; --fill: #2d363e; --line: rgba(255,255,255,0.11); --line-strong: #e9edf0;
+          --ink: #f1f3f4; --ink-2: #b4bdc5; --muted: #8e99a3; --accent-soft: rgba(246,184,0,0.16);
+          --danger: #ff5a52; --danger-ink: #ff8a84; --danger-soft: rgba(255,90,82,0.14);
+          --ok: #3cc47c; --ok-ink: #72dba2; --ok-soft: rgba(60,196,124,0.13);
+          --warn: #f6b800; --warn-ink: #ffd35c; --warn-soft: rgba(246,184,0,0.14);
+          --info: #5aa9f0; --info-ink: #8cc4f5; --glass: rgba(29,36,42,0.8); color-scheme: dark; }
+        body { background: var(--bg); color: var(--ink); }
         @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
-        @keyframes ddScan { 0%{transform:translateX(-140%);} 100%{transform:translateX(160%);} }
-        @keyframes ddRise { 0%{opacity:0; transform:translateY(10px);} 100%{opacity:1; transform:translateY(0);} }
-        .dd-title { font-family:'Space Grotesk', -apple-system, system-ui, sans-serif; }
-        .dd-rise { animation: ddRise .55s cubic-bezier(.2,.7,.2,1) both; }
-        .dd-rise-2 { animation: ddRise .7s .09s cubic-bezier(.2,.7,.2,1) both; }
-        .dd-scan { position:absolute; top:0; left:0; height:100%; width:38%; background:linear-gradient(90deg, transparent, rgba(201,210,218,0.16), transparent); pointer-events:none; animation: ddScan 3.4s cubic-bezier(.4,0,.2,1) 1; }
-        button { transition: filter .16s ease, transform .14s cubic-bezier(.2,.7,.2,1), box-shadow .18s ease, background-color .16s ease; }
-        button:hover { filter: brightness(1.12); transform: translateY(-1px); }
-        button:active { transform: translateY(0) scale(.97); transition-duration: .06s; }
-        button:disabled { cursor: not-allowed; opacity: .55; transform: none; }
-        :focus-visible { outline: 2px solid #ff7a18 !important; outline-offset: 2px; border-radius: 8px; }
-        input:focus-visible, select:focus-visible, input:focus, select:focus { outline: none !important; border-color: #ff7a18 !important; box-shadow: 0 0 0 3px rgba(255,122,24,.35); }
+        @keyframes ddRise { 0%{opacity:0;} 100%{opacity:1;} }
+        .dd-rise, .dd-rise-2 { animation: ddRise .5s ease both; }
+        .dd-scan { display: none; }
+        .dd-sub { display: none; }
+        .dd-logo-dark { display: none; }
+        @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .dd-logo-dark { display: block; } :root:not([data-theme="light"]) .dd-logo-light { display: none; } }
+        :root[data-theme="dark"] .dd-logo-dark { display: block; } :root[data-theme="dark"] .dd-logo-light { display: none; }
+        .dd-title, .dd-large { font-family: var(--f-sign) !important; font-weight: 600 !important; letter-spacing: 0 !important; }
+        button { transition: background-color .15s ease, border-color .15s ease, color .15s ease, transform .1s ease; }
+        button:hover { filter: none; }
+        button:active { transform: scale(.97); transition-duration: .05s; }
+        button:disabled { cursor: not-allowed; opacity: .5; transform: none; }
+        :focus-visible { outline: 2.5px solid var(--info) !important; outline-offset: 2px; }
+        input:focus-visible, select:focus-visible, input:focus, select:focus { outline: none !important; border-color: var(--info) !important; box-shadow: 0 0 0 3px color-mix(in srgb, var(--info) 30%, transparent); }
         h1, .dd-kpis, .dd-tabs button { font-variant-numeric: tabular-nums; }
-        input[type=range], input[type=checkbox], input[type=radio] { accent-color: #ff7a18; }
-        button, [role=button], select, a { touch-action: manipulation; -webkit-tap-highlight-color: rgba(255,122,24,.18); }
+        input[type=range], input[type=checkbox], input[type=radio] { accent-color: var(--ink); }
+        button, [role=button], select, a { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
         h1, h2, h3 { text-wrap: balance; }
-        .dd-skip { position: fixed; left: 12px; top: -60px; z-index: 200; background: #ff7a18; color: #0b1622; font-weight: 700; padding: 10px 14px; border-radius: 8px; text-decoration: none; transition: top .15s ease; }
+        .dd-skip { position: fixed; left: 12px; top: -60px; z-index: 200; background: var(--accent); color: var(--on-accent); font-weight: 700; padding: 10px 14px; border-radius: 8px; text-decoration: none; }
         .dd-skip:focus-visible { top: 12px; }
-        select { background-color: #0e1012; color: #f2f4f6; }
+        select { background-color: var(--surface); color: var(--ink); }
         .dd-tabbar, .dd-seg { display: none; }
-        .dd-tape { height: 3px; background: repeating-linear-gradient(-45deg, #ff7a18 0 14px, #e9edf1 14px 22px); opacity: .9; }
-        .dd-title, .dd-hero-title, .dd-tile-num { font-family: -apple-system, "SF Pro Display", Geist, system-ui, sans-serif; }
-        .dd-hero { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 22px; border-radius: 22px; background: linear-gradient(135deg, color-mix(in srgb, var(--tone) 14%, #121418) 0%, #121418 60%); border: 1px solid color-mix(in srgb, var(--tone) 28%, transparent); box-shadow: 0 20px 50px -30px color-mix(in srgb, var(--tone) 60%, transparent); }
-        .dd-hero-ico { width: 52px; height: 52px; flex: none; border-radius: 16px; display: grid; place-items: center; color: var(--tone); background: color-mix(in srgb, var(--tone) 16%, transparent); }
-        .dd-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #8e96a1; }
-        .dd-hero-title { margin: 4px 0 4px; font-size: 28px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; color: #f5f6f7; }
-        .dd-hero-sub { font-size: 14px; line-height: 1.45; color: #b4bbc4; overflow-wrap: anywhere; }
-        .dd-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #ff7a18; color: #1a0d02; border: 0; border-radius: 14px; padding: 13px 18px; font-size: 15px; font-weight: 650; cursor: pointer; font-family: inherit; box-shadow: 0 8px 22px -10px rgba(255,122,24,.7), inset 0 1px 0 rgba(255,255,255,.25); }
-        .dd-tile { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; text-align: left; cursor: pointer; background: #121418; border: 1px solid rgba(255,255,255,0.075); border-radius: 18px; padding: 14px 16px 16px; color: inherit; font-family: inherit; }
-        .dd-tile-top { display: flex; width: 100%; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-        .dd-tile-ico { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; color: var(--tint); background: color-mix(in srgb, var(--tint) 15%, transparent); }
-        .dd-tile-num { font-size: 30px; font-weight: 650; letter-spacing: -0.03em; line-height: 1; color: #f5f6f7; font-variant-numeric: tabular-nums; }
-        .dd-tile-lbl { font-size: 13px; color: #9aa1ab; }
-        .dd-flag { font-size: 11px; font-weight: 650; padding: 3px 8px; border-radius: 99px; }
-        .dd-flag.red { color: #ff6961; background: rgba(255,69,58,.14); }
-        .dd-flag.amber { color: #ffd60a; background: rgba(255,214,10,.12); }
-        .dd-card:hover { border-color: rgba(255,255,255,.16) !important; box-shadow: 0 18px 36px -22px rgba(0,0,0,.9); }
-        .dd-h3 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 15px; font-weight: 650; letter-spacing: -0.01em; color: #f5f6f7; }
-        .dd-count { min-width: 22px; height: 22px; padding: 0 7px; box-sizing: border-box; border-radius: 11px; background: #22262d; color: #c3cad2; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums; }
-        .dd-row { display: flex; align-items: center; gap: 12px; padding: 11px 16px; font-size: 14px; line-height: 1.35; color: #e6e9ec; border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .dd-row:last-child { border-bottom: 0; }
-        .dd-row.crit { background: rgba(255,69,58,.12); font-weight: 650; }
-        .dd-row-ico { width: 30px; height: 30px; flex: none; border-radius: 9px; display: grid; place-items: center; color: var(--tint); background: color-mix(in srgb, var(--tint) 14%, transparent); }
+        .dd-tape { height: 5px; background: repeating-linear-gradient(-45deg, #f6b800 0 10px, #15191c 10px 20px); }
+
+        /* overview: the sign is the one loud element */
+        .dd-hero { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 22px; padding: 6px 2px 10px; }
+        .dd-hero-title { margin: 0; font-family: var(--f-sign); font-weight: 600; font-size: 44px; line-height: 1; color: var(--ink); }
+        .dd-hero-sub { margin-top: 8px; font-size: 15px; line-height: 1.45; color: var(--ink-2); max-width: 62ch; overflow-wrap: anywhere; }
+        .dd-hero-date { margin-top: 6px; font-size: 13px; color: var(--muted); }
+        .dd-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent); color: var(--on-accent); border: 1.5px solid var(--line-strong); border-radius: 8px; padding: 12px 18px; font-size: 15px; font-weight: 650; cursor: pointer; font-family: inherit; white-space: nowrap; }
+        .dd-primary:hover { background: #ffc81f; }
+        .dd-board { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+        .dd-cell { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 14px 16px 16px; background: var(--surface); border: 0; text-align: left; cursor: pointer; color: inherit; font-family: inherit; border-radius: 0; }
+        .dd-cell:hover { background: var(--surface-2); }
+        .dd-cell:active { transform: none; background: var(--fill); }
+        .dd-num { font-family: var(--f-sign); font-weight: 600; font-size: 42px; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+        .dd-cell.red .dd-num { color: var(--danger); } .dd-cell.amber .dd-num { color: var(--warn); }
+        .dd-lbl { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-2); }
+        .dd-mark { width: 8px; height: 8px; flex: none; }
+        .dd-cell.red .dd-mark { background: var(--danger); } .dd-cell.amber .dd-mark { background: var(--accent); outline: 1px solid var(--line-strong); }
+        .dd-plate { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+        .dd-h3 { display: flex; align-items: center; gap: 8px; margin: 0; font-family: var(--f-sign); font-size: 21px; font-weight: 600; color: var(--ink); }
+        .dd-count { font-family: var(--f-sign); font-size: 21px; font-weight: 500; color: var(--muted); }
+        .dd-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; font-size: 14.5px; line-height: 1.4; color: var(--ink); border-top: 1px solid var(--line); }
+        .dd-row.crit { background: var(--danger-soft); font-weight: 650; }
         .dd-row-txt { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+        .dd-row svg { margin-top: 1px; }
+        .dd-card:hover { transform: none; }
+
         .dd-action { width: 300px; max-width: 100%; display: flex; flex-direction: column; gap: 8px; }
-        .dd-action .grp { background: #1c1f24; border-radius: 14px; overflow: hidden; }
-        .dd-action .msg { padding: 14px 16px; text-align: center; font-size: 13px; color: #c3cad2; border-bottom: 1px solid #2c3036; }
-        .dd-action .msg small { display: block; margin-top: 4px; color: #8b949e; font-size: 12px; }
+        .dd-action .grp { background: var(--surface); border-radius: 14px; overflow: hidden; }
+        .dd-action .msg { padding: 14px 16px; text-align: center; font-size: 13px; color: var(--ink-2); border-bottom: 1px solid var(--line); }
+        .dd-action .msg small { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
         .dd-action button { display: block; width: 100%; background: transparent; border: 0; padding: 15px; font-size: 17px; cursor: pointer; font-family: inherit; }
-        .dd-action .danger { color: #ff453a; }
-        .dd-action .cancel { color: #ff9f45; font-weight: 600; }
+        .dd-action .danger { color: var(--danger); }
+        .dd-action .cancel { color: var(--info); font-weight: 600; }
         @keyframes ddSheetIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
         @keyframes ddFade { from { opacity: 0; } to { opacity: 1; } }
         @media (max-width: 768px) {
@@ -766,62 +801,55 @@ export default function ShipyardSafetyDemo() {
           button, [role=button], .dd-tabbar { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
           input, select, textarea { font-size: 16px !important; }
           .dd-header { padding: 10px 16px !important; padding-top: max(10px, env(safe-area-inset-top)) !important; gap: 8px !important; }
-          .dd-header .dd-brand img { height: 30px !important; }
-          .dd-header .dd-sub { display: none; }
+          .dd-header .dd-brand img { height: 28px !important; }
           .dd-ctrls { flex-wrap: nowrap !important; overflow-x: auto; width: 100%; padding-bottom: 2px; scrollbar-width: none; }
           .dd-ctrls::-webkit-scrollbar { display: none; }
           .dd-ctrls > * { flex: none; }
           .dd-ctrls button, .dd-ctrls select { min-height: 36px !important; }
           .dd-tabs { display: none !important; }
           .dd-viewonly { display: none !important; }
-          .dd-large { font-size: 32px !important; letter-spacing: -0.6px !important; font-family: -apple-system, "SF Pro Display", "Space Grotesk", system-ui, sans-serif !important; }
+          .dd-large { font-size: 36px !important; }
+          .dd-hero { grid-template-columns: auto 1fr; gap: 16px; }
+          .dd-hero .dd-primary { grid-column: 1 / -1; width: 100%; }
+          .dd-hero-title { font-size: 34px; }
           #main { padding-bottom: calc(96px + env(safe-area-inset-bottom)) !important; }
           .dd-foot { padding-bottom: calc(96px + env(safe-area-inset-bottom)) !important; margin-top: 0 !important; }
-          .dd-tabbar { display: flex; position: fixed; z-index: 40; left: max(12px, env(safe-area-inset-left)); right: max(12px, env(safe-area-inset-right)); bottom: calc(10px + env(safe-area-inset-bottom)); justify-content: space-around; padding: 6px; border-radius: 30px; background: rgba(28, 31, 36, 0.72); -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%); border: 1px solid rgba(255,255,255,0.09); box-shadow: 0 10px 30px -8px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.06); }
-          .dd-tabbar button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; background: transparent; border: 0; color: #9aa3ad; padding: 6px 0 4px; border-radius: 24px; min-height: 52px; font-family: inherit; }
-          .dd-tabbar button:hover { transform: none; filter: none; }
-          .dd-tabbar button.on { color: #ff7a18; background: rgba(255,122,24,0.13); }
+          .dd-tabbar { display: flex; position: fixed; z-index: 40; left: max(12px, env(safe-area-inset-left)); right: max(12px, env(safe-area-inset-right)); bottom: calc(10px + env(safe-area-inset-bottom)); justify-content: space-around; padding: 5px; border-radius: 999px; background: var(--glass); -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%); border: 1px solid var(--line); box-shadow: 0 10px 30px -12px rgba(0,0,0,.35); }
+          .dd-tabbar button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; background: transparent; border: 0; color: var(--muted); padding: 6px 0 4px; border-radius: 999px; min-height: 52px; font-family: inherit; }
+          .dd-tabbar button.on { color: var(--ink); background: var(--fill); }
           .dd-tabbar .ico { position: relative; display: inline-flex; }
-          .dd-tabbar .badge { position: absolute; top: -5px; right: -11px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #dc2626; color: #fff; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
-          .dd-tabbar .lbl { font-size: 11px; font-weight: 600; letter-spacing: .1px; }
-          .dd-seg { display: flex; margin: 0 0 14px; padding: 2px; border-radius: 9px; background: #1c1f24; }
-          .dd-seg button { flex: 1; background: transparent; border: 0; color: #c3cad2; font-size: 13px; font-weight: 600; border-radius: 7px; min-height: 32px !important; font-family: inherit; }
-          .dd-seg button.on { background: #3a3f46; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.35); }
+          .dd-tabbar .badge { position: absolute; top: -5px; right: -11px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #d70015; color: #fff; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+          .dd-tabbar .lbl { font-size: 11px; font-weight: 600; }
+          .dd-seg { display: flex; margin: 0 0 14px; padding: 2px; border-radius: 9px; background: var(--fill); }
+          .dd-seg button { flex: 1; background: transparent; border: 0; color: var(--ink-2); font-size: 13px; font-weight: 600; border-radius: 7px; min-height: 32px !important; font-family: inherit; }
+          .dd-seg button.on { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.18); }
           .dd-backdrop { align-items: flex-end !important; padding: 0 !important; animation: ddFade .2s ease both; }
           .dd-confirm-bd { padding: 0 8px calc(8px + env(safe-area-inset-bottom)) !important; }
           .dd-action { width: 100%; animation: ddSheetIn .32s cubic-bezier(.2,.8,.2,1) both; }
           .dd-sheet { width: 100% !important; max-width: 100% !important; max-height: 92vh !important; border-radius: 14px 14px 0 0 !important; padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important; animation: ddSheetIn .34s cubic-bezier(.2,.8,.2,1) both; overflow: auto; position: relative; }
-          .dd-sheet::before { content: ""; display: block; width: 36px; height: 5px; border-radius: 3px; background: rgba(140,148,158,.55); margin: -8px auto 12px; }
+          .dd-sheet::before { content: ""; display: block; width: 36px; height: 5px; border-radius: 3px; background: var(--muted); opacity: .5; margin: -8px auto 12px; }
         }
         @media (max-width: 640px) {
           button, select, input:not([type=file]) { min-height: 44px; }
           .dd-plan button, .dd-plan input { min-height: 0; }
-          .dd-kpis > :last-child:nth-child(odd) { grid-column: 1 / -1; }
-          .dd-hero { padding: 18px; }
-          .dd-hero-title { font-size: 24px; }
-          .dd-primary { width: 100%; }
+          .dd-board { grid-template-columns: 1fr 1fr; }
+          .dd-board > :last-child:nth-child(odd) { grid-column: 1 / -1; }
         }
-        @keyframes ddAlert { 0%,100% { box-shadow: 0 0 0 2.5px #ef4444; } 50% { box-shadow: 0 0 0 6px rgba(239,68,68,.38); } }
-        @keyframes ddCrit { 0%,100% { background: rgba(239,68,68,.16); } 50% { background: rgba(239,68,68,.32); } }
-        .dd-card { transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
-        .dd-card:hover { transform: translateY(-2px); }
+        @keyframes ddAlert { 0%,100% { box-shadow: 0 0 0 2.5px #ff453a; } 50% { box-shadow: 0 0 0 6px rgba(255,69,58,.38); } }
+        @keyframes ddCrit { 0%,100% { background: var(--danger-soft); } 50% { background: color-mix(in srgb, var(--danger) 22%, transparent); } }
         .dd-plan { box-shadow: inset 0 0 0 1px rgba(201,210,218,.14), inset 0 0 70px rgba(0,0,0,.5); }
-        ::selection { background: rgba(255,122,24,0.35); }
-        ::-webkit-scrollbar { width:10px; height:10px; }
-        ::-webkit-scrollbar-track { background:#0e1012; }
-        ::-webkit-scrollbar-thumb { background:#26292e; border-radius:6px; border:2px solid #0e1012; }
-        ::-webkit-scrollbar-thumb:hover { background:#ff7a18; }
-        @media (prefers-reduced-motion: reduce){ .dd-rise,.dd-rise-2,.dd-scan{ animation:none !important; } *,*::before,*::after{ animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; } }
+        ::selection { background: var(--accent-soft); }
+        @media (prefers-reduced-motion: reduce){ .dd-rise,.dd-rise-2{ animation:none !important; } *,*::before,*::after{ animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; } }
       `}</style>
 
       {showLogin && (
         <div className="dd-backdrop" onClick={() => setShowLogin(false)} style={{ overscrollBehavior: 'contain', position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: '20px' }}>
           <div className="dd-sheet" role="dialog" aria-modal="true" aria-label={tx('Accès coordination', 'Coordination access')} onClick={(e) => e.stopPropagation()} style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '14px', padding: '22px', width: '320px', maxWidth: '100%' }}>
-            <div style={{ fontSize: '16px', fontWeight: 700, marginBottom: '6px' }}>🔐 {tx('Accès coordination', 'Coordination access')}</div>
+            <div style={{ fontSize: '16px', fontWeight: 700, marginBottom: '6px' }}>{tx('Accès coordination', 'Coordination access')}</div>
             <div style={{ fontSize: '12px', color: C.dim, marginBottom: '14px' }}>{tx('Réservé à la coordination du chantier.', 'Restricted to site coordination.')}</div>
-            <input type="password" name="access-code" autoComplete="current-password" spellCheck={false} aria-label={tx("Code d'accès", 'Access code')} value={codeInput} autoFocus onChange={(e) => { setCodeInput(e.target.value); setCodeError(false); }} onKeyDown={(e) => { if (e.key === 'Enter') tryLogin(); }} placeholder={tx("Code d'accès", 'Access code') + '…'} style={{ width: '100%', boxSizing: 'border-box', background: C.panel2, color: C.text, border: `1px solid ${codeError ? '#ef4444' : C.line}`, borderRadius: '8px', padding: '11px 12px', fontSize: '15px', marginBottom: codeError ? '6px' : '14px' }} />
-            {codeError && <div role="alert" style={{ fontSize: '12px', color: '#fca5a5', marginBottom: '12px' }}>{tx('Code incorrect.', 'Wrong code.')}</div>}
-            <div style={{ display: 'flex', gap: '8px' }}><button onClick={() => setShowLogin(false)} style={{ flex: 1, background: 'transparent', color: C.dim, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '10px', fontSize: '13px', cursor: 'pointer' }}>{tx('Annuler', 'Cancel')}</button><button onClick={tryLogin} style={{ flex: 1, background: C.accent, color: '#0b1622', border: 'none', borderRadius: '8px', padding: '10px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}>{tx('Déverrouiller', 'Unlock')}</button></div>
+            <input type="password" name="access-code" autoComplete="current-password" spellCheck={false} aria-label={tx("Code d'accès", 'Access code')} value={codeInput} autoFocus onChange={(e) => { setCodeInput(e.target.value); setCodeError(false); }} onKeyDown={(e) => { if (e.key === 'Enter') tryLogin(); }} placeholder={tx("Code d'accès", 'Access code') + '…'} style={{ width: '100%', boxSizing: 'border-box', background: C.panel2, color: C.text, border: `1px solid ${codeError ? 'var(--danger)' : C.line}`, borderRadius: '8px', padding: '11px 12px', fontSize: '15px', marginBottom: codeError ? '6px' : '14px' }} />
+            {codeError && <div role="alert" style={{ fontSize: '12px', color: 'var(--danger-ink)', marginBottom: '12px' }}>{tx('Code incorrect.', 'Wrong code.')}</div>}
+            <div style={{ display: 'flex', gap: '8px' }}><button onClick={() => setShowLogin(false)} style={{ flex: 1, background: 'transparent', color: C.dim, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '10px', fontSize: '13px', cursor: 'pointer' }}>{tx('Annuler', 'Cancel')}</button><button onClick={tryLogin} style={{ flex: 1, background: C.accent, color: 'var(--on-accent)', border: 'none', borderRadius: '8px', padding: '10px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}>{tx('Déverrouiller', 'Unlock')}</button></div>
           </div>
         </div>
       )}
@@ -862,7 +890,7 @@ export default function ShipyardSafetyDemo() {
       {aiPhase && (
         <div className="dd-backdrop" onClick={() => { if (aiPhase !== 'loading') { setAiPhase(null); setAiResult(null); } }} style={{ overscrollBehavior: 'contain', position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.78)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 80, padding: '18px' }}>
           <div className="dd-sheet" role="dialog" aria-modal="true" aria-label={tx('Analyse IA du plan', 'AI plan analysis')} onClick={(e) => e.stopPropagation()} style={{ overscrollBehavior: 'contain', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '14px', padding: '20px', width: '460px', maxWidth: '100%', maxHeight: '90vh', overflow: 'auto' }}>
-            <div style={{ fontSize: '15px', fontWeight: 700, marginBottom: '4px' }}>🤖 {tx('Analyse IA du plan', 'AI plan analysis')}</div>
+            <div style={{ fontSize: '15px', fontWeight: 700, marginBottom: '4px' }}>{tx('Analyse IA du plan', 'AI plan analysis')}</div>
             {aiPhase === 'loading' && (
               <div style={{ padding: '18px 0' }}>
                 <div style={{ fontSize: '13px', color: C.dim, marginBottom: '12px', animation: 'pulse 1.6s infinite' }}>{tx('Lecture du plan d\u2019arrangement général…', 'Reading the general arrangement plan…')}</div>
@@ -875,8 +903,8 @@ export default function ShipyardSafetyDemo() {
             )}
             {aiPhase === 'done' && aiResult && (
               <div>
-                <div style={{ fontSize: '12px', color: '#86efac', margin: '6px 0 12px' }}>✓ {aiResult.decks.length} {tx('pont(s) détecté(s)', 'deck(s) detected')}</div>
-                {aiResult.demo && <div style={{ fontSize: '11px', color: '#fde68a', background: 'rgba(234,179,8,0.08)', border: '1px solid #eab308', borderRadius: '8px', padding: '8px 10px', marginBottom: '12px' }}>⚠ {tx('API indisponible ici — résultat d\u2019exemple (pétrolier) pour illustrer le fonctionnement.', 'API unavailable here — sample result (tanker) to illustrate the workflow.')}</div>}
+                <div style={{ fontSize: '12px', color: 'var(--ok-ink)', margin: '6px 0 12px' }}>✓ {aiResult.decks.length} {tx('pont(s) détecté(s)', 'deck(s) detected')}</div>
+                {aiResult.demo && <div style={{ fontSize: '11px', color: 'var(--warn-ink)', background: 'var(--warn-soft)', border: '1px solid #eab308', borderRadius: '8px', padding: '8px 10px', marginBottom: '12px' }}>⚠ {tx('API indisponible ici — résultat d\u2019exemple (pétrolier) pour illustrer le fonctionnement.', 'API unavailable here — sample result (tanker) to illustrate the workflow.')}</div>}
                 {aiResult.decks.map((d, i) => (
                   <div key={i} style={{ background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '14px', padding: '10px 12px', marginBottom: '8px' }}>
                     <div style={{ fontSize: '13px', fontWeight: 700 }}>{d.name}</div>
@@ -886,7 +914,7 @@ export default function ShipyardSafetyDemo() {
                 ))}
                 <div style={{ display: 'flex', gap: '8px', marginTop: '14px' }}>
                   <button onClick={() => { setAiPhase(null); setAiResult(null); }} style={{ flex: 1, background: 'transparent', color: C.dim, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '10px', fontSize: '13px', cursor: 'pointer' }}>{tx('Annuler', 'Cancel')}</button>
-                  <button onClick={applyAiResult} style={{ flex: 1, background: C.accent, color: '#0b1622', border: 'none', borderRadius: '8px', padding: '10px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}>{tx('Créer les ponts', 'Create decks')}</button>
+                  <button onClick={applyAiResult} style={{ flex: 1, background: C.accent, color: 'var(--on-accent)', border: 'none', borderRadius: '8px', padding: '10px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}>{tx('Créer les ponts', 'Create decks')}</button>
                 </div>
               </div>
             )}
@@ -897,8 +925,8 @@ export default function ShipyardSafetyDemo() {
       {docView && (
         <div className="dd-backdrop" onClick={() => setDocView(null)} style={{ overscrollBehavior: 'contain', position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.78)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 60, padding: '20px' }}>
           <div className="dd-sheet" role="dialog" aria-modal="true" aria-label={docView.name} onClick={(e) => e.stopPropagation()} style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '14px', padding: '16px', width: '560px', maxWidth: '100%', maxHeight: '92vh', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}><div style={{ fontSize: '14px', fontWeight: 700 }}>{docView.kind === 'permit' ? tx('📄 Permis de travail', '📄 Work permit') : tx('🫁 Test atmosphérique', '🫁 Atmospheric test')}<span style={{ color: C.dim, fontWeight: 400 }}> · {docView.name}</span></div><button onClick={() => setDocView(null)} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: C.text, borderRadius: '6px', padding: '4px 10px', fontSize: '13px', cursor: 'pointer' }}>{tx('Fermer', 'Close')}</button></div>
-            <div style={{ overflow: 'auto', background: '#fff', borderRadius: '8px' }}>{docView.loading ? <div style={{ padding: '40px', textAlign: 'center', color: C.dim }}>{tx('Chargement…', 'Loading…')}</div> : docView.data ? <img src={docView.data} alt={docView.name} style={{ width: '100%', display: 'block' }} /> : <div style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>{tx('Document indisponible.', 'Document unavailable.')}</div>}</div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}><div style={{ fontSize: '14px', fontWeight: 700 }}>{docView.kind === 'permit' ? tx('Permis de travail', 'Work permit') : tx('Test atmosphérique', 'Atmospheric test')}<span style={{ color: C.dim, fontWeight: 400 }}> · {docView.name}</span></div><button onClick={() => setDocView(null)} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: C.text, borderRadius: '6px', padding: '4px 10px', fontSize: '13px', cursor: 'pointer' }}>{tx('Fermer', 'Close')}</button></div>
+            <div style={{ overflow: 'auto', background: '#fff', borderRadius: '8px' }}>{docView.loading ? <div style={{ padding: '40px', textAlign: 'center', color: C.dim }}>{tx('Chargement…', 'Loading…')}</div> : docView.data ? <img src={docView.data} alt={docView.name} style={{ width: '100%', display: 'block' }} /> : <div style={{ padding: '40px', textAlign: 'center', color: 'var(--muted)' }}>{tx('Document indisponible.', 'Document unavailable.')}</div>}</div>
           </div>
         </div>
       )}
@@ -909,8 +937,8 @@ export default function ShipyardSafetyDemo() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: '14px' }}>
             {canEdit ? <input aria-label={tx('Nom du navire', 'Vessel name')} value={active.name} onChange={(e) => updateActive({ name: e.target.value })} className="dd-title dd-large" style={{ background: 'transparent', color: C.text, border: 'none', borderBottom: `2px solid ${C.line}`, fontSize: '24px', fontWeight: 700, padding: '4px 2px', minWidth: '180px' }} /> : <h1 className="dd-title dd-large" style={{ margin: 0, fontSize: '24px', fontWeight: 700, letterSpacing: '-0.3px', padding: '4px 2px' }}>{active.name}</h1>}
             <div className="dd-tabs" style={{ display: 'flex', gap: '2px', flexWrap: 'wrap', padding: '3px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '12px' }}>
-              {TABS.map(([k, lbl, Ico]) => (<button key={k} onClick={() => setTab(k)} aria-pressed={tab === k} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '7px', position: 'relative', background: tab === k ? C.fill : 'transparent', color: tab === k ? C.text : C.dim, border: 'none', borderRadius: '9px', padding: '7px 13px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', boxShadow: tab === k ? '0 1px 2px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.06)' : 'none' }}><Ico size={16} strokeWidth={2} aria-hidden="true" style={{ color: tab === k ? C.accent : 'currentColor' }} />{lbl}{k === 'overview' && alertCount > 0 && <span style={{ position: 'absolute', top: '-7px', right: '-7px', background: '#dc2626', color: '#fff', borderRadius: '14px', minWidth: '18px', height: '18px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 800, padding: '0 4px', boxShadow: '0 0 0 2px #0a0b0d' }}>{alertCount}</span>}</button>))}
-              {canEdit && <button onClick={() => deleteShip(active.id)} aria-label={tx('Supprimer le navire', 'Delete vessel')} title={tx('Supprimer le navire', 'Delete vessel')} style={{ background: 'transparent', color: '#ef4444', border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 12px', fontSize: '13px', cursor: 'pointer' }}>🗑</button>}
+              {TABS.map(([k, lbl, Ico]) => (<button key={k} onClick={() => setTab(k)} aria-pressed={tab === k} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '7px', position: 'relative', background: tab === k ? C.fill : 'transparent', color: tab === k ? C.text : C.dim, border: 'none', borderRadius: '9px', padding: '7px 13px', fontSize: '13px', fontWeight: 600, cursor: 'pointer', boxShadow: tab === k ? '0 1px 2px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.06)' : 'none' }}><Ico size={16} strokeWidth={2} aria-hidden="true" style={{ color: 'currentColor' }} />{lbl}{k === 'overview' && alertCount > 0 && <span style={{ position: 'absolute', top: '-7px', right: '-7px', background: '#dc2626', color: '#fff', borderRadius: '14px', minWidth: '18px', height: '18px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 800, padding: '0 4px', boxShadow: '0 0 0 2px #0a0b0d' }}>{alertCount}</span>}</button>))}
+              {canEdit && <button onClick={() => deleteShip(active.id)} aria-label={tx('Supprimer le navire', 'Delete vessel')} title={tx('Supprimer le navire', 'Delete vessel')} style={{ background: 'transparent', color: 'var(--danger)', border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 12px', fontSize: '13px', cursor: 'pointer' }}>🗑</button>}
             </div>
           </div>
 
@@ -926,33 +954,33 @@ export default function ShipyardSafetyDemo() {
                   {canEdit && <input aria-label={tx('Nom du pont', 'Deck name')} value={activeDeck.name} onChange={(e) => updateDeck({ name: e.target.value })} placeholder={tx('Nom du pont', 'Deck name') + '…'} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '12px', width: '150px' }} />}
                   {canEdit && <select value={activeDeck.layout || 'main'} onChange={(e) => updateDeck({ layout: e.target.value })} aria-label={tx('Type de pont (schéma)', 'Deck type (schematic)')} title={tx('Type de pont (schéma)', 'Deck type (schematic)')} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '12px' }}><option value="main">{tx('Type : Général', 'Type: General')}</option><option value="cabins">{tx('Type : Cabines', 'Type: Cabins')}</option><option value="machinery">{tx('Type : Machines', 'Type: Machinery')}</option><option value="technical">{tx('Type : Technique', 'Type: Technical')}</option></select>}
                   {canEdit && <button onClick={addDeck} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '8px', padding: '8px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{tx('+ Pont', '+ Deck')}</button>}
-                  {canEdit && active.decks.length > 1 && <button onClick={deleteDeck} style={{ background: 'transparent', color: '#ef4444', border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '12px', cursor: 'pointer' }}>🗑 {tx('Pont', 'Deck')}</button>}
+                  {canEdit && active.decks.length > 1 && <button onClick={deleteDeck} style={{ background: 'transparent', color: 'var(--danger)', border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '12px', cursor: 'pointer' }}>🗑 {tx('Pont', 'Deck')}</button>}
                 </div>
 
                 <div style={{ display: 'flex', gap: '8px', marginBottom: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
                   <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} style={{ display: 'none' }} />
-                  {canEdit && <button onClick={() => fileRef.current && fileRef.current.click()} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '8px', padding: '9px 14px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>{tx('📤 Importer le plan du pont', '📤 Import deck plan')}</button>}
-                  {canEdit && <button onClick={startAiImport} style={{ background: 'linear-gradient(120deg, #1e6fb8, #0e4a80)', color: '#fff', border: 'none', borderRadius: '8px', padding: '9px 14px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}>{tx('🤖 Analyser un plan (IA)', '🤖 Analyse a plan (AI)')}</button>}
+                  {canEdit && <button onClick={() => fileRef.current && fileRef.current.click()} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '8px', padding: '9px 14px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>{tx('Importer le plan du pont', 'Import deck plan')}</button>}
+                  {canEdit && <button onClick={startAiImport} style={{ background: 'linear-gradient(120deg, #1e6fb8, #0e4a80)', color: '#fff', border: 'none', borderRadius: '8px', padding: '9px 14px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}>{tx('Analyser un plan (IA)', 'Analyse a plan (AI)')}</button>}
                   {canEdit && activeDeck.planImage && (<button onClick={() => updateDeck({ planImage: null })} style={{ background: 'transparent', color: C.dim, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '9px 12px', fontSize: '12px', cursor: 'pointer' }}>{tx('Retirer', 'Remove')}</button>)}
-                  <div style={{ display: 'flex', border: `1px solid ${C.line}`, borderRadius: '8px', overflow: 'hidden' }}>{[['hazard', tx('Par danger', 'By hazard')], ['company', tx('Par compagnie', 'By company')]].map(([k, lbl]) => (<button key={k} onClick={() => setColorMode(k)} style={{ background: colorMode === k ? C.accent : 'transparent', color: colorMode === k ? '#0b1622' : C.dim, border: 'none', padding: '8px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{lbl}</button>))}</div>
+                  <div style={{ display: 'flex', border: `1px solid ${C.line}`, borderRadius: '8px', overflow: 'hidden' }}>{[['hazard', tx('Par danger', 'By hazard')], ['company', tx('Par compagnie', 'By company')]].map(([k, lbl]) => (<button key={k} onClick={() => setColorMode(k)} style={{ background: colorMode === k ? C.accent : 'transparent', color: colorMode === k ? 'var(--on-accent)' : C.dim, border: 'none', padding: '8px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{lbl}</button>))}</div>
                 </div>
                 <div style={{ fontSize: '11px', color: C.dim, marginBottom: '8px' }}>{!canEdit ? tx('Consultation — touchez une zone pour voir le détail', 'View-only — tap a zone to see details') : (tool ? tx('→ Cliquez sur le plan pour placer : ', '→ Tap the plan to place: ') + pick(lang, HAZARDS[tool].label.fr, HAZARDS[tool].label.en) : tx('Choisissez un danger à droite, puis cliquez sur le plan', 'Pick a hazard on the right, then tap the plan'))}</div>
                 {deckConflicts.length > 0 && (
-                  <div style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid #ef4444', borderRadius: '14px', padding: '10px 12px', marginBottom: '8px' }}>
-                    <div style={{ fontSize: '12px', fontWeight: 800, color: '#fca5a5', marginBottom: '4px' }}>⚠ {tx('Conflits de travaux détectés', 'Work conflicts detected')} ({deckConflicts.length})</div>
-                    {deckConflicts.map((c, i) => (<div key={i} style={{ fontSize: '11px', color: '#fecaca', marginBottom: '2px' }}>• {(c.z1.work || pick(lang, HAZARDS[c.z1.type].label.fr, HAZARDS[c.z1.type].label.en))} ↔ {(c.z2.work || pick(lang, HAZARDS[c.z2.type].label.fr, HAZARDS[c.z2.type].label.en))} — {pick(lang, c.rule.fr, c.rule.en)}</div>))}
+                  <div style={{ background: 'var(--danger-soft)', border: '1px solid #ef4444', borderRadius: '14px', padding: '10px 12px', marginBottom: '8px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 800, color: 'var(--danger-ink)', marginBottom: '4px' }}>⚠ {tx('Conflits de travaux détectés', 'Work conflicts detected')} ({deckConflicts.length})</div>
+                    {deckConflicts.map((c, i) => (<div key={i} style={{ fontSize: '11px', color: 'var(--danger-ink)', marginBottom: '2px' }}>• {(c.z1.work || pick(lang, HAZARDS[c.z1.type].label.fr, HAZARDS[c.z1.type].label.en))} ↔ {(c.z2.work || pick(lang, HAZARDS[c.z2.type].label.fr, HAZARDS[c.z2.type].label.en))} — {pick(lang, c.rule.fr, c.rule.en)}</div>))}
                   </div>
                 )}
 
-                <div ref={planRef} onClick={handlePlanClick} className="dd-plan" style={{ position: 'relative', width: '100%', aspectRatio: '3 / 4', background: C.panel2, border: `1px solid ${C.line}`, borderRadius: '18px', overflow: 'hidden', cursor: tool ? 'crosshair' : 'default' }}>
+                <div ref={planRef} onClick={handlePlanClick} className="dd-plan" style={{ position: 'relative', width: '100%', aspectRatio: '3 / 4', background: '#1d242a', border: `1px solid ${C.line}`, borderRadius: '18px', overflow: 'hidden', cursor: tool ? 'crosshair' : 'default' }}>
                   {activeDeck.planImage ? (<img src={activeDeck.planImage} alt="plan" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain' }} />) : (<DeckSchematic layout={activeDeck.layout} lang={lang} aiRooms={activeDeck.aiRooms} />)}
                   {activeDeck.zones.map((z) => {
                     const col = zoneColor(z), sel = selectedId === z.id, st = STATUS[z.status];
                     const fwHere = z.type === 'hot' && crew.fireWatch.some((f) => f.status === 'posted' && f.zoneId === z.id);
                     return (
-                      <div key={z.id} role="button" tabIndex={0} aria-pressed={sel} aria-label={(z.work || pick(lang, HAZARDS[z.type].label.fr, HAZARDS[z.type].label.en)) + (z.company ? ' — ' + z.company : '')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedId(z.id); } }} onClick={(e) => e.stopPropagation()} onPointerDown={(e) => onZonePointerDown(e, z)} style={{ position: 'absolute', left: `${z.x}%`, top: `${z.y}%`, width: `${z.w}%`, height: `${z.h}%`, background: col + (sel ? 'd9' : '99'), border: `2px solid ${col}`, borderRadius: '4px', cursor: canEdit ? 'move' : 'pointer', touchAction: canEdit ? 'none' : 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px', fontSize: '10px', lineHeight: 1.15, fontWeight: 700, color: '#0b1622', textAlign: 'center', padding: '2px', overflow: 'hidden', boxShadow: sel ? '0 0 0 2px #fff' : 'none', animation: !sel && conflictIds.has(z.id) ? 'ddAlert 1.8s ease-in-out infinite' : 'none' }}>
+                      <div key={z.id} role="button" tabIndex={0} aria-pressed={sel} aria-label={(z.work || pick(lang, HAZARDS[z.type].label.fr, HAZARDS[z.type].label.en)) + (z.company ? ' — ' + z.company : '')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedId(z.id); } }} onClick={(e) => e.stopPropagation()} onPointerDown={(e) => onZonePointerDown(e, z)} style={{ position: 'absolute', left: `${z.x}%`, top: `${z.y}%`, width: `${z.w}%`, height: `${z.h}%`, background: col + (sel ? 'd9' : '99'), border: `2px solid ${col}`, borderRadius: '4px', cursor: canEdit ? 'move' : 'pointer', touchAction: canEdit ? 'none' : 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px', fontSize: '10px', lineHeight: 1.15, fontWeight: 700, color: 'var(--on-accent)', textAlign: 'center', padding: '2px', overflow: 'hidden', boxShadow: sel ? '0 0 0 2px #fff' : 'none', animation: !sel && conflictIds.has(z.id) ? 'ddAlert 1.8s ease-in-out infinite' : 'none' }}>
                         <span>{conflictIds.has(z.id) && '⚠ '}{z.company || pick(lang, HAZARDS[z.type].label.fr, HAZARDS[z.type].label.en)}</span>
-                        <span style={{ display: 'flex', gap: '2px', alignItems: 'center' }}><span style={{ background: st.color, color: '#fff', borderRadius: '3px', padding: '0 4px', fontSize: '9px' }}>{pick(lang, st.fr, st.en)}</span>{z.permit && <span style={{ fontSize: '8px' }}>📄</span>}{z.type === 'confined' && z.status !== 'done' && (() => { const dz = atmoDue(z); const dc = dz.state === 'overdue' ? '#ef4444' : dz.state === 'ok' ? '#16a34a' : '#64748b'; return <span style={{ fontSize: '8px', display: 'inline-flex', alignItems: 'center', gap: '1px' }}>🫁<span style={{ width: '5px', height: '5px', borderRadius: '50%', background: dc }} /></span>; })()}{fwHere && <span style={{ fontSize: '8px' }}>🧯</span>}{(z.entries || []).filter((e) => !e.outAt).length > 0 && <span style={{ fontSize: '7.5px', background: '#0ea5e9', borderRadius: '3px', padding: '0 3px', color: '#0b1622' }}>👤{(z.entries || []).filter((e) => !e.outAt).length}</span>}</span>
+                        <span style={{ display: 'flex', gap: '2px', alignItems: 'center' }}><span style={{ background: st.color, color: '#fff', borderRadius: '3px', padding: '0 4px', fontSize: '9px' }}>{pick(lang, st.fr, st.en)}</span>{z.permit && <span style={{ fontSize: '8px' }}>📄</span>}{z.type === 'confined' && z.status !== 'done' && (() => { const dz = atmoDue(z); const dc = dz.state === 'overdue' ? 'var(--danger)' : dz.state === 'ok' ? '#16a34a' : 'var(--muted)'; return <span style={{ fontSize: '8px', display: 'inline-flex', alignItems: 'center', gap: '1px' }}>🫁<span style={{ width: '5px', height: '5px', borderRadius: '50%', background: dc }} /></span>; })()}{fwHere && <span style={{ fontSize: '8px' }}>🧯</span>}{(z.entries || []).filter((e) => !e.outAt).length > 0 && <span style={{ fontSize: '7.5px', background: 'var(--info)', borderRadius: '3px', padding: '0 3px', color: 'var(--on-accent)' }}>👤{(z.entries || []).filter((e) => !e.outAt).length}</span>}</span>
                         {canEdit && sel && (<div onPointerDown={(e) => startResize(e, z)} onClick={(e) => e.stopPropagation()} style={{ position: 'absolute', right: '1px', bottom: '1px', width: '13px', height: '13px', background: '#fff', border: `2px solid ${col}`, borderRadius: '3px', cursor: 'nwse-resize', touchAction: 'none' }} />)}
                       </div>
                     );
@@ -962,15 +990,15 @@ export default function ShipyardSafetyDemo() {
               </div>
 
               <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {canEdit && <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '14px' }}><div style={{ fontSize: '13px', fontWeight: 700, marginBottom: '10px', color: C.accent }}>{tx('Ajouter une zone', 'Add a zone')}</div><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>{Object.entries(HAZARDS).map(([key, h]) => (<button key={key} onClick={() => setTool(tool === key ? null : key)} style={{ background: tool === key ? h.color : 'transparent', color: tool === key ? '#0b1622' : C.text, border: `1.5px solid ${h.color}`, borderRadius: '8px', padding: '9px 8px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', textAlign: 'left' }}><span style={{ display: 'inline-block', width: '10px', height: '10px', background: h.color, borderRadius: '50%', marginRight: '6px' }} />{lang !== 'bi' ? pick(lang, h.label.fr, h.label.en) : <>{h.label.fr}<br /><span style={{ opacity: 0.6, fontSize: '10px' }}>{h.label.en}</span></>}</button>))}</div></div>}
+                {canEdit && <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '14px' }}><div style={{ fontSize: '13px', fontWeight: 700, marginBottom: '10px', color: C.text }}>{tx('Ajouter une zone', 'Add a zone')}</div><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>{Object.entries(HAZARDS).map(([key, h]) => (<button key={key} onClick={() => setTool(tool === key ? null : key)} style={{ background: tool === key ? h.color : 'transparent', color: tool === key ? 'var(--on-accent)' : C.text, border: `1.5px solid ${h.color}`, borderRadius: '8px', padding: '9px 8px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', textAlign: 'left' }}><span style={{ display: 'inline-block', width: '10px', height: '10px', background: h.color, borderRadius: '50%', marginRight: '6px' }} />{lang !== 'bi' ? pick(lang, h.label.fr, h.label.en) : <>{h.label.fr}<br /><span style={{ opacity: 0.6, fontSize: '10px' }}>{h.label.en}</span></>}</button>))}</div></div>}
 
                 {selectedZone ? (() => {
                   const h = HAZARDS[selectedZone.type];
                   const fwHere = crew.fireWatch.filter((f) => f.status === 'posted' && f.zoneId === selectedZone.id);
                   return (
                     <div style={{ background: C.panel, border: `2px solid ${h.color}`, borderRadius: '18px', padding: '14px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}><div style={{ fontSize: '13px', fontWeight: 700, color: h.color }}>{lang !== 'bi' ? pick(lang, h.label.fr, h.label.en) : <>{h.label.fr} <span style={{ opacity: 0.55, fontWeight: 400 }}>/ {h.label.en}</span></>}</div>{canEdit && <button onClick={() => removeZone(selectedZone.id)} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: '#ef4444', borderRadius: '6px', padding: '4px 8px', fontSize: '11px', cursor: 'pointer' }}>{tx('Supprimer', 'Delete')}</button>}</div>
-                      {(() => { const my = deckConflicts.filter((c) => c.z1.id === selectedZone.id || c.z2.id === selectedZone.id); return my.length ? (<div style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid #ef4444', borderRadius: '8px', padding: '8px 10px', marginBottom: '10px' }}>{my.map((c, i) => { const other = c.z1.id === selectedZone.id ? c.z2 : c.z1; return (<div key={i} style={{ fontSize: '11px', color: '#fecaca', marginBottom: i < my.length - 1 ? '4px' : 0 }}>⚠ {tx('Conflit avec', 'Conflict with')} « {other.work || pick(lang, HAZARDS[other.type].label.fr, HAZARDS[other.type].label.en)} » — {pick(lang, c.rule.fr, c.rule.en)}</div>); })}</div>) : null; })()}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}><div style={{ fontSize: '13px', fontWeight: 700, color: h.color }}>{lang !== 'bi' ? pick(lang, h.label.fr, h.label.en) : <>{h.label.fr} <span style={{ opacity: 0.55, fontWeight: 400 }}>/ {h.label.en}</span></>}</div>{canEdit && <button onClick={() => removeZone(selectedZone.id)} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: 'var(--danger)', borderRadius: '6px', padding: '4px 8px', fontSize: '11px', cursor: 'pointer' }}>{tx('Supprimer', 'Delete')}</button>}</div>
+                      {(() => { const my = deckConflicts.filter((c) => c.z1.id === selectedZone.id || c.z2.id === selectedZone.id); return my.length ? (<div style={{ background: 'var(--danger-soft)', border: '1px solid #ef4444', borderRadius: '8px', padding: '8px 10px', marginBottom: '10px' }}>{my.map((c, i) => { const other = c.z1.id === selectedZone.id ? c.z2 : c.z1; return (<div key={i} style={{ fontSize: '11px', color: 'var(--danger-ink)', marginBottom: i < my.length - 1 ? '4px' : 0 }}>⚠ {tx('Conflit avec', 'Conflict with')} « {other.work || pick(lang, HAZARDS[other.type].label.fr, HAZARDS[other.type].label.en)} » — {pick(lang, c.rule.fr, c.rule.en)}</div>); })}</div>) : null; })()}
                       <label style={{ fontSize: '11px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi('Compagnie', 'Company')}</label>
                       {canEdit ? <input value={selectedZone.company} onChange={(e) => updateZone(selectedZone.id, { company: e.target.value })} placeholder={tx('ex : Allied Welding', 'e.g. Allied Welding')} style={{ width: '100%', boxSizing: 'border-box', background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '13px', marginBottom: '10px' }} /> : <div style={{ fontSize: '13px', padding: '8px 0', marginBottom: '4px' }}>{selectedZone.company || '—'}</div>}
                       <label style={{ fontSize: '11px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi('Travaux', 'Work')}</label>
@@ -988,47 +1016,47 @@ export default function ShipyardSafetyDemo() {
                         const occ = occupantsOf(selectedZone); const gate = zoneGate(selectedZone);
                         return (
                           <div style={{ borderTop: `1px solid ${C.line}`, paddingTop: '10px', marginBottom: '10px' }}>
-                            <div style={{ fontSize: '11px', color: '#7dd3fc', marginBottom: '6px', fontWeight: 700 }}>🚪 {bi('Registre d\u2019accès', 'Access register')}{occ.length > 0 && <span style={{ marginLeft: '6px', background: '#0ea5e9', color: '#0b1622', borderRadius: '8px', padding: '0 6px', fontSize: '10px' }}>👤 {occ.length}</span>}</div>
+                            <div style={{ fontSize: '11px', color: 'var(--info-ink)', marginBottom: '6px', fontWeight: 700 }}>🚪 {bi('Registre d\u2019accès', 'Access register')}{occ.length > 0 && <span style={{ marginLeft: '6px', background: 'var(--info)', color: 'var(--on-accent)', borderRadius: '8px', padding: '0 6px', fontSize: '10px' }}>👤 {occ.length}</span>}</div>
                             {occ.length === 0 && <div style={{ fontSize: '12px', color: C.dim, marginBottom: '6px' }}>{tx('Personne dans la zone.', 'Nobody in the zone.')}</div>}
-                            {occ.map((e) => (<div key={e.id} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', marginBottom: '4px' }}><span style={{ flex: 1 }}>👤 {e.name} <span style={{ color: C.dim }}>· {tx('depuis', 'since')} {fmtDur(e.inAt, lang)}</span></span><button onClick={() => checkOut(selectedZone, e.id, e.name)} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: '#7dd3fc', borderRadius: '6px', padding: '4px 9px', fontSize: '11px', cursor: 'pointer' }}>{tx('Sortie', 'Check-out')}</button></div>))}
-                            {!gate.ok && <div style={{ fontSize: '11px', color: '#fca5a5', marginBottom: '6px' }}>⛔ {tx('Conditions non remplies : ', 'Conditions not met: ')}{pick(lang, gate.fr, gate.en)}</div>}
+                            {occ.map((e) => (<div key={e.id} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', marginBottom: '4px' }}><span style={{ flex: 1 }}>👤 {e.name} <span style={{ color: C.dim }}>· {tx('depuis', 'since')} {fmtDur(e.inAt, lang)}</span></span><button onClick={() => checkOut(selectedZone, e.id, e.name)} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: 'var(--info-ink)', borderRadius: '6px', padding: '4px 9px', fontSize: '11px', cursor: 'pointer' }}>{tx('Sortie', 'Check-out')}</button></div>))}
+                            {!gate.ok && <div style={{ fontSize: '11px', color: 'var(--danger-ink)', marginBottom: '6px' }}>⛔ {tx('Conditions non remplies : ', 'Conditions not met: ')}{pick(lang, gate.fr, gate.en)}</div>}
                             <div style={{ display: 'flex', gap: '6px' }}>
                               <input value={checkinName} onChange={(e) => { setCheckinName(e.target.value); setCheckinErr(null); }} onKeyDown={(e) => { if (e.key === 'Enter') checkIn(selectedZone); }} placeholder={tx('Nom de l\u2019intervenant…', 'Worker name…')} style={{ flex: 1, minWidth: '100px', background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '7px', padding: '8px 10px', fontSize: '12px' }} />
-                              <button onClick={() => checkIn(selectedZone)} style={{ background: gate.ok ? '#0ea5e9' : '#475569', color: '#0b1622', border: 'none', borderRadius: '7px', padding: '8px 12px', fontSize: '12px', fontWeight: 700, cursor: 'pointer' }}>{tx('Entrée', 'Check-in')}</button>
+                              <button onClick={() => checkIn(selectedZone)} style={{ background: gate.ok ? 'var(--info)' : '#475569', color: 'var(--on-accent)', border: 'none', borderRadius: '7px', padding: '8px 12px', fontSize: '12px', fontWeight: 700, cursor: 'pointer' }}>{tx('Entrée', 'Check-in')}</button>
                             </div>
-                            {checkinErr && <div style={{ fontSize: '11px', color: '#fca5a5', marginTop: '6px' }}>⛔ {tx('Entrée refusée et journalisée — ', 'Entry denied and logged — ')}{pick(lang, checkinErr.fr, checkinErr.en)}</div>}
+                            {checkinErr && <div style={{ fontSize: '11px', color: 'var(--danger-ink)', marginTop: '6px' }}>⛔ {tx('Entrée refusée et journalisée — ', 'Entry denied and logged — ')}{pick(lang, checkinErr.fr, checkinErr.en)}</div>}
                           </div>
                         );
                       })()}
                       <div style={{ borderTop: `1px solid ${C.line}`, paddingTop: '10px', marginBottom: '10px' }}>
-                        <div style={{ fontSize: '11px', color: C.accent, marginBottom: '6px', fontWeight: 700 }}>📄 {bi('Permis de travail', 'Work permit')}</div>
-                        {selectedZone.permit ? (<div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}><button onClick={() => openDoc('permit', selectedZone.permit)} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '7px', padding: '7px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{tx('Voir le permis', 'View permit')}</button><span style={{ fontSize: '11px', color: C.dim, flex: 1, minWidth: '80px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{selectedZone.permit.name}</span>{canEdit && <button onClick={() => removeDoc(selectedZone.id, 'permit')} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: '#ef4444', borderRadius: '6px', padding: '5px 8px', fontSize: '11px', cursor: 'pointer' }}>{tx('Retirer', 'Remove')}</button>}</div>) : canEdit ? (<button onClick={() => startDocImport(selectedZone.id, 'permit')} style={{ background: 'transparent', border: `1px dashed ${C.accent2}`, color: C.accent2, borderRadius: '7px', padding: '8px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer', width: '100%' }}>{tx('＋ Importer le permis (image / scan)', '＋ Import permit (image / scan)')}</button>) : (<div style={{ fontSize: '12px', color: C.dim }}>{tx('Aucun permis importé.', 'No permit uploaded.')}</div>)}
+                        <div style={{ fontSize: '11px', color: C.text, marginBottom: '6px', fontWeight: 700 }}>{bi('Permis de travail', 'Work permit')}</div>
+                        {selectedZone.permit ? (<div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}><button onClick={() => openDoc('permit', selectedZone.permit)} style={{ background: C.fill, color: C.text, border: 'none', borderRadius: '7px', padding: '7px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>{tx('Voir le permis', 'View permit')}</button><span style={{ fontSize: '11px', color: C.dim, flex: 1, minWidth: '80px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{selectedZone.permit.name}</span>{canEdit && <button onClick={() => removeDoc(selectedZone.id, 'permit')} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: 'var(--danger)', borderRadius: '6px', padding: '5px 8px', fontSize: '11px', cursor: 'pointer' }}>{tx('Retirer', 'Remove')}</button>}</div>) : canEdit ? (<button onClick={() => startDocImport(selectedZone.id, 'permit')} style={{ background: 'transparent', border: `1px dashed ${C.accent2}`, color: C.accent2, borderRadius: '7px', padding: '8px 11px', fontSize: '12px', fontWeight: 600, cursor: 'pointer', width: '100%' }}>{tx('＋ Importer le permis (image / scan)', '＋ Import permit (image / scan)')}</button>) : (<div style={{ fontSize: '12px', color: C.dim }}>{tx('Aucun permis importé.', 'No permit uploaded.')}</div>)}
                       </div>
 
                       {selectedZone.type === 'confined' && (() => {
                         const due = atmoDue(selectedZone); const checks = mergedChecks(selectedZone);
-                        const dueColor = due.state === 'overdue' ? '#ef4444' : due.state === 'ok' ? '#22c55e' : C.dim;
+                        const dueColor = due.state === 'overdue' ? 'var(--danger)' : due.state === 'ok' ? 'var(--ok)' : C.dim;
                         return (<div style={{ borderTop: `1px solid ${C.line}`, paddingTop: '10px', marginBottom: '10px' }}>
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                            <div style={{ fontSize: '11px', color: '#fb923c', fontWeight: 700 }}>🫁 {bi('Tests atmosphériques', 'Atmospheric tests')}</div>
+                            <div style={{ fontSize: '11px', color: '#fb923c', fontWeight: 700 }}>{bi('Tests atmosphériques', 'Atmospheric tests')}</div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><span style={{ fontSize: '10px', color: C.dim }}>{tx('Intervalle', 'Interval')}</span>{canEdit ? <select value={selectedZone.interval || 12} onChange={(e) => updateZone(selectedZone.id, { interval: Number(e.target.value) })} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '6px', padding: '2px 6px', fontSize: '11px' }}><option value={12}>12h</option><option value={24}>24h</option></select> : <span style={{ fontSize: '11px', color: C.text }}>{(selectedZone.interval || 12)}h</span>}</div>
                           </div>
-                          <div style={{ fontSize: '11px', color: dueColor, fontWeight: 700, marginBottom: '8px' }}>{due.state === 'none' ? tx('⚠ Aucun test enregistré', '⚠ No test recorded') : due.state === 'overdue' ? tx('⏰ EN RETARD depuis ', '⏰ OVERDUE by ') + fmtRemaining(due.remaining, lang) : tx('✓ Prochain test dans ', '✓ Next test in ') + fmtRemaining(due.remaining, lang)}</div>
-                          {canEdit && <button onClick={() => startCheckImport(selectedZone.id)} style={{ background: '#f97316', color: '#0b1622', border: 'none', borderRadius: '7px', padding: '8px 11px', fontSize: '12px', fontWeight: 700, cursor: 'pointer', width: '100%', marginBottom: '8px' }}>{tx('＋ Nouveau contrôle (upload fiche)', '＋ New check (upload sheet)')}</button>}
+                          <div style={{ fontSize: '11px', color: dueColor, fontWeight: 700, marginBottom: '8px' }}>{due.state === 'none' ? tx('⚠ Aucun test enregistré', '⚠ No test recorded') : due.state === 'overdue' ? tx('EN RETARD depuis ', 'OVERDUE by ') + fmtRemaining(due.remaining, lang) : tx('✓ Prochain test dans ', '✓ Next test in ') + fmtRemaining(due.remaining, lang)}</div>
+                          {canEdit && <button onClick={() => startCheckImport(selectedZone.id)} style={{ background: '#f97316', color: 'var(--on-accent)', border: 'none', borderRadius: '7px', padding: '8px 11px', fontSize: '12px', fontWeight: 700, cursor: 'pointer', width: '100%', marginBottom: '8px' }}>{tx('＋ Nouveau contrôle (upload fiche)', '＋ New check (upload sheet)')}</button>}
                           {checks.length === 0 && <div style={{ fontSize: '12px', color: C.dim }}>{tx('Aucun contrôle.', 'No check yet.')}</div>}
                           {checks.map((c) => (<div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', padding: '5px 0', borderTop: `1px solid ${C.line}` }}>
-                            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: c.pending ? '#eab308' : '#22c55e', flexShrink: 0 }} />
+                            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: c.pending ? 'var(--warn)' : 'var(--ok)', flexShrink: 0 }} />
                             <span style={{ flex: 1, minWidth: '90px' }}>{fmtClock(c.ts, lang)}<span style={{ color: C.dim }}> · {c.by}</span></span>
-                            {c.pending && <span style={{ fontSize: '9px', color: '#eab308', border: '1px solid #eab308', borderRadius: '4px', padding: '0 4px' }}>{tx('en attente', 'pending')}</span>}
+                            {c.pending && <span style={{ fontSize: '9px', color: 'var(--warn)', border: '1px solid #eab308', borderRadius: '4px', padding: '0 4px' }}>{tx('en attente', 'pending')}</span>}
                             <button onClick={() => openDoc('atmo', c)} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: C.accent2, borderRadius: '5px', padding: '3px 8px', fontSize: '10px', cursor: 'pointer' }}>{tx('Voir', 'View')}</button>
                           </div>))}
                           <div style={{ fontSize: '10px', color: C.dim, marginTop: '6px', fontStyle: 'italic' }}>{tx('Hors-ligne, les contrôles sont enregistrés sur l’appareil puis synchronisés au retour du réseau.', 'Offline, checks are saved on the device and synced when the network returns.')}</div>
                         </div>);
                       })()}
 
-                      {selectedZone.type === 'hot' && (<div style={{ borderTop: `1px solid ${C.line}`, paddingTop: '10px', marginBottom: '10px' }}><div style={{ fontSize: '11px', color: '#fca5a5', marginBottom: '6px', fontWeight: 700 }}>🧯 Fire Watch</div>{fwHere.length ? fwHere.map((f) => (<div key={f.id} style={{ fontSize: '12px', marginBottom: '3px' }}>✓ {f.name} <span style={{ color: C.dim }}>· {tx('depuis', 'since')} {fmtDur(f.since, lang)}</span></div>)) : <div style={{ fontSize: '12px', color: '#fca5a5' }}>⚠ {tx('Aucun fire watch posté sur cette zone.', 'No fire watch posted on this zone.')}</div>}{canEdit && <div style={{ fontSize: '11px', color: C.dim, marginTop: '4px' }}>{tx('Gérer dans l’onglet Équipe.', 'Manage in the Crew tab.')}</div>}</div>)}
+                      {selectedZone.type === 'hot' && (<div style={{ borderTop: `1px solid ${C.line}`, paddingTop: '10px', marginBottom: '10px' }}><div style={{ fontSize: '11px', color: 'var(--danger-ink)', marginBottom: '6px', fontWeight: 700 }}>Fire Watch</div>{fwHere.length ? fwHere.map((f) => (<div key={f.id} style={{ fontSize: '12px', marginBottom: '3px' }}>✓ {f.name} <span style={{ color: C.dim }}>· {tx('depuis', 'since')} {fmtDur(f.since, lang)}</span></div>)) : <div style={{ fontSize: '12px', color: 'var(--danger-ink)' }}>⚠ {tx('Aucun fire watch posté sur cette zone.', 'No fire watch posted on this zone.')}</div>}{canEdit && <div style={{ fontSize: '11px', color: C.dim, marginTop: '4px' }}>{tx('Gérer dans l’onglet Équipe.', 'Manage in the Crew tab.')}</div>}</div>)}
 
-                      <div style={{ fontSize: '11px', color: C.accent, marginBottom: '6px' }}>⚠ {pick(lang, h.permit.fr, h.permit.en)}</div>
+                      <div style={{ fontSize: '11px', color: C.text, marginBottom: '6px' }}>⚠ {pick(lang, h.permit.fr, h.permit.en)}</div>
                       <div style={{ fontSize: '11px', fontWeight: 700, color: C.dim, marginBottom: '6px' }}>{bi('EPI', 'PPE')}</div>
                       {h.epi.map((e, i) => (<div key={i} style={{ fontSize: '12px', marginBottom: '3px' }}>{lang !== 'bi' ? '✓ ' + pick(lang, e.fr, e.en) : <>✓ {e.fr} <span style={{ opacity: 0.5 }}>/ {e.en}</span></>}</div>))}
                     </div>
@@ -1073,20 +1101,20 @@ function CrewView({ crew, C, canEdit, hotZones, nowTick, lang, onCoord, onAssist
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
         <div style={{ flex: '1 1 280px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '16px' }}>
-          <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px', color: C.accent }}>{tx('Coordination du chantier', 'Site coordination')}</div>
+          <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px', color: C.text }}>{tx('Coordination du chantier', 'Site coordination')}</div>
           <label style={{ fontSize: '11px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi('Coordinateur', 'Site coordinator')}</label>
           {canEdit ? <input value={crew.coordinator} onChange={(e) => onCoord(e.target.value)} placeholder={tx('Nom', 'Name') + '…'} style={{ width: '100%', boxSizing: 'border-box', background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '9px 10px', fontSize: '14px', marginBottom: '12px' }} /> : <div style={{ fontSize: '15px', fontWeight: 600, marginBottom: '12px' }}>{crew.coordinator || '—'}</div>}
           <label style={{ fontSize: '11px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi('Assistant coordinateur', 'Assistant')}</label>
           {canEdit ? <input value={crew.assistant} onChange={(e) => onAssist(e.target.value)} placeholder={tx('Nom (optionnel)', 'Name (optional)') + '…'} style={{ width: '100%', boxSizing: 'border-box', background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '9px 10px', fontSize: '14px' }} /> : <div style={{ fontSize: '15px', fontWeight: 600 }}>{crew.assistant || '—'}</div>}
         </div>
         <div style={{ flex: '1 1 160px', display: 'flex', gap: '16px' }}>
-          <div style={{ flex: 1, background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '16px', textAlign: 'center' }}><div style={{ fontSize: '30px', fontWeight: 800, color: '#22c55e' }}>{posted.length}</div><div style={{ fontSize: '12px', color: C.dim }}>{tx('Fire Watch en position', 'Fire watch on station')}</div></div>
+          <div style={{ flex: 1, background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '16px', textAlign: 'center' }}><div style={{ fontSize: '30px', fontWeight: 800, color: 'var(--ok)' }}>{posted.length}</div><div style={{ fontSize: '12px', color: C.dim }}>{tx('Fire Watch en position', 'Fire watch on station')}</div></div>
           <div style={{ flex: 1, background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '16px', textAlign: 'center' }}><div style={{ fontSize: '30px', fontWeight: 800, color: C.accent2 }}>{avail.length}</div><div style={{ fontSize: '12px', color: C.dim }}>{tx('Disponibles', 'Available')}</div></div>
         </div>
       </div>
 
       <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', overflow: 'hidden' }}>
-        <div style={{ padding: '12px 14px', fontSize: '14px', fontWeight: 700, color: C.accent, borderBottom: `1px solid ${C.line}` }}>🧯 {tx('Fire Watch — surveillants incendie', 'Fire watch — fire sentries')}</div>
+        <div style={{ padding: '12px 14px', fontSize: '14px', fontWeight: 700, color: C.text, borderBottom: `1px solid ${C.line}` }}>{tx('Fire Watch — surveillants incendie', 'Fire watch — fire sentries')}</div>
         {canEdit && (
           <div style={{ display: 'flex', gap: '8px', padding: '12px 14px', borderBottom: `1px solid ${C.line}`, flexWrap: 'wrap' }}>
             <input value={fwName} onChange={(e) => setFwName(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') submitAdd(); }} placeholder={tx('Nom du fire watch…', 'Fire watch name…')} style={{ flex: 1, minWidth: '160px', background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '9px 10px', fontSize: '13px' }} />
@@ -1098,10 +1126,10 @@ function CrewView({ crew, C, canEdit, hotZones, nowTick, lang, onCoord, onAssist
           const isPosted = f.status === 'posted';
           return (
             <div key={f.id} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '11px 14px', borderBottom: `1px solid ${C.line}`, flexWrap: 'wrap' }}>
-              <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: isPosted ? '#22c55e' : C.dim }} />
+              <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: isPosted ? 'var(--ok)' : C.dim }} />
               <span style={{ fontWeight: 600, fontSize: '14px', minWidth: '110px' }}>{f.name}</span>
-              {isPosted ? (() => { const exists = hotZones.some((z) => z.id === f.zoneId); return (<span role={exists ? 'button' : undefined} tabIndex={exists ? 0 : undefined} onKeyDown={(e) => { if (exists && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onLocate(f.zoneId); } }} onClick={() => exists && onLocate(f.zoneId)} title={exists ? tx('Voir sur le plan', 'View on plan') : undefined} style={{ fontSize: '12px', color: '#86efac', flex: 1, minWidth: '160px', cursor: exists ? 'pointer' : 'default' }}>🔥 <span style={{ textDecoration: exists ? 'underline dotted' : 'none', textUnderlineOffset: '3px' }}>{zoneName(f.zoneId)}</span> <span style={{ color: C.dim }}>· {tx('depuis', 'since')} {fmtDur(f.since, lang)}</span>{exists && <span style={{ marginLeft: '6px', fontSize: '11px' }}>📍</span>}</span>); })() : (<span style={{ fontSize: '12px', color: C.dim, flex: 1, minWidth: '160px' }}>{tx('Disponible', 'Available')}</span>)}
-              {canEdit && (<div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>{isPosted ? (<button onClick={() => onRelease(f.id)} style={{ background: 'transparent', border: `1px solid #22c55e`, color: '#86efac', borderRadius: '6px', padding: '5px 10px', fontSize: '11px', cursor: 'pointer' }}>{tx('Libérer', 'Release')}</button>) : (<select defaultValue="" onChange={(e) => { if (e.target.value) onAssign(f.id, e.target.value); }} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '6px', padding: '5px 8px', fontSize: '11px' }}><option value="" disabled>{tx('Poster sur…', 'Post to…')}</option>{hotZones.length === 0 && <option value="" disabled>{tx('Aucune zone à chaud', 'No hot work zone')}</option>}{hotZones.map((z) => <option key={z.id} value={z.id}>{z.work || tx('Zone à chaud', 'Hot work zone')}</option>)}</select>)}<button onClick={() => onRemove(f.id)} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: '#ef4444', borderRadius: '6px', padding: '5px 8px', fontSize: '11px', cursor: 'pointer' }}>✕</button></div>)}
+              {isPosted ? (() => { const exists = hotZones.some((z) => z.id === f.zoneId); return (<span role={exists ? 'button' : undefined} tabIndex={exists ? 0 : undefined} onKeyDown={(e) => { if (exists && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onLocate(f.zoneId); } }} onClick={() => exists && onLocate(f.zoneId)} title={exists ? tx('Voir sur le plan', 'View on plan') : undefined} style={{ fontSize: '12px', color: 'var(--ok-ink)', flex: 1, minWidth: '160px', cursor: exists ? 'pointer' : 'default' }}><span style={{ textDecoration: exists ? 'underline dotted' : 'none', textUnderlineOffset: '3px' }}>{zoneName(f.zoneId)}</span> <span style={{ color: C.dim }}>· {tx('depuis', 'since')} {fmtDur(f.since, lang)}</span>{exists && <span style={{ marginLeft: '6px', fontSize: '11px' }}>📍</span>}</span>); })() : (<span style={{ fontSize: '12px', color: C.dim, flex: 1, minWidth: '160px' }}>{tx('Disponible', 'Available')}</span>)}
+              {canEdit && (<div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>{isPosted ? (<button onClick={() => onRelease(f.id)} style={{ background: 'transparent', border: `1px solid #22c55e`, color: 'var(--ok-ink)', borderRadius: '6px', padding: '5px 10px', fontSize: '11px', cursor: 'pointer' }}>{tx('Libérer', 'Release')}</button>) : (<select defaultValue="" onChange={(e) => { if (e.target.value) onAssign(f.id, e.target.value); }} style={{ background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '6px', padding: '5px 8px', fontSize: '11px' }}><option value="" disabled>{tx('Poster sur…', 'Post to…')}</option>{hotZones.length === 0 && <option value="" disabled>{tx('Aucune zone à chaud', 'No hot work zone')}</option>}{hotZones.map((z) => <option key={z.id} value={z.id}>{z.work || tx('Zone à chaud', 'Hot work zone')}</option>)}</select>)}<button onClick={() => onRemove(f.id)} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: 'var(--danger)', borderRadius: '6px', padding: '5px 8px', fontSize: '11px', cursor: 'pointer' }}>✕</button></div>)}
             </div>
           );
         })}
@@ -1119,7 +1147,7 @@ function WorksView({ zones, companies, C, lang }) {
     <div>
       <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', flexWrap: 'wrap' }}>{Object.entries(STATUS).map(([k, s]) => (<div key={k} style={{ flex: '1 1 120px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '14px', textAlign: 'center' }}><div style={{ fontSize: '26px', fontWeight: 800, color: s.color }}>{counts[k] || 0}</div><div style={{ fontSize: '12px', color: C.dim }}>{pick(lang, s.fr, s.en)}</div></div>))}</div>
       <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', overflow: 'hidden' }}>
-        <div style={{ padding: '12px 14px', fontSize: '14px', fontWeight: 700, color: C.accent, borderBottom: `1px solid ${C.line}` }}>🏗️ {tx('Travaux par compagnie (tous les ponts)', 'Works by company (all decks)')}</div>
+        <div style={{ padding: '12px 14px', fontSize: '14px', fontWeight: 700, color: C.text, borderBottom: `1px solid ${C.line}` }}>{tx('Travaux par compagnie (tous les ponts)', 'Works by company (all decks)')}</div>
         {companies.length === 0 && zones.length === 0 && (<div style={{ padding: '24px', textAlign: 'center', color: C.dim, fontSize: '13px' }}>{tx('Aucune zone.', 'No zone.')}</div>)}
         {companies.map((c) => {
           const zs = zones.filter((z) => z.company === c);
@@ -1305,6 +1333,15 @@ function IntroOverlay({ introOut }) {
   );
 }
 
+function SafetySign({ level, size = 72, title }) {
+  // level: 0 safe condition (green square), 1 warning (yellow triangle), 2 danger (red-bordered triangle)
+  if (level === 0) return (
+    <svg width={size} height={size} viewBox="0 0 100 100" role="img" aria-label={title}><rect x="2" y="2" width="96" height="96" rx="8" fill="#1e7f4f" /><path d="M27 52 L44 68 L74 34" fill="none" stroke="#fff" strokeWidth="11" strokeLinecap="round" strokeLinejoin="round" /></svg>);
+  const fill = level >= 2 ? '#fff' : '#f6b800', edge = level >= 2 ? '#c4161c' : '#15191c', mark = level >= 2 ? '#c4161c' : '#15191c';
+  return (
+    <svg width={size} height={size * 0.9} viewBox="0 0 100 90" role="img" aria-label={title}><path d="M50 4 L96 84 Q98 88 93 88 L7 88 Q2 88 4 84 Z" fill={fill} stroke={edge} strokeWidth="7" strokeLinejoin="round" /><rect x="45" y="30" width="10" height="32" rx="3" fill={mark} /><circle cx="50" cy="73" r="6" fill={mark} /></svg>);
+}
+
 function DashboardView({ C, lang, active, statusCounts, allConflicts, overdueTests, untestedConfined, hotNoFw, noPermitActive, fwPosted, fwAvail, checksToday, crew, occupantsTotal, riskyOccupied, onReport, onGoto }) {
   const tx = mkTx(lang);
   const kpis = [
@@ -1325,41 +1362,40 @@ function DashboardView({ C, lang, active, statusCounts, allConflicts, overdueTes
     ...noPermitActive.map((z) => ({ ico: FileWarning, sev: 1, fr: 'Permis manquant — ' + (z.work || HAZARDS[z.type].label.fr), en: 'Missing permit — ' + (z.work || HAZARDS[z.type].label.en) })),
   ].sort((a, b) => b.sev - a.sev);
   const log = (active.log || []).slice(0, 25);
+  const top = alerts.length ? alerts[0].sev : 0;
+  const today = new Date().toLocaleDateString(lang === 'en' ? 'en-GB' : lang === 'bg' ? 'bg-BG' : 'fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      {(() => { const top = alerts.length ? alerts[0].sev : 0; const tone = top >= 2 ? C.red : top === 1 ? C.amber : C.green; const Ico = top >= 2 ? AlertTriangle : top === 1 ? FileWarning : ShieldCheck; return (
-        <section className="dd-hero" style={{ '--tone': tone }}>
-          <div className="dd-hero-ico"><Ico size={26} strokeWidth={2} aria-hidden="true" /></div>
-          <div style={{ flex: '1 1 220px', minWidth: 0 }}>
-            <div className="dd-eyebrow">{new Date().toLocaleDateString(lang === 'en' ? 'en-GB' : lang === 'bg' ? 'bg-BG' : 'fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
-            <h2 className="dd-hero-title">{alerts.length ? alerts.length + ' ' + tx(alerts.length > 1 ? 'points à traiter' : 'point à traiter', alerts.length > 1 ? 'items need attention' : 'item needs attention') : tx('Chantier conforme', 'Site compliant')}</h2>
-            <div className="dd-hero-sub">{alerts.length ? pick(lang, alerts[0].fr, alerts[0].en) : tx('Espaces confinés testés, zones à chaud couvertes, aucun conflit.', 'Confined spaces tested, hot work covered, no conflicts.')}</div>
-          </div>
-          <button type="button" className="dd-primary" onClick={onReport}><ClipboardList size={17} aria-hidden="true" />{tx('Rapport journalier', 'Daily report')}</button>
-        </section>); })()}
-      <div className="dd-kpis" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '10px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+      <section className="dd-hero">
+        <SafetySign level={top >= 2 ? 2 : top === 1 ? 1 : 0} size={84} title={top ? tx('Danger', 'Warning') : tx('Conforme', 'Safe')} />
+        <div style={{ minWidth: 0 }}>
+          <h2 className="dd-hero-title">{alerts.length ? alerts.length + ' ' + tx(alerts.length > 1 ? 'points à traiter' : 'point à traiter', alerts.length > 1 ? 'items need attention' : 'item needs attention') : tx('Chantier conforme', 'Site compliant')}</h2>
+          <div className="dd-hero-sub">{alerts.length ? pick(lang, alerts[0].fr, alerts[0].en) : tx('Espaces confinés testés, zones à chaud couvertes, aucun conflit.', 'Confined spaces tested, hot work covered, no conflicts.')}</div>
+          <div className="dd-hero-date">{today.charAt(0).toUpperCase() + today.slice(1)}</div>
+        </div>
+        <button type="button" className="dd-primary" onClick={onReport}><ClipboardList size={17} aria-hidden="true" />{tx('Rapport journalier', 'Daily report')}</button>
+      </section>
+
+      <div className="dd-board dd-kpis">
         {kpis.map((k, i) => (
-          <button key={i} onClick={() => onGoto(k.go)} className="dd-card dd-tile" style={{ '--tint': k.tint }}>
-            <span className="dd-tile-top"><span className="dd-tile-ico"><k.ico size={17} strokeWidth={2.1} aria-hidden="true" /></span>{k.flag && <span className={'dd-flag ' + k.flag}>{tx('À traiter', 'Action')}</span>}</span>
-            <span className="dd-tile-num">{k.v}</span>
-            <span className="dd-tile-lbl">{pick(lang, k.fr, k.en)}</span>
+          <button key={i} type="button" onClick={() => onGoto(k.go)} className={'dd-cell' + (k.flag ? ' ' + k.flag : '')}>
+            <span className="dd-num">{k.v}</span>
+            <span className="dd-lbl">{k.flag && <span className="dd-mark" aria-hidden="true" />}{pick(lang, k.fr, k.en)}</span>
           </button>
         ))}
       </div>
 
-      <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
-        <div style={{ flex: '1 1 320px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', overflow: 'hidden' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', borderBottom: `1px solid ${C.line}` }}>
-            <h3 className="dd-h3">{tx('Alertes actives', 'Active alerts')}<span className="dd-count">{alerts.length}</span></h3>
-          </div>
-          {alerts.length === 0 && <div style={{ padding: '18px', fontSize: '12px', color: C.dim }}>{tx('Tous les espaces confinés sont à jour, les zones à chaud sont couvertes et aucun conflit n\u2019est détecté.', 'All confined spaces are up to date, hot work zones are covered and no conflict is detected.')}</div>}
-          {alerts.map((a, i) => (<div key={i} className={'dd-row' + (a.sev === 3 ? ' crit' : '')} style={{ '--tint': a.sev >= 2 ? C.red : C.amber }}><span className="dd-row-ico"><a.ico size={16} strokeWidth={2.1} aria-hidden="true" /></span><span className="dd-row-txt">{pick(lang, a.fr, a.en)}</span><ChevronRight size={16} aria-hidden="true" style={{ color: C.dim, flex: 'none' }} /></div>))}
+      <div style={{ display: 'flex', gap: '18px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+        <div className="dd-plate" style={{ flex: '1 1 340px' }}>
+          <div style={{ padding: '14px 16px 12px' }}><h3 className="dd-h3">{tx('Alertes actives', 'Active alerts')}<span className="dd-count">{alerts.length}</span></h3></div>
+          {alerts.length === 0 && <div className="dd-row" style={{ color: C.dim }}>{tx('Tous les espaces confinés sont à jour, les zones à chaud sont couvertes et aucun conflit n\u2019est détecté.', 'All confined spaces are up to date, hot work zones are covered and no conflict is detected.')}</div>}
+          {alerts.map((a, i) => (<div key={i} className={'dd-row' + (a.sev === 3 ? ' crit' : '')}><SafetySign level={a.sev >= 2 ? 2 : 1} size={22} title={a.sev >= 2 ? tx('Danger', 'Danger') : tx('Attention', 'Caution')} /><span className="dd-row-txt">{pick(lang, a.fr, a.en)}</span></div>))}
         </div>
 
-        <div style={{ flex: '1 1 320px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', overflow: 'hidden' }}>
-          <div style={{ display: 'flex', alignItems: 'center', padding: '14px 16px', borderBottom: `1px solid ${C.line}` }}><h3 className="dd-h3"><History size={16} aria-hidden="true" style={{ color: C.dim }} />{tx('Journal du chantier', 'Site log')}</h3></div>
-          {log.length === 0 && <div style={{ padding: '18px', fontSize: '12px', color: C.dim }}>{tx('Les actions (permis, contrôles, fire watch…) s\u2019enregistrent ici, horodatées.', 'Actions (permits, checks, fire watch…) are recorded here with timestamps.')}</div>}
-          {log.map((l) => (<div key={l.id} style={{ display: 'flex', gap: '10px', padding: '8px 14px', borderBottom: `1px solid ${C.line}`, fontSize: '12px' }}><span style={{ color: C.dim, fontFamily: 'ui-monospace, monospace', whiteSpace: 'nowrap' }}>{fmtClock(l.ts, lang)}</span><span style={{ color: C.text }}>{pick(lang, l.fr, l.en)}</span></div>))}
+        <div className="dd-plate" style={{ flex: '1 1 340px' }}>
+          <div style={{ padding: '14px 16px 12px' }}><h3 className="dd-h3">{tx('Journal du chantier', 'Site log')}</h3></div>
+          {log.length === 0 && <div className="dd-row" style={{ color: C.dim }}>{tx('Les permis, contrôles et mouvements de fire watch s\u2019inscrivent ici avec leur heure.', 'Permits, checks and fire watch moves are recorded here with their time.')}</div>}
+          {log.map((l) => (<div key={l.id} className="dd-row"><span style={{ color: C.dim, whiteSpace: 'nowrap', fontVariantNumeric: 'tabular-nums' }}>{fmtClock(l.ts, lang)}</span><span className="dd-row-txt">{pick(lang, l.fr, l.en)}</span></div>))}
         </div>
       </div>
     </div>
@@ -1537,7 +1573,7 @@ function Yard3D({ ships, activeId, onSelect, onMove, canEdit, C, lang }) {
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '12px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
-        <div style={{ fontSize: '14px', fontWeight: 700, color: C.accent }}>{tx('Vue 3D du chantier', '3D yard view')}</div>
+        <div style={{ fontSize: '14px', fontWeight: 700, color: C.text }}>{tx('Vue 3D du chantier', '3D yard view')}</div>
         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
           <button onClick={() => setXray(!xray)} style={btn(xray)}>{tx('Coque transparente', 'See-through hull')}</button>
           <button onClick={() => setLabels(!labels)} style={btn(labels)}>{tx('Étiquettes', 'Labels')}</button>
@@ -1581,12 +1617,12 @@ function DryDockView({ active, updateActive, C, canEdit, lang }) {
   return (
     <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
       <div style={{ flex: '1 1 300px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '16px' }}>
-        <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px', color: C.accent }}>{tx('Dimensions du dry dock & du navire', 'Dry dock & vessel dimensions')}</div>
+        <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px', color: C.text }}>{tx('Dimensions du dry dock & du navire', 'Dry dock & vessel dimensions')}</div>
         {fields.map(([f, fr, en]) => (<div key={f} style={{ marginBottom: '12px' }}><label style={{ fontSize: '11px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi(fr, en)}</label><div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><input type="number" value={d[f]} readOnly={!canEdit} onChange={(e) => set(f, e.target.value)} style={{ flex: 1, background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '9px 10px', fontSize: '14px', opacity: canEdit ? 1 : 0.7 }} /><span style={{ fontSize: '12px', color: C.dim }}>m</span></div></div>))}
-        <div style={{ marginTop: '6px', padding: '10px', borderRadius: '8px', background: fits ? 'rgba(34,197,94,0.12)' : 'rgba(239,68,68,0.14)', border: `1px solid ${fits ? '#22c55e' : '#ef4444'}`, fontSize: '12px', color: fits ? '#86efac' : '#fca5a5' }}>{fits ? tx(`✓ Le navire entre dans le bassin · Marge latérale ${marginSide} m / extrémités ${marginEnd} m`, `✓ Vessel fits in the dock · Side clearance ${marginSide} m / ends ${marginEnd} m`) : tx('✗ Le navire dépasse les dimensions du bassin', '✗ Vessel exceeds the dock dimensions')}</div>
+        <div style={{ marginTop: '6px', padding: '10px', borderRadius: '8px', background: fits ? 'var(--ok-soft)' : 'var(--danger-soft)', border: `1px solid ${fits ? 'var(--ok)' : 'var(--danger)'}`, fontSize: '12px', color: fits ? 'var(--ok-ink)' : 'var(--danger-ink)' }}>{fits ? tx(`✓ Le navire entre dans le bassin · Marge latérale ${marginSide} m / extrémités ${marginEnd} m`, `✓ Vessel fits in the dock · Side clearance ${marginSide} m / ends ${marginEnd} m`) : tx('✗ Le navire dépasse les dimensions du bassin', '✗ Vessel exceeds the dock dimensions')}</div>
       </div>
       <div style={{ flex: '1 1 360px', background: C.panel, border: `1px solid ${C.line}`, borderRadius: '18px', padding: '16px' }}>
-        <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px', color: C.accent }}>{tx('Vue de dessus — navire en cale sèche', 'Top view — vessel in dry dock')}</div>
+        <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px', color: C.text }}>{tx('Vue de dessus — navire en cale sèche', 'Top view — vessel in dry dock')}</div>
         <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', background: C.panel2, borderRadius: '8px' }}>
           <rect x={pad} y={pad} width={dockW} height={dockH} fill="#0e1012" stroke={C.accent2} strokeWidth="2" rx="4" />
           <text x={W / 2} y={12} textAnchor="middle" fill={C.dim} fontSize="9">{d.dockLength} m</text>
