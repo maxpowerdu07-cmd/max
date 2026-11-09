@@ -23,11 +23,11 @@ const STATUS = {
   done:     { fr: 'Terminé', en: 'Completed', color: '#0a84ff' },
 };
 const COMPANY_PALETTE = ['#2dd4bf', '#60a5fa', '#f472b6', '#facc15', '#fda4af', '#fb923c', '#4ade80', '#f87171', '#38bdf8', '#a3e635'];
-const SHARED_KEY = 'ams_shared_v2';
-const PRESENCE_KEY = 'ams_presence_v2';
-const PENDING_KEY = 'ams_pending_v1';
+const SHARED_KEY = 'dd_shared_v3';
+const PRESENCE_KEY = 'dd_presence_v3';
+const PENDING_KEY = 'dd_pending_v2';
 const BRAND_INK = '#111316';
-const COORD_CODE = 'ALLIED2026';
+const COORD_CODE = 'DRYDOCK2026';
 
 function uid() { return Math.random().toString(36).slice(2, 9); }
 function companyList(zones) { const set = []; zones.forEach((z) => { if (z.company && !set.includes(z.company)) set.push(z.company); }); return set; }
@@ -235,7 +235,7 @@ function makeExampleShip() {
         { id: uid(), type: 'blast', x: 35, y: 30, w: 30, h: 40, company: 'BlastPro NV', work: 'Hull blasting & painting', status: 'planned', permit: null, atmo: null },
       ] },
       { id: uid(), name: 'Deck 1 — Machinery / Tanks', layout: 'machinery', planImage: null, zones: [
-        { id: hotId, type: 'hot', x: 35, y: 22, w: 30, h: 24, company: 'Allied Welding', work: 'Bow plating replacement', status: 'progress', permit: { name: 'Permis_feu_proue.svg', data: permitSvg() }, atmo: null },
+        { id: hotId, type: 'hot', x: 35, y: 22, w: 30, h: 24, company: 'Nordweld Marine', work: 'Bow plating replacement', status: 'progress', permit: { name: 'Permis_feu_proue.svg', data: permitSvg() }, atmo: null },
         { id: uid(), type: 'confined', x: 38, y: 50, w: 24, h: 22, company: 'TankClean Services', work: 'Aft ballast tank cleaning', status: 'progress', permit: null, atmo: { name: 'Test_atmo_ballast.svg', data: atmoSvg() }, entries: [{ id: uid(), name: 'T. Lemaire', inAt: Date.now() - 50 * 60000, outAt: null }] },
       ] },
     ] };
@@ -1066,7 +1066,7 @@ export default function ShipyardSafetyDemo() {
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}><div style={{ fontSize: '13px', fontWeight: 700, color: h.color }}>{lang !== 'bi' ? pick(lang, h.label.fr, h.label.en) : <>{h.label.fr} <span style={{ opacity: 0.55, fontWeight: 400 }}>/ {h.label.en}</span></>}</div>{canEdit && <button onClick={() => removeZone(selectedZone.id)} style={{ background: 'transparent', border: `1px solid ${C.line}`, color: 'var(--danger)', borderRadius: '6px', padding: '4px 8px', fontSize: '11px', cursor: 'pointer' }}>{tx('Supprimer', 'Delete')}</button>}</div>
                       {(() => { const my = deckConflicts.filter((c) => c.z1.id === selectedZone.id || c.z2.id === selectedZone.id); return my.length ? (<div style={{ background: 'var(--danger-soft)', border: '1px solid #ef4444', borderRadius: '8px', padding: '8px 10px', marginBottom: '10px' }}>{my.map((c, i) => { const other = c.z1.id === selectedZone.id ? c.z2 : c.z1; return (<div key={i} style={{ fontSize: '11px', color: 'var(--danger-ink)', marginBottom: i < my.length - 1 ? '4px' : 0 }}>⚠ {tx('Conflit avec', 'Conflict with')} « {other.work || pick(lang, HAZARDS[other.type].label.fr, HAZARDS[other.type].label.en)} » — {pick(lang, c.rule.fr, c.rule.en)}</div>); })}</div>) : null; })()}
                       <label style={{ fontSize: '11px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi('Compagnie', 'Company')}</label>
-                      {canEdit ? <input value={selectedZone.company} onChange={(e) => updateZone(selectedZone.id, { company: e.target.value })} placeholder={tx('ex : Allied Welding', 'e.g. Allied Welding')} style={{ width: '100%', boxSizing: 'border-box', background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '13px', marginBottom: '10px' }} /> : <div style={{ fontSize: '13px', padding: '8px 0', marginBottom: '4px' }}>{selectedZone.company || '—'}</div>}
+                      {canEdit ? <input value={selectedZone.company} onChange={(e) => updateZone(selectedZone.id, { company: e.target.value })} placeholder={tx('ex : Nordweld Marine', 'e.g. Nordweld Marine')} style={{ width: '100%', boxSizing: 'border-box', background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '13px', marginBottom: '10px' }} /> : <div style={{ fontSize: '13px', padding: '8px 0', marginBottom: '4px' }}>{selectedZone.company || '—'}</div>}
                       <label style={{ fontSize: '11px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi('Travaux', 'Work')}</label>
                       {canEdit ? <input value={selectedZone.work} onChange={(e) => updateZone(selectedZone.id, { work: e.target.value })} placeholder={tx('ex : Sablage carène', 'e.g. Hull blasting')} style={{ width: '100%', boxSizing: 'border-box', background: C.panel2, color: C.text, border: `1px solid ${C.line}`, borderRadius: '8px', padding: '8px 10px', fontSize: '13px', marginBottom: '10px' }} /> : <div style={{ fontSize: '13px', padding: '8px 0', marginBottom: '4px' }}>{selectedZone.work || '—'}</div>}
                       <label style={{ fontSize: '11px', color: C.dim, display: 'block', marginBottom: '4px' }}>{bi('Statut', 'Status')}</label>
@@ -1149,7 +1149,7 @@ export default function ShipyardSafetyDemo() {
           <div className="grp"><button type="button" className="cancel" onClick={() => setConfirmAsk(null)}>{tx('Annuler', 'Cancel')}</button></div>
         </div>
       </div>)}
-      <div className="dd-foot" style={{ padding: '14px 18px', background: C.panel2, borderTop: `1px solid ${C.line}`, fontSize: '11px', color: C.dim, textAlign: 'center', marginTop: '20px' }}>{tx('Démo collaborative — Allied Maritime Solutions Ltd · Safety & Service. Permis et tests sont des exemples de démonstration.', 'Collaborative demo — Allied Maritime Solutions Ltd · Safety & Service. Permits and tests are demonstration samples.')}</div>
+      <div className="dd-foot" style={{ padding: '14px 18px', background: C.panel2, borderTop: `1px solid ${C.line}`, fontSize: '11px', color: C.dim, textAlign: 'center', marginTop: '20px' }}>{tx('DryDock Safety · version bêta. Permis et tests sont des exemples de démonstration.', 'DryDock Safety · beta. Permits and tests are demonstration samples.')}</div>
     </div>
     </>
   );
