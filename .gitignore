@@ -3,3 +3,4 @@ dist
 .taste-skill/
 .playwright-cli/
 dist-artifact/
+.codegraph/

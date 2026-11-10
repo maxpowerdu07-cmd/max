@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "codegraph": {
+      "command": "sh",
+      "args": [
+        "-c",
+        "[ -f .codegraph/codegraph.db ] || npx -y @colbymchenry/codegraph@1.6.2 init -y . >/dev/null 2>&1; exec npx -y @colbymchenry/codegraph@1.6.2 serve --mcp"
+      ],
+      "env": {
+        "CODEGRAPH_TELEMETRY": "0",
+        "DO_NOT_TRACK": "1"
+      }
+    }
+  }
+}
