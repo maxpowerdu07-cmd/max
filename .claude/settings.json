@@ -8,7 +8,7 @@
     "code-simplifier@claude-plugins-official": true,
     "caveman@caveman": true,
     "ui-ux-pro-max@ui-ux-pro-max-skill": true,
-    "context-mode@context-mode": true,
+    "context-mode@context-mode": false,
     "claude-mem@thedotmack": true
   },
   "extraKnownMarketplaces": {
