@@ -1,0 +1,34 @@
+streamlink 8.6.3
+clipper v2.0
+[OK]  Python >= 3.11  -  3.12.10
+[OK]  ffmpeg  -  D:\a\max\max\dist\Clipper\ffmpeg.exe
+[OK]  ffmpeg : sous-titres incrustes (libass)
+[!!]  encodage GPU NVENC (RTX)  -  sinon x264 sur CPU, ca marche aussi
+[OK]  streamlink  -  streamlink 8.6.3
+[OK]  faster-whisper (sous-titres)
+[OK]  config.toml : streamers  -  streamer1, streamer2, streamer3
+[OK]  chat Twitch (connexion + JOIN)
+[OK]  streamlink -> streamer1  -  hors ligne ou introuvable (normal s'il ne stream pas)
+[OK]  espace disque libre  -  157 Go
+menu par double-clic : lignes OK = 11
+06:13:14 INFO echauffement du chat : 20 s avant les premiers clips
+06:13:14 INFO chat : connecte, 1 channel(s) rejoint(s)
+06:13:19 INFO [fake] live detecte, enregistrement en cours
+06:13:24 INFO [fake] jeu en cours : Grand Theft Auto VI
+06:13:26 WARNING chat : connexion perdue (connexion fermee par Twitch)
+06:13:32 INFO chat : connecte, 1 channel(s) rejoint(s)
+06:14:12 INFO [fake] PIC DE CHAT x5.3  (39.2/s contre 7.4, 188 personnes, ambiance drole, note provisoire 80)
+06:14:32 INFO [fake] CLIP PRET : 20261112_061356_fake_s90.mp4  (note 90, IA 8/10, 17 s, 0 mots) Il pensait vraiment y arriver ?
+06:15:00 INFO tiktok : PUBLIE  https://tiktok.example/post1
+06:15:16 INFO instagram : PUBLIE  https://instagram.example/post2
+06:15:19 INFO youtube : PUBLIE  https://www.youtube.com/shorts/vid123
+clip : debut +42.5s  duree 17.4s  note 90 (base 100, IA 8)  chat x5.32  188 pers.  son z=22.7  drole  blur 30fps  jeu=Grand Theft Auto VI
+calage : premiere image a t%10 = 2.72s, attendu 2.55s -> ecart +0.17s
+publications : {'tiktok': ('publie', 'https://tiktok.example/post1'), 'instagram': ('publie', 'https://instagram.example/post2'), 'youtube': ('publie', 'https://www.youtube.com/shorts/vid123')}
+[OK]  streamlink -> fake  -  en live sur Grand Theft Auto VI
+[OK]  IA (cle API Anthropic)  -  claude-haiku-5-5
+[OK]  Zernio : cle API  -  tiktok @maxclips, instagram @maxclips
+[OK]  Zernio : compte tiktok  -  @maxclips
+[OK]  Zernio : compte instagram  -  @maxclips
+[OK]  YouTube : autorisation
+TEST DE BOUT EN BOUT OK (198 s)

@@ -1,0 +1,15 @@
+50301 INFO: Building EXE because EXE-00.toc is non existent
+50301 INFO: Building EXE from EXE-00.toc
+50301 INFO: Copying bootloader EXE to D:\a\max\max\build\Clipper\Clipper.exe
+50303 INFO: Copying icon to EXE
+50305 INFO: Copying 0 resources to EXE
+50305 INFO: Embedding manifest in EXE
+50306 INFO: Appending PKG archive to EXE
+50314 INFO: Fixing EXE headers
+50417 INFO: Building EXE from EXE-00.toc completed successfully.
+50442 INFO: checking COLLECT
+50442 INFO: Building COLLECT because COLLECT-00.toc is non existent
+50442 INFO: Building COLLECT COLLECT-00.toc
+51972 INFO: Building COLLECT COLLECT-00.toc completed successfully.
+52025 INFO: Build complete! The results are available in: D:\a\max\max\dist
+dist/Clipper : 415 Mo

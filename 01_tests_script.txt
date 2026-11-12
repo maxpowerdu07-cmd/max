@@ -1,0 +1,29 @@
+ffmpeg version 9.0.2-essentials_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+gros chat en rafales (x0.4 a x2): 0 evenement(s)
+   -> 0 clips en 25 min sur un chat instable
+TESTS DETECTION OK
+tiktok : connexion impossible (reseau), nouvel essai dans 2 min
+tiktok : publication abandonnee pour j.mp4 (refus definitif)
+TESTS UNITAIRES OK
+06:08:57 INFO echauffement du chat : 20 s avant les premiers clips
+06:08:57 INFO chat : connecte, 1 channel(s) rejoint(s)
+06:08:58 WARNING Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+06:09:02 INFO [fake] live detecte, enregistrement en cours
+06:09:07 INFO [fake] jeu en cours : Grand Theft Auto VI
+06:09:09 WARNING chat : connexion perdue (connexion fermee par Twitch)
+06:09:15 INFO chat : connecte, 1 channel(s) rejoint(s)
+06:09:56 INFO [fake] PIC DE CHAT x7.2  (39.4/s contre 5.5, 205 personnes, ambiance drole, note provisoire 80)
+06:10:17 INFO [fake] CLIP PRET : 20261112_060939_fake_s90.mp4  (note 90, IA 8/10, 18 s, 0 mots) Il pensait vraiment y arriver 😭
+06:10:43 INFO tiktok : PUBLIE  https://tiktok.example/post1
+06:10:59 INFO instagram : PUBLIE  https://instagram.example/post2
+06:11:02 INFO youtube : PUBLIE  https://www.youtube.com/shorts/vid123
+clip : debut +42.6s  duree 18.4s  note 90 (base 100, IA 8)  chat x7.16  205 pers.  son z=22.7  drole  blur 30fps  jeu=Grand Theft Auto VI
+calage : premiere image a t%10 = 2.72s, attendu 2.55s -> ecart +0.17s
+publications : {'tiktok': ('publie', 'https://tiktok.example/post1'), 'instagram': ('publie', 'https://instagram.example/post2'), 'youtube': ('publie', 'https://www.youtube.com/shorts/vid123')}
+[OK]  streamlink -> fake  -  en live sur Grand Theft Auto VI
+[OK]  IA (cle API Anthropic)  -  claude-haiku-5-5
+[OK]  Zernio : cle API  -  tiktok @maxclips, instagram @maxclips
+[OK]  Zernio : compte tiktok  -  @maxclips
+[OK]  Zernio : compte instagram  -  @maxclips
+[OK]  YouTube : autorisation
+TEST DE BOUT EN BOUT OK (198 s)
