@@ -57,7 +57,7 @@ language = ""
     t = time.time()
     p = subprocess.run(CLIPPER + ["run", "--config", str(tmp / "config.toml")], cwd=tmp, env=env, capture_output=True, text=True, errors="replace", timeout=seconds + 300)
     log = p.stdout + p.stderr
-    lines = [l.split(" : « ")[0] for l in log.splitlines()]       # ne pas recopier les paroles du streamer
+    lines = [l.split(" mots) ")[0] + (" mots)" if " mots) " in l else "") for l in log.splitlines()]   # sans les paroles du streamer
     keep = [l for l in lines if any(k in l for k in ("PIC", "CLIP", "ERROR", "WARNING", "Traceback", "jeu en cours", "chat :", "live detecte", "abandonne", "etat :", "encodage", "sous-titres", "ignore"))]
     print("\n".join(keep[-28:]))
     print(f"  (code de sortie {p.returncode}, {time.time()-t:.0f} s)")
