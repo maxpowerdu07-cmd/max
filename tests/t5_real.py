@@ -67,6 +67,8 @@ language = ""
     print(f"  segments restants dans le tampon : {len(segs)} ; clips : {len(recs)}")
     if "Traceback" in log:
         print(log[-3000:]); return False
+    if "transcription impossible" in log or "sous-titres desactives" in log:
+        print("  SOUS-TITRES EN PANNE"); return False
     if not recs:
         return False
     ok = True
@@ -82,6 +84,8 @@ language = ""
         print(f"  clip {f.name}: {f.stat().st_size // 1024} Ko, {r['duration']} s, {r['fps']} fps, {r['layout']}, note {r['score']}, chat x{r['ratio']}, {r['uniq']} pers., son z={r['audio_z']}, "
               f"{words} mots transcrits, jeu connu: {bool(r['category'])}, 1080x1920+aac: {dims}, contraste images: {stds}")
         ok = ok and dims and f.stat().st_size > 300_000 and r["duration"] >= 8 and max(stds) > 4
+    total = sum(len(r.get("transcript", "").split()) for r in recs)
+    print(f"  mots transcrits sur l'ensemble des clips : {total}")
     return ok
 
 print("Recherche d'un live :")

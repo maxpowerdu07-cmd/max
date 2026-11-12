@@ -1227,7 +1227,11 @@ class Transcriber:
                                 "(pip install nvidia-cublas-cu12 nvidia-cudnn-cu12)")
             except (OSError, subprocess.TimeoutExpired):
                 pass
-        self.model = WhisperModel(self.model_name, device=dev, compute_type=ct)
+        model = WhisperModel(self.model_name, device=dev, compute_type=ct)
+        import numpy as np
+        segs, _ = model.transcribe(np.zeros(16000, dtype=np.float32), beam_size=1)   # essai a vide
+        list(segs)
+        self.model = model
         log.info("sous-titres : modele '%s' charge sur %s", self.model_name, dev)
 
     def preload(self) -> None:
@@ -1258,8 +1262,16 @@ class Transcriber:
                     self.failed = True
                     return []
             try:
+                # lecture directe du WAV (16 kHz mono) : pas besoin du decodeur interne de faster-whisper
+                import wave
+                import numpy as np
+                with wave.open(wav, "rb") as wf:
+                    pcm = wf.readframes(wf.getnframes())
+                audio = np.frombuffer(pcm, dtype="<i2").astype(np.float32) / 32768.0
+                if audio.size < 1600:
+                    return []
                 segs, _info = self.model.transcribe(
-                    wav, language=language or None, beam_size=1, vad_filter=True,
+                    audio, language=language or None, beam_size=1, vad_filter=True,
                     word_timestamps=True, condition_on_previous_text=False,
                 )
                 out = []
@@ -1996,7 +2008,7 @@ class Renderer:
         if self.tr.enabled and not self.tr.failed:
             wav = job.dir / "a.wav"
             r = sh([ffmpeg_bin(), "-y", "-hide_banner", "-loglevel", "error", "-ss", f"{job.lo:.3f}",
-                    "-i", str(src), "-t", f"{job.hi - job.lo:.3f}", "-vn", "-ac", "1", "-ar", "16000", str(wav)])
+                    "-i", str(src), "-t", f"{job.hi - job.lo:.3f}", "-vn", "-ac", "1", "-ar", "16000", "-c:a", "pcm_s16le", str(wav)])
             if r.returncode == 0:
                 words = [(s + job.lo, e + job.lo, w) for s, e, w in self.tr.words(str(wav), c.language)]
         a, b = job.a, job.b

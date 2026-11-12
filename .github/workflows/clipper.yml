@@ -45,8 +45,10 @@ jobs:
           export CLIPPER_EXE="$(pwd -W)/dist/Clipper/Clipper.exe"
           "$CLIPPER_EXE" _streamlink --version 2>&1 | tee ci-report/03_tests_exe.txt
           (cd dist/Clipper && ./Clipper.exe doctor 2>&1 | tee -a ../../ci-report/03_tests_exe.txt)
+          (cd dist/Clipper && printf '2\n\n0\n' | ./Clipper.exe 2>&1 | grep -c -E "Clipper v|\[OK\]" | sed 's/^/menu par double-clic : lignes OK = /' | tee -a ../../ci-report/03_tests_exe.txt)
           python tests/t3_pipeline.py 2>&1 | tail -30 | tee -a ci-report/03_tests_exe.txt
           grep -q "TEST DE BOUT EN BOUT OK" ci-report/03_tests_exe.txt
+          ! grep -q "transcription impossible" ci-report/03_tests_exe.txt
       - name: Essai sur un vrai live Twitch (Clipper.exe)
         id: reel
         continue-on-error: true
