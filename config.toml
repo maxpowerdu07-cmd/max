@@ -1,0 +1,118 @@
+# ============================================================
+#  Clipper - réglages. Seule la ligne "channels" est obligatoire.
+#  Après une modification : ferme Clipper et relance-le.
+# ============================================================
+
+# Streamers à surveiller : le nom dans l'adresse twitch.tv/NOM, en minuscules.
+channels = ["streamer1", "streamer2", "streamer3"]
+
+[general]
+output_dir = "clips"        # les clips finis arrivent ici (un dossier par streamer)
+render_workers = 2          # clips fabriqués en même temps
+
+[twitch]
+quality = "best"            # "best", ou "720p60" pour consommer moins de débit
+games = []                  # ex. ["grand theft auto vi"] : ne clipper QUE quand le streamer est sur ce jeu
+oauth_token = ""            # facultatif : jeton d'un compte abonné ou Turbo, pour éviter les coupures pub
+
+[detect]
+ratio = 1.8                 # sensibilité : plus haut = moins de clips, mais plus forts
+min_rate = 3.0              # activité minimale du chat (personnes par seconde) ; 1.5 pour un petit streamer
+min_unique = 8              # nombre minimal de personnes différentes qui réagissent
+cooldown_seconds = 45       # pause entre deux clips d'un même streamer
+max_clips_per_hour = 12
+
+[clip]
+layout = "blur"             # "blur" = image entière sur fond flouté | "stack" = facecam en haut, jeu zoomé en bas
+max_seconds = 58
+credit = "twitch.tv/{channel}"   # crédit affiché sur la vidéo ("" pour l'enlever)
+
+[subtitles]
+enabled = true
+model = "small"             # "base" (rapide), "small" (conseillé), "medium" (plus précis, plus lent)
+language = "fr"             # langue parlée ; "" = détection automatique
+device = "cpu"              # "cuda" = carte graphique (pip install nvidia-cublas-cu12 nvidia-cudnn-cu12)
+highlight_color = "#FFE600" # couleur du mot en cours
+
+[post]
+# Hashtags ajoutés à toutes les légendes (mets ici ceux qu'exige une campagne de clipping).
+hashtags = ["#gta6", "#gtavi", "#twitchfr"]
+
+# ------------------------------------------------------------
+#  IA (facultatif) : regarde le clip, le note sur 10, écrit l'accroche
+#  incrustée, le titre et les hashtags, et signale les contenus à risque.
+#  Il faut une clé API Anthropic (payante à l'usage, séparée de l'abonnement Claude).
+# ------------------------------------------------------------
+[ai]
+enabled = false
+api_key = ""
+model = "claude-haiku-5-5"
+min_note = 0                # ex. 5 : les clips notés moins de 5/10 par l'IA ne sont pas fabriqués
+max_calls_per_hour = 120    # garde-fou sur la dépense
+
+# ------------------------------------------------------------
+#  Publication automatique
+#  TikTok + Instagram : via Zernio (zernio.com), gratuit pour 2 comptes.
+#     Crée un compte, connecte TikTok et Instagram (compte professionnel),
+#     puis colle ta clé API ci-dessous dans [zernio].
+#  YouTube Shorts : API officielle Google (gratuite), voir [youtube].
+#  Commence avec dry_run = true : Clipper écrit ce qu'il publierait, sans rien envoyer.
+# ------------------------------------------------------------
+[publish]
+enabled = false
+dry_run = true
+timezone = "Europe/Paris"   # fuseau des créneaux ci-dessous
+min_score = 55              # note minimale (sur 100) pour qu'un clip soit publié
+delay_minutes = 15          # délai avant publication : supprime le fichier du clip pour l'annuler
+rush_score = 0              # ex. 85 : au-dessus de cette note, publication immédiate, même hors créneau
+need_ai = false             # true = ne publier que les clips validés par l'IA
+
+[publish.tiktok]
+enabled = true
+via = "zernio"
+windows = ["12:00-13:30", "17:00-21:30"]   # créneaux de publication ; [] = à toute heure
+max_per_day = 6
+min_gap_minutes = 60
+caption = "{titre} {hashtags}"
+
+[publish.instagram]
+enabled = true
+via = "zernio"
+windows = ["12:00-13:30", "18:00-21:30"]
+max_per_day = 6
+min_gap_minutes = 60
+caption = "{titre}\n\n{hashtags}\n{credit}"
+
+[publish.youtube]
+enabled = true
+via = "youtube"             # "zernio" possible aussi (3e compte Zernio, payant)
+windows = ["12:00-15:00", "19:00-22:00"]
+max_per_day = 8
+min_gap_minutes = 45
+category = "20"             # 20 = Jeux vidéo
+caption = "{titre}\n\n{credit}\n{hashtags} #shorts"
+
+[zernio]
+api_key = ""
+
+[youtube]
+# console.cloud.google.com : crée un projet, active "YouTube Data API v3", puis crée un
+# identifiant OAuth de type "Application de bureau" et colle ses deux valeurs ici.
+# Ensuite, dans Clipper : "Autoriser YouTube" (une seule fois).
+client_id = ""
+client_secret = ""
+
+[encode]
+nvenc = "auto"              # "auto" = utilise la carte graphique NVIDIA si possible
+
+# ------------------------------------------------------------
+#  Réglages propres à un streamer (facultatif).
+#  facecam = [x, y, largeur, hauteur] en fractions de l'image (0 à 1) :
+#  utilise "Capture d'un live avec grille" pour les lire.
+# ------------------------------------------------------------
+# [streamer.streamer1]
+# layout = "stack"
+# facecam = [0.0, 0.70, 0.25, 0.30]
+# display = "Streamer1"       # nom affiché dans les titres
+# hashtags = ["#gta6", "#streamer1"]
+# min_rate = 1.5

@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+build/
+dist/
+*.spec
+tools/
+ffdl/
+clips/
+buffer/
+logs/
+ci-report/
+youtube_token.json
+snapshot_*.png
+tests/last_clip.mp4
+tests/visual.png
+Clipper-Windows.zip

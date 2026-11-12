@@ -1,0 +1,78 @@
+name: Clipper (Windows)
+on:
+  push:
+    branches: [clipper]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    env:
+      PYTHONUTF8: "1"
+      PYTHONIOENCODING: utf-8
+      GH_TOKEN: ${{ github.token }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dependances
+        run: |
+          mkdir -p ci-report
+          python -m pip install --upgrade pip
+          pip install streamlink faster-whisper tzdata pyinstaller pillow
+          python packaging/get_ffmpeg.py
+          echo "$(pwd -W)/tools" >> "$GITHUB_PATH"
+          pip list 2>/dev/null | grep -i -E "streamlink|faster|ctranslate2|onnxruntime|pyinstaller|^av " | tee ci-report/00_versions.txt
+      - name: Tests du script sous Windows
+        run: |
+          ffmpeg -version | head -1 | tee ci-report/01_tests_script.txt
+          python tests/t1_detect.py 2>&1 | tail -3 | tee -a ci-report/01_tests_script.txt
+          python tests/t2_units.py 2>&1 | tail -3 | tee -a ci-report/01_tests_script.txt
+          python tests/t3_pipeline.py 2>&1 | tail -30 | tee -a ci-report/01_tests_script.txt
+          grep -q "TESTS DETECTION OK" ci-report/01_tests_script.txt && grep -q "TESTS UNITAIRES OK" ci-report/01_tests_script.txt && grep -q "TEST DE BOUT EN BOUT OK" ci-report/01_tests_script.txt
+      - name: Construction de Clipper.exe
+        run: |
+          python packaging/build_exe.py 2>&1 | tail -15 | tee ci-report/02_build.txt
+          test -f dist/Clipper/Clipper.exe
+      - name: Tests de Clipper.exe (serveurs simules)
+        run: |
+          export CLIPPER_EXE="$(pwd -W)/dist/Clipper/Clipper.exe"
+          "$CLIPPER_EXE" _streamlink --version 2>&1 | tee ci-report/03_tests_exe.txt
+          (cd dist/Clipper && ./Clipper.exe doctor 2>&1 | tee -a ../../ci-report/03_tests_exe.txt)
+          python tests/t3_pipeline.py 2>&1 | tail -30 | tee -a ci-report/03_tests_exe.txt
+          grep -q "TEST DE BOUT EN BOUT OK" ci-report/03_tests_exe.txt
+      - name: Essai sur un vrai live Twitch (Clipper.exe)
+        id: reel
+        continue-on-error: true
+        run: |
+          export CLIPPER_EXE="$(pwd -W)/dist/Clipper/Clipper.exe"
+          python tests/t5_real.py 2>&1 | tee ci-report/04_essai_reel.txt
+          grep -q "ESSAI REEL OK" ci-report/04_essai_reel.txt
+      - name: Zip
+        run: python packaging/make_zip.py 2>&1 | tee ci-report/05_zip.txt
+      - name: Release
+        run: |
+          TAG=clipper-v2.0
+          NOTES="Clipper pour Windows. Dezippe le dossier puis double-clique sur Clipper.exe. Voir LISEZ-MOI.txt."
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" Clipper-Windows.zip --clobber
+          else
+            gh release create "$TAG" Clipper-Windows.zip --target "$GITHUB_SHA" --title "Clipper v2.0 (Windows)" --notes "$NOTES"
+          fi
+          echo "release OK" | tee ci-report/06_release.txt
+      - name: Rapport
+        if: always()
+        run: |
+          echo "commit $GITHUB_SHA  run $GITHUB_RUN_ID  essai reel: ${{ steps.reel.outcome }}  job: ${{ job.status }}" > ci-report/99_resume.txt
+          cd ci-report
+          git init -q -b clipper-ci
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -q -m "Rapport CI $GITHUB_RUN_ID"
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" clipper-ci

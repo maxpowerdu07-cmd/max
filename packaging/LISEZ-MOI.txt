@@ -1,0 +1,46 @@
+CLIPPER v2.0 - mode d'emploi rapide
+===================================
+
+INSTALLATION
+1. Dezippe TOUT le dossier "Clipper" ou tu veux (exemple : C:\Clipper).
+   Clipper.exe doit rester dans ce dossier, avec le reste.
+2. Double-clique sur Clipper.exe.
+   Si Windows affiche "Windows a protege votre ordinateur" : clique sur
+   "Informations complementaires" puis "Executer quand meme" (le programme n'est pas signe).
+3. Icone sur le bureau : clic droit sur Clipper.exe > Envoyer vers > Bureau (creer un raccourci).
+
+PREMIER LANCEMENT
+- Choix 3 : ouvre les reglages. Remplace streamer1, streamer2, streamer3 par tes streamers
+  (le nom dans l'adresse twitch.tv/NOM), puis enregistre le fichier.
+- Choix 2 : verifie que tout est [OK].
+- Choix 1 : Clipper surveille les lives. Laisse la fenetre ouverte. Ctrl+C pour arreter.
+- Les clips arrivent dans le dossier "clips". Le choix 4 ouvre la page qui permet de les trier
+  et de copier les legendes.
+- Au tout premier clip, le modele de sous-titres se telecharge (quelques minutes).
+
+FACECAM EN HAUT + JEU EN BAS (conseille)
+- Choix 5 : capture du live avec une grille. Lis la position de la facecam, puis ajoute a la fin
+  de config.toml, pour chaque streamer :
+      [streamer.NOM]
+      layout = "stack"
+      facecam = [0.0, 0.70, 0.25, 0.30]
+
+PUBLICATION AUTOMATIQUE (facultatif)
+- TikTok et Instagram : cree un compte sur zernio.com (gratuit pour 2 comptes), connecte ton
+  TikTok et ton Instagram (compte professionnel), cree une cle API et colle-la dans
+  config.toml, section [zernio].
+- YouTube Shorts : sur console.cloud.google.com, cree un projet, active "YouTube Data API v3",
+  cree un identifiant OAuth de type "Application de bureau" et colle client_id et client_secret
+  dans [youtube]. Passe l'ecran de consentement en "production", sinon l'autorisation expire
+  au bout de 7 jours. Puis choix 6 dans Clipper.
+- Dans [publish] : enabled = true. Garde dry_run = true pour un premier essai : Clipper ecrit
+  ce qu'il publierait, sans rien envoyer. Quand tout est bon, mets dry_run = false.
+- Pour empecher un clip de partir : supprime son fichier avant la fin du delai (delay_minutes).
+
+IA (facultatif)
+- Avec une cle API Anthropic dans [ai] (payante a l'usage), Clipper note chaque clip, ecrit
+  l'accroche incrustee, le titre et les hashtags, et bloque la publication des contenus a risque.
+
+RAPPEL
+- Ne publie que des clips de streamers qui l'autorisent (campagnes de clipping, accord du
+  streamer). Respecte les regles de chaque campagne : credit, hashtags, plateformes.
